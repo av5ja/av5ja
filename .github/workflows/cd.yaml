@@ -1,14 +1,16 @@
-name: CI 
+name: CD 
 
 on:
   push:
+    tags:
+      - 'v*.*.*'
 
 permissions:
   contents: read
   packages: write
 
 jobs:
-  ci:
+  cd:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
