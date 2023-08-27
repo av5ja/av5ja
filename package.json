@@ -1,4 +1,10 @@
 {
+  "name": "av5ja",
+  "version": "0.0.1",
+  "description": "Asynchronous Communication Library for SplatNet3.",
+  "main": "dist/index.js",
+  "author": "tkgstrator <tkgling@splatnet3.com>",
+  "license": "MIT",
   "scripts": {
     "test": "jest",
     "test:dev": "jest --watch",
