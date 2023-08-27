@@ -40,6 +40,8 @@ jobs:
         run: yarn build
       
       - name: Deploy
-        run: yarn publish
+        run: |
+          npm ci
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
