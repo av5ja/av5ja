@@ -34,3 +34,5 @@ rules:
   sort-keys-fix/sort-keys-fix: error
   typescript-sort-keys/interface: error
   unused-imports/no-unused-imports: error
+  '@typescript-eslint/no-namespace': off
+  '@typescript-eslint/no-explicit-any': off
