@@ -1,4 +1,3 @@
-
 class Header {
   readonly alg: AlgorithmType;
 }
@@ -29,6 +28,9 @@ export namespace Token {
     readonly exp: number;
     readonly typ: TokenType;
     readonly iat: number;
+    /**
+     * NA ID
+     */
     readonly sub: string;
 
     get isValid(): boolean {
@@ -43,6 +45,10 @@ export namespace Token {
     readonly iat: number;
     readonly membership: Membership;
     readonly isChildRestricted: boolean;
+    /**
+     * Coral User ID
+     */
+    readonly sub: number;
 
     get isValid(): boolean {
       return true;
@@ -60,10 +66,12 @@ export namespace Token {
       return true;
     }
   }
-
 }
 
 interface NetworkServiceAccount {
+  /**
+   * Network Service Account ID(NSA ID)
+   */
   readonly id: string;
 }
 
@@ -71,10 +79,9 @@ interface Links {
   readonly networkServiceAccount: NetworkServiceAccount;
 }
 
-interface Membership {
+export class Membership {
   readonly active: boolean;
 }
-
 
 export class JWT<T extends PayloadType> {
   header: Header;
