@@ -1,7 +1,8 @@
 import { plainToInstance } from 'class-transformer';
 
 import { JWT, Token } from '../dto/jwt.dto';
-import { ResponseType, RequestType, Method, Headers, Parameters } from '../utils/request';
+import { Method } from '../enum/method';
+import { ResponseType, RequestType, Headers, Parameters } from '../utils/request';
 
 export namespace SessionToken {
   export class Request implements RequestType {
