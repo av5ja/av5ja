@@ -90,7 +90,7 @@ export class JWT<T extends PayloadType> {
 
   constructor(rawValue: string) {
     this.rawValue = rawValue;
-    const [header, payload, signature] = rawValue.split('.');
+    const [header, payload] = rawValue.split('.');
     this.header = JSON.parse(atob(header));
     this.payload = JSON.parse(atob(payload)) as T;
   }
