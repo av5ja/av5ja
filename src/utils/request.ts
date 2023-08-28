@@ -1,5 +1,6 @@
 import snakecaseKeys from 'snakecase-keys';
 
+
 export enum Method {
   GET = 'GET',
   POST = 'POST',
