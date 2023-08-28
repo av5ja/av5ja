@@ -1,9 +1,11 @@
 import { Transform, Type, plainToInstance } from 'class-transformer';
 
 import { JWT, Membership, Token } from '../dto/jwt.dto';
-import { ResponseType, RequestType, Method, Headers, Parameters } from '../utils/request';
+import { Method } from '../enum/method';
+import { ResponseType, RequestType, Headers, Parameters } from '../utils/request';
 
 import { CoralToken } from './coral_token';
+
 import 'reflect-metadata';
 
 export namespace GameServiceToken {

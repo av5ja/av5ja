@@ -1,3 +1,6 @@
+import { AlgorithmType } from '../enum/algorithm';
+import { TokenType } from '../enum/token_type';
+
 class Header {
   readonly alg: AlgorithmType;
 }

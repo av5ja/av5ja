@@ -1,6 +1,7 @@
 import { plainToInstance } from 'class-transformer';
 
-import { ResponseType, RequestType, Method, Headers, Parameters } from '../utils/request';
+import { Method } from '../enum/method';
+import { ResponseType, RequestType, Headers, Parameters } from '../utils/request';
 
 export namespace CoralToken {
   export class Request implements RequestType {

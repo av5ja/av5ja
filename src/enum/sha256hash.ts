@@ -1,3 +1,1 @@
-export enum SHA256Hash {
-
-}
+export enum SHA256Hash {}

@@ -1,11 +1,6 @@
 import snakecaseKeys from 'snakecase-keys';
 
-
-export enum Method {
-  GET = 'GET',
-  POST = 'POST',
-}
-
+import { Method } from '../enum/method';
 export interface ResponseType {}
 export type Headers = Record<string, string>;
 export type Parameters = string | URLSearchParams | undefined | Record<string, string | number | undefined | Record<string, string | number | undefined>>;
