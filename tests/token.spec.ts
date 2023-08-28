@@ -38,6 +38,7 @@ describe('JSONWebToken', () => {
     expect(token.payload.exp).toBe(1692847827);
     expect(token.payload.typ).toBe('id_token');
     expect(token.payload.iat).toBe(1692840627);
+    expect(token.payload.sub).toBe(4737360831381504);
     expect(token.payload.membership.active).toBe(true);
     expect(token.payload.isChildRestricted).toBe(false);
   });

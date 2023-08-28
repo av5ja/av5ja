@@ -40,6 +40,8 @@
     "typescript": "5.1.6"
   },
   "dependencies": {
-    "class-transformer": "^0.5.1"
+    "class-transformer": "^0.5.1",
+    "reflect-metadata": "^0.1.13",
+    "snakecase-keys": "^5.4.6"
   }
 }

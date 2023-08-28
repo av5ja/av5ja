@@ -1,3 +1,5 @@
+import snakecaseKeys from 'snakecase-keys';
+
 export enum Method {
   GET = 'GET',
   POST = 'POST',
@@ -5,7 +7,7 @@ export enum Method {
 
 export interface ResponseType {}
 export type Headers = Record<string, string>;
-export type Parameters = string | URLSearchParams | undefined | Record<string, string>;
+export type Parameters = string | URLSearchParams | undefined | Record<string, string | number | undefined | Record<string, string | number | undefined>>;
 
 export interface RequestType {
   readonly baseURL: string;
@@ -21,9 +23,10 @@ export async function request<T extends RequestType, U extends ReturnType<T['req
   const url = new URL(request.path, request.baseURL);
   const body = request.method === Method.GET ? undefined : JSON.stringify(request.parameters);
   const response = await fetch(url, {
-    body:  body,
+    body: body,
     headers: request.headers,
     method: request.method,
   });
-  return request.request(response.json()) as U;
+
+  return request.request(snakecaseKeys(await response.json())) as U;
 }
