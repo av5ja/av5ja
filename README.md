@@ -6,8 +6,31 @@ av5jaはSplatNet3のAPIに対応した非同期通信ライブラリです.
 
 ### 導入
 
+パッケージマネージャーとしてyarnを利用しています.
+
+> npmでも使い方は大体同じです.
+
+```
+git clone https://github.com/salmonstats3/av5ja.git
+cd av5ja
+yarn install
+```
+
 > 現在執筆中です.
 
+### NodeJSのバージョン切り替え
+
+nvm(Node Version Manager)を使ってバージョン管理を行っています. NodeJSのバージョンを簡単に切り替えられるのでオススメです.
+
+macOSの場合は以下のコマンドでnvmを導入できます.
+```
+brew install nvm
+```
+
+他のOSの場合は未検証ですが以下の方法で導入可能と思われます.
+
+- [NVM for Windows](https://github.com/coreybutler/nvm-windows)
+- [Node Version Manager](https://github.com/nvm-sh/nvm#installing-and-updating)
 
 ### 機能
 
@@ -24,6 +47,8 @@ av5jaはSplatNet3のAPIに対応した非同期通信ライブラリです.
 - `build`
   - tscでビルドを行います
   - 特に使う場面はありません
+- `update`
+  - authorize.spec.tsを実行し、トークンを更新します
 - `format`
   - prettierを使ってコード整形を行います
   - 未整形のコードが残っている場合はCIが失敗します

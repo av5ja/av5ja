@@ -9,10 +9,12 @@
     "dev": "ts-node src/index.ts",
     "test": "jest",
     "test:dev": "jest --watch",
-    "lint": "eslint --fix '{src,tests}/**/*.ts'",
+    "lint": "eslint --max-warnings=0 --ignore-path .gitignore '{src,test}/**/*.{js,ts}' --fix",
+    "lint:fix": "eslint --fix '{src,tests}/**/*.ts'",
     "format": "prettier --write '{src,tests}/**/*.ts'",
     "build": "tsc --build tsconfig.build.json",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "update": "jest authorize"
   },
   "files": [
     "dist/**/*"
