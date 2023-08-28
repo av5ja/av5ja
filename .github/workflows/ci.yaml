@@ -43,8 +43,3 @@ jobs:
       
       - name: Build
         run: yarn build
-      
-      - name: Deploy
-        run: yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
