@@ -29,7 +29,7 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
   const headers = {
     Authorization: `Bearer ${bullet_token}`,
     'Content-Type': 'application/json',
-    'X-Web-View-Ver': version
+    'X-Web-View-Ver': version,
   };
   const response = await fetch(url, {
     body: body,
