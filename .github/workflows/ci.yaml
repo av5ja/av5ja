@@ -45,6 +45,11 @@ jobs:
         run: yarn build
       
       - name: Deploy
-        run: yarn publish
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.0.0
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@salmonstats3'
+      - run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
