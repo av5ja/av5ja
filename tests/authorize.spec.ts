@@ -1,4 +1,3 @@
-import { JWT, Token } from '../src/dto/jwt.dto';
 import { AccessToken } from '../src/requests/access_token';
 import { BulletToken } from '../src/requests/bullet_token';
 import { CoralToken } from '../src/requests/coral_token';
@@ -10,7 +9,7 @@ import token from './token.json';
 
 describe('Authorize', () => {
   const session_token = token.session_token;
-  const access_token: JWT<Token.Token> = new JWT<Token.Token>(token.access_token);
+  // const access_token: JWT<Token.Token> = new JWT<Token.Token>(token.access_token);
 
   it('Session Token', () => {});
 
