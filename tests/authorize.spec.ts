@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 import { AccessToken } from '../src/requests/access_token';
 import { BulletToken } from '../src/requests/bullet_token';
 import { CoralToken } from '../src/requests/coral_token';
@@ -9,23 +11,6 @@ import token from './token.json';
 
 describe('Authorize', () => {
   const session_token = token.session_token;
-  // const access_token: JWT<Token.Token> = new JWT<Token.Token>(token.access_token);
-
-  it('Session Token', () => {});
-
-  it('Access Token', async () => {
-    // const access_token: AccessToken.Response = await request(new AccessToken.Request(session_token))
-    // expect(access_token.expires_in).toBe(900)
-    // expect(access_token.scope).toStrictEqual(['openid','user','user.birthday','user.mii','user.screenName'])
-    // expect(access_token.token_type).toBe('Bearer')
-  });
-
-  it('Coral Token', async () => {
-    // const coral_token: CoralToken.Response = await request(new CoralToken.Request(access_token.rawValue, 1, access_token.payload.sub, undefined, '2.7.0'))
-    // expect(coral_token.f).toBeDefined()
-    // expect(coral_token.request_id).toBeDefined()
-    // expect(coral_token.timestamp).toBeGreaterThan(0)
-  });
 
   it('Game Web Token', async () => {
     const version: string = '2.7.0';
@@ -51,5 +36,12 @@ describe('Authorize', () => {
     expect(game_web_token.access_token.payload.typ).toBe('id_token');
     expect(bullet_token.lang).toBe('ja-JP');
     expect(bullet_token.is_noe_country).toBe(false);
+
+    token.access_token = access_token.access_token.rawValue;
+    token.id_token = access_token.id_token.rawValue;
+    token.game_service_token = game_service_token.access_token.rawValue;
+    token.game_web_token = game_web_token.access_token.rawValue;
+    token.bullet_token = bullet_token.bullet_token;
+    fs.writeFileSync('./tests/token.json', JSON.stringify(token, null, 2));
   }, 10000);
 });

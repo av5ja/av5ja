@@ -17,6 +17,11 @@
   "files": [
     "dist/**/*"
   ],
+  "engine": {
+    "node": ">=18.0.0",
+    "npm": ">=7.0.0",
+    "yarn": ">=1.22.0"
+  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
@@ -41,6 +46,7 @@
   },
   "dependencies": {
     "class-transformer": "^0.5.1",
+    "dayjs": "^1.11.9",
     "reflect-metadata": "^0.1.13",
     "snakecase-keys": "^5.4.6"
   }

@@ -1,4 +1,5 @@
-import { plainToInstance } from 'class-transformer';
+import { Expose, Transform, Type, plainToInstance } from 'class-transformer';
+import dayjs from 'dayjs';
 
 import { ModeType } from '../../enum/mode';
 import { RuleType } from '../../enum/rule';
@@ -7,10 +8,18 @@ import { Common } from '../../utils/common';
 import { GraphQL } from '../../utils/graph_ql';
 import { Parameters } from '../../utils/request';
 
+
+import 'reflect-metadata'
+
 export namespace CoopHistoryQuery {
   export class Request implements GraphQL {
     readonly hash: SHA256Hash;
     readonly parameters: Parameters;
+
+    constructor() {
+      this.hash = SHA256Hash.CoopHistoryQuery;
+      this.parameters = {}
+    }
 
     request(response: any): Response {
       return plainToInstance(Response, response, { excludeExtraneousValues: true });
@@ -18,26 +27,38 @@ export namespace CoopHistoryQuery {
   }
 
   class HistoryDetail {
+    @Expose()
     readonly id: string
   }
 
   class HistoryGroup {
-    readonly start_time: Date
-    readonly end_time: Date
+    readonly start_time: string
+    readonly end_time: string
     readonly mode: ModeType
     readonly rule: RuleType
-    readonly historyDetails: Common.Node<HistoryDetail>
+    @Type(() => Common.Node<HistoryDetail>)
+    readonly history_details: Common.Node<HistoryDetail>
   }
 
   class CoopResult {
-    readonly historyGroup: Common.Node<HistoryGroup>
+    @Expose()
+    @Type(() => Common.Node<HistoryGroup>)
+    readonly history_groups: Common.Node<HistoryGroup>
   }
 
   class DataClass {
-    readonly coopResult: CoopResult
+    @Expose()
+    @Type(() => CoopResult)
+    readonly coop_result: CoopResult
   }
 
   export class Response {
+    @Expose()
+    @Type(() => DataClass)
     readonly data: DataClass
+
+    get results(): HistoryDetail[] {
+      return this.data.coop_result.history_groups.nodes.flatMap((node) => node.history_details.nodes);
+    }
   }
 }
