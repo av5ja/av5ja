@@ -30,6 +30,7 @@ rules:
       newlines-between: always
       alphabetize:
         order: asc
+      newlines-between: always
   import/no-duplicates: error
   sort-keys-fix/sort-keys-fix: error
   typescript-sort-keys/interface: error

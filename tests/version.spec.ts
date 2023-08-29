@@ -1,9 +1,7 @@
-import { JWT, Token } from '../src/dto/jwt.dto';
 import { NSO } from '../src/utils/nso_version';
 import { request } from '../src/utils/request';
 import { Web } from '../src/utils/web_version';
 
-import token from './token.json';
 
 describe('Web', () => {
     it('Hash', async () => {
