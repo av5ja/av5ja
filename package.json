@@ -6,14 +6,14 @@
   "author": "tkgstrator <tkgling@splatnet3.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node src/index.ts",
+    "build": "tsc --build tsconfig.build.json",
+    "dev": "ts-node src/index.ts", 
+    "format:dev": "prettier --check '{src,tests}/**/*.ts'",
+    "lint": "eslint --fix '{src,tests}/**/*.ts'", 
+    "lint:dev": "eslint --max-warnings=0 --ignore-path .gitignore '{src,test}/**/*.{js,ts}'",
+    "prepare": "npm run build",
     "test": "jest",
     "test:dev": "jest --watch",
-    "lint": "eslint --max-warnings=0 --ignore-path .gitignore '{src,test}/**/*.{js,ts}' --fix",
-    "lint:fix": "eslint --fix '{src,tests}/**/*.ts'",
-    "format": "prettier --write '{src,tests}/**/*.ts'",
-    "build": "tsc --build tsconfig.build.json",
-    "prepare": "npm run build",
     "update": "jest authorize"
   },
   "files": [
