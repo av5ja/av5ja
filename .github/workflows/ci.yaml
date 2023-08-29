@@ -3,10 +3,6 @@ name: CI
 on:
   push:
 
-permissions:
-  contents: read
-  packages: write
-
 jobs:
   ci:
     runs-on: ubuntu-20.04
@@ -18,8 +14,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.0.0
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@salmonstats3'
+
+      - name: Install Yarn
+        run: npm install -g yarn
 
       - name: Cache CDK Dependencies
         uses: actions/cache@v3
@@ -36,10 +33,10 @@ jobs:
         run: yarn install
 
       - name: Format
-        run: yarn format
+        run: yarn format:dev
       
       - name: Lint
-        run: yarn lint
+        run: yarn lint:dev
       
       - name: Test
         run: yarn test
