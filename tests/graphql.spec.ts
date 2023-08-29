@@ -1,6 +1,5 @@
 import { CoopHistoryDetailQuery } from '../src/requests/av5ja/coop_history_detail_query';
 import { CoopHistoryQuery } from '../src/requests/av5ja/coop_history_query';
-import { StageScheduleQuery } from '../src/requests/av5ja/stage_schedule_query';
 import { Common } from '../src/utils/common';
 import { request } from '../src/utils/graph_ql';
 
