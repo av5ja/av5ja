@@ -53,10 +53,28 @@ export namespace CoopHistoryDetailQuery {
     //     readonly image: Common.URL<string>;
     // }
 
-    class Nameplate {
+    class Background {
+        @Expose()
+        @Type(() => Common.TextColor)
         readonly text_color: Common.TextColor;
+        
+        @Expose()
+        @Type(() => Common.URL<string>)
         readonly image: Common.URL<string>;
-        readonly id: NameplateBdInfoId;
+        
+        @Expose()
+        @Type(() => Common.Id<string>)
+        readonly id: Common.Id<string>
+    }
+
+    class Nameplate {
+        @Expose()
+        @Type(() => Common.URL<string>)
+        readonly badges: Common.URL<string>[]
+        
+        @Expose()
+        @Type(() => Background)
+        readonly background: Background;
     }
 
     class ResultPlayer {
@@ -67,6 +85,8 @@ export namespace CoopHistoryDetailQuery {
         readonly name: string;
         @Expose()
         readonly nameId: string;
+        @Expose()
+        @Type(() => Nameplate)
         readonly nameplate: Nameplate;
         readonly uniform: SkinId;
         readonly species: SpecieKey;
@@ -76,6 +96,8 @@ export namespace CoopHistoryDetailQuery {
         @Expose()
         @Type(() => ResultPlayer)
         readonly player: ResultPlayer;
+        @Expose()
+        @Type(() => Common.Image<string>)
         readonly weapons: Common.WeaponType[];
         readonly special_weapon: SpecialId;
         @Expose()
@@ -110,7 +132,9 @@ export namespace CoopHistoryDetailQuery {
 
     class CoopHistoryDetail {
         readonly id: Common.CoopHistoryDetailId;
-        readonly after_grade: GradeId;
+        @Expose()
+        @Type(() => Common.Id<GradeId>)
+        readonly after_grade: Common.Id<GradeId>;
         readonly rule: RuleType;
         @Expose()
         @Type(() => MemberResult)
