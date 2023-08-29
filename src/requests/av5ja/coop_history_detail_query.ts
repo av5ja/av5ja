@@ -16,7 +16,6 @@ import { Common } from '../../utils/common';
 import { GraphQL } from '../../utils/graph_ql';
 import { Parameters } from '../../utils/request';
 
-
 export namespace CoopHistoryDetailQuery {
     export class Request implements GraphQL {
         readonly hash: SHA256Hash = SHA256Hash.CoopHistoryDetailQuery;
