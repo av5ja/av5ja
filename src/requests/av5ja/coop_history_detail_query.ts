@@ -2,13 +2,9 @@ import { Expose, Transform, Type, plainToInstance } from 'class-transformer';
 
 import 'reflect-metadata';
 
-import { EnemyId } from '../../enum/enemy';
 import { CoopEventId } from '../../enum/event_id';
-import { GradeId } from '../../enum/grade';
 import { RuleType } from '../../enum/rule';
 import { SHA256Hash } from '../../enum/sha256hash';
-import { SkinId } from '../../enum/skin';
-import { SpecialId } from '../../enum/special';
 import { SpecieKey } from '../../enum/specie';
 import { CoopWaterLevelId } from '../../enum/water_level';
 import { Common } from '../../utils/common';
@@ -32,8 +28,8 @@ export namespace CoopHistoryDetailQuery {
     }
 
     class SpecialType extends Common.Hash {
-        @Expose({ name: 'weapon_id'})
-        id: number
+        @Expose({ name: 'weapon_id' })
+        id: number;
     }
 
     class WaveResult {
@@ -42,7 +38,7 @@ export namespace CoopHistoryDetailQuery {
         @Expose()
         readonly water_level: CoopWaterLevelId;
         @Expose()
-        @Transform(({ value }) => value === null ? null : plainToInstance(Common.Id, value).id)
+        @Transform(({ value }) => (value === null ? null : plainToInstance(Common.Id, value).id))
         readonly event_wave: CoopEventId;
         @Expose()
         readonly deliver_norm: number | null;
@@ -125,7 +121,7 @@ export namespace CoopHistoryDetailQuery {
         readonly pop_count: number;
         @Expose()
         @Type(() => Common.HashId)
-        readonly enemy: Common.HashId
+        readonly enemy: Common.HashId;
     }
 
     class BossResult {
@@ -176,7 +172,7 @@ export namespace CoopHistoryDetailQuery {
         @Expose()
         readonly after_grade_point: number | null;
         @Expose()
-        @Transform(({ value }) => value === null ? null : [value.bronze, value.silver, value.gold])
+        @Transform(({ value }) => (value === null ? null : [value.bronze, value.silver, value.gold]))
         readonly scale: number[] | null;
         @Expose()
         readonly job_point: number | null;
