@@ -4,7 +4,7 @@ import { ModeType } from '../../enum/mode';
 import { RuleType } from '../../enum/rule';
 import { SHA256Hash } from '../../enum/sha256hash';
 import { Common } from '../../utils/common';
-import { GraphQL } from '../../utils/graph_ql';
+import { GraphQL, ResponseType } from '../../utils/graph_ql';
 import { Parameters } from '../../utils/request';
 
 import 'reflect-metadata';
@@ -15,7 +15,7 @@ export namespace CoopHistoryQuery {
         readonly parameters: Parameters;
 
         request(response: any): Response {
-            return plainToInstance(Response, response, { excludeExtraneousValues: true });
+            return plainToInstance(Response, { ...response, ...{ rawValue: response } }, { excludeExtraneousValues: true });
         }
     }
 
@@ -45,7 +45,7 @@ export namespace CoopHistoryQuery {
         readonly coop_result: CoopResult;
     }
 
-    export class Response {
+    export class Response implements ResponseType {
         @Expose()
         @Type(() => DataClass)
         readonly data: DataClass;
@@ -57,6 +57,13 @@ export namespace CoopHistoryQuery {
         get result_id_list(): Common.CoopHistoryDetailId[] {
             const results = this.results;
             return results.map((result) => new Common.CoopHistoryDetailId(result.id));
+        }
+
+        @Expose()
+        private readonly rawValue: JSON;
+
+        json(): JSON {
+            return this.rawValue;
         }
     }
 }

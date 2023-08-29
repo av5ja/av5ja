@@ -13,7 +13,7 @@ import { SpecialId } from '../../enum/special';
 import { SpecieKey } from '../../enum/specie';
 import { CoopWaterLevelId } from '../../enum/water_level';
 import { Common } from '../../utils/common';
-import { GraphQL } from '../../utils/graph_ql';
+import { GraphQL, ResponseType } from '../../utils/graph_ql';
 import { Parameters } from '../../utils/request';
 
 export namespace CoopHistoryDetailQuery {
@@ -28,8 +28,7 @@ export namespace CoopHistoryDetailQuery {
         }
 
         request(response: any): Response {
-            // console.log(response)
-            return plainToInstance(Response, response, { excludeExtraneousValues: true });
+            return plainToInstance(Response, { ...response, ...{ rawValue: response } }, { excludeExtraneousValues: true });
         }
     }
 
@@ -159,9 +158,16 @@ export namespace CoopHistoryDetailQuery {
         readonly coop_history_detail: CoopHistoryDetail;
     }
 
-    export class Response {
+    export class Response implements ResponseType {
         @Expose()
         @Type(() => DataClass)
         readonly data: DataClass;
+
+        @Expose()
+        private readonly rawValue: JSON;
+
+        json(): JSON {
+            return this.rawValue;
+        }
     }
 }
