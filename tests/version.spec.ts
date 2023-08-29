@@ -9,6 +9,7 @@ describe('Web', () => {
         expect(hash.js).toBe('631eca4e');
         expect(hash.css).toBe('726ac373');
     });
+    
     it('Version', async () => {
         const hash = (await request(new Web.Hash.Request())) as Web.Hash.Response;
         const version = (await request(new Web.Version.Request(hash.js))) as Web.Version.Response;

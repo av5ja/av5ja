@@ -1,13 +1,12 @@
 import { Expose, Type, plainToInstance } from 'class-transformer';
 
+import { CoopStageId } from '../../enum/coop_stage_id';
 import { SHA256Hash } from '../../enum/sha256hash';
 import { Common } from '../../utils/common';
 import { GraphQL } from '../../utils/graph_ql';
 import { Parameters } from '../../utils/request';
 
 import 'reflect-metadata';
-import { CoopStageId } from '../../enum/coop_stage_id';
-
 
 export namespace StageScheduleQuery {
     export class Request implements GraphQL {

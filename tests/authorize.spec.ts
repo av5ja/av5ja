@@ -5,25 +5,28 @@ import { BulletToken } from '../src/requests/bullet_token';
 import { CoralToken } from '../src/requests/coral_token';
 import { GameServiceToken } from '../src/requests/game_service_token';
 import { GameWebToken } from '../src/requests/game_web_token';
+import { NSO } from '../src/utils/nso_version';
 import { request } from '../src/utils/request';
+import { Web } from '../src/utils/web_version';
 
 import token from './token.json';
 
 describe('Authorize', () => {
     const session_token = token.session_token;
 
-    it('Game Web Token', async () => {
-        const version: string = '2.7.0';
-        const web_version: string = '4.0.0-b8c1e0fc';
+    it('Bullet Token', async () => {
+        const version: string = (await request(new NSO.Version.Request())).result.version;
+        const hash: string = (await request(new Web.Hash.Request())).js;
+        const web_version = (await request(new Web.Version.Request(hash))).web_version;
         const access_token = (await request(new AccessToken.Request(session_token))) as AccessToken.Response;
         const coral_token_nso: CoralToken.Response = await request(
-            new CoralToken.Request(access_token.access_token.rawValue, 1, access_token.na_id, undefined, '2.7.0')
+            new CoralToken.Request(access_token.access_token.rawValue, 1, access_token.na_id, undefined, version)
         );
         const game_service_token = (await request(
             new GameServiceToken.Request(access_token.access_token, coral_token_nso, version)
         )) as GameServiceToken.Response;
         const coral_token_app: CoralToken.Response = await request(
-            new CoralToken.Request(game_service_token.access_token.rawValue, 2, access_token.na_id, game_service_token.access_token.payload.sub, '2.7.0')
+            new CoralToken.Request(game_service_token.access_token.rawValue, 2, access_token.na_id, game_service_token.access_token.payload.sub, version)
         );
         const game_web_token = (await request(new GameWebToken.Request(game_service_token.access_token, coral_token_app, version))) as GameWebToken.Response;
         const bullet_token = (await request(new BulletToken.Request(game_web_token.access_token, web_version))) as BulletToken.Response;
