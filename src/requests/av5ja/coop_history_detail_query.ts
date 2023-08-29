@@ -42,6 +42,7 @@ export namespace CoopHistoryDetailQuery {
         @Expose()
         readonly water_level: CoopWaterLevelId;
         @Expose()
+        @Transform(({ value }) => value === null ? null : plainToInstance(Common.Id, value).id)
         readonly event_wave: CoopEventId;
         @Expose()
         readonly deliver_norm: number | null;
@@ -122,13 +123,17 @@ export namespace CoopHistoryDetailQuery {
         readonly team_defeat_count: number;
         @Expose()
         readonly pop_count: number;
-        readonly enemy: EnemyId;
+        @Expose()
+        @Type(() => Common.HashId)
+        readonly enemy: Common.HashId
     }
 
     class BossResult {
         @Expose()
         readonly has_defeat_boss: boolean;
-        readonly boss: EnemyId;
+        @Expose()
+        @Type(() => Common.HashId)
+        readonly boss: Common.HashId;
     }
 
     class CoopHistoryDetail {
@@ -136,6 +141,7 @@ export namespace CoopHistoryDetailQuery {
         @Expose()
         @Type(() => Common.Id)
         readonly after_grade: Common.Id;
+        @Expose()
         readonly rule: RuleType;
         @Expose()
         @Type(() => MemberResult)
@@ -156,17 +162,22 @@ export namespace CoopHistoryDetailQuery {
         readonly result_wave: number;
         @Expose()
         readonly played_time: string;
-        readonly coop_stage: string;
+        @Expose()
+        @Type(() => Common.HashId)
+        readonly coop_stage: Common.HashId;
         @Expose()
         readonly danger_rate: number;
         @Expose()
         readonly scenario_code: string | null;
         @Expose()
         readonly smell_meter: number | null;
+        @Expose()
         readonly weapons: Common.Hash[];
         @Expose()
         readonly after_grade_point: number | null;
-        readonly scale: number | null;
+        @Expose()
+        @Transform(({ value }) => value === null ? null : [value.bronze, value.silver, value.gold])
+        readonly scale: number[] | null;
         @Expose()
         readonly job_point: number | null;
         @Expose()

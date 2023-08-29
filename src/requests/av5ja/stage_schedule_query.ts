@@ -31,7 +31,7 @@ export namespace StageScheduleQuery {
         coop_stage: CoopStage;
 
         @Expose()
-        weapons: Common.WeaponType[];
+        weapons: Common.Hash[];
     }
 
     class CoopSchedule {
