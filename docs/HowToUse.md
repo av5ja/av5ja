@@ -2,9 +2,9 @@
 
 ### 対応リクエスト
 
-- [ ] [CoopHistoryQuery]()
-- [ ] [CoopHistoryDetailQuery]()
-- [ ] [StageScheudleQuery]()
+- [ ] [CoopHistoryQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/CoopHistoryQuery.md)
+- [ ] [CoopHistoryDetailQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/CoopHistoryDetailQuery.md)
+- [ ] [StageScheudleQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/StageScheduleQuery.md)
 
 #### 仕様
 

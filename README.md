@@ -18,6 +18,10 @@ yarn install
 
 > 現在執筆中です.
 
+#### 使い方
+
+詳しくは[ドキュメント](https://github.com/salmonstats3/av5ja/blob/master/docs/HowToUse.md)をご参照ください.
+
 ### NodeJSのバージョン切り替え
 
 nvm(Node Version Manager)を使ってバージョン管理を行っています. NodeJSのバージョンを簡単に切り替えられるのでオススメです.
