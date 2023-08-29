@@ -34,6 +34,6 @@ describe('GraphQL', () => {
 
         const result_id_list: Common.CoopHistoryDetailId[] = coop_history_query.result_id_list;
         const result = (await request(new CoopHistoryDetailQuery.Request(result_id_list[0].rawValue), bullet_token)) as CoopHistoryDetailQuery.Response;
-        console.log(result.data.coop_history_detail.my_result);
+        console.log(JSON.stringify(result.data.coop_history_detail.member_results, null, 2));
     }, 10000);
 });

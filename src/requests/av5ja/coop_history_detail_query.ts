@@ -1,11 +1,10 @@
-import { Expose, Type, plainToInstance } from 'class-transformer';
+import { Expose, Transform, Type, plainToInstance } from 'class-transformer';
 
 import 'reflect-metadata';
 
 import { EnemyId } from '../../enum/enemy';
 import { CoopEventId } from '../../enum/event_id';
 import { GradeId } from '../../enum/grade';
-import { NameplateBdInfoId } from '../../enum/nameplate';
 import { RuleType } from '../../enum/rule';
 import { SHA256Hash } from '../../enum/sha256hash';
 import { SkinId } from '../../enum/skin';
@@ -48,47 +47,40 @@ export namespace CoopHistoryDetailQuery {
         readonly special_weapon: SpecialId[];
     }
 
-    // class Badge {
-    //     readonly id: BadgeInfoId;
-    //     readonly image: Common.URL<string>;
-    // }
-
-    class Background {
+    class Background extends Common.HashId {
         @Expose()
         @Type(() => Common.TextColor)
         readonly text_color: Common.TextColor;
-        
-        @Expose()
-        @Type(() => Common.URL<string>)
-        readonly image: Common.URL<string>;
-        
-        @Expose()
-        @Type(() => Common.Id<string>)
-        readonly id: Common.Id<string>
     }
 
     class Nameplate {
         @Expose()
-        @Type(() => Common.URL<string>)
-        readonly badges: Common.URL<string>[]
-        
+        @Type(() => Common.HashId)
+        readonly badges: Common.HashId[];
+
         @Expose()
         @Type(() => Background)
         readonly background: Background;
     }
 
     class ResultPlayer {
+        @Expose()
+        @Type(() => Common.PlayerId)
+        @Transform(({ value }) => new Common.PlayerId(value))
         readonly id: Common.PlayerId;
         @Expose()
         readonly byname: string;
         @Expose()
         readonly name: string;
         @Expose()
-        readonly nameId: string;
+        readonly name_id: string;
         @Expose()
         @Type(() => Nameplate)
         readonly nameplate: Nameplate;
-        readonly uniform: SkinId;
+        @Expose()
+        @Type(() => Common.HashId)
+        readonly uniform: Common.HashId;
+        @Expose()
         readonly species: SpecieKey;
     }
 
@@ -97,8 +89,8 @@ export namespace CoopHistoryDetailQuery {
         @Type(() => ResultPlayer)
         readonly player: ResultPlayer;
         @Expose()
-        @Type(() => Common.Image<string>)
-        readonly weapons: Common.WeaponType[];
+        @Type(() => Common.Hash)
+        readonly weapons: Common.Hash[];
         readonly special_weapon: SpecialId;
         @Expose()
         readonly defeat_enemy_count: number;
@@ -133,8 +125,8 @@ export namespace CoopHistoryDetailQuery {
     class CoopHistoryDetail {
         readonly id: Common.CoopHistoryDetailId;
         @Expose()
-        @Type(() => Common.Id<GradeId>)
-        readonly after_grade: Common.Id<GradeId>;
+        @Type(() => Common.Id)
+        readonly after_grade: Common.Id;
         readonly rule: RuleType;
         @Expose()
         @Type(() => MemberResult)
@@ -162,7 +154,7 @@ export namespace CoopHistoryDetailQuery {
         readonly scenario_code: string | null;
         @Expose()
         readonly smell_meter: number | null;
-        readonly weapons: Common.WeaponType[];
+        readonly weapons: Common.Hash[];
         @Expose()
         readonly after_grade_point: number | null;
         readonly scale: number | null;
