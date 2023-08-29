@@ -5,6 +5,36 @@ import 'reflect-metadata';
 export namespace Common {
     export type WeaponType = Common.Image<string>;
 
+    export class TextColor {
+        a: number;
+        b: number;
+        g: number;
+        r: number;
+    }
+
+    export class PlayerId {
+        readonly id: string;
+        readonly prefix: string;
+        readonly npln_user_id: string;
+        readonly start_time: Date;
+        readonly uuid: string;
+        readonly rawValue: string;
+
+        constructor(rawValue: string) {
+            this.rawValue = rawValue;
+            const regexp = /([\w]*)-([\w]{1})-([\w\d]{20}):([\dT]{15})_([a-f0-9-]{36})/;
+            const match = regexp.exec(atob(rawValue));
+            if (match !== null) {
+                const [, id, prefix, npln_user_id, start_time, uuid] = match;
+                this.id = id;
+                this.prefix = prefix;
+                this.npln_user_id = npln_user_id;
+                this.start_time = dayjs(start_time).toDate();
+                this.uuid = uuid;
+            }
+        }
+    }
+
     export class CoopHistoryDetailId {
         readonly id: string;
         readonly prefix: string;
