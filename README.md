@@ -50,8 +50,22 @@ brew install nvm
 
 ### 機能
 
-- [ ] ログイン
-- [ ] データ取得
+- [ ] 認証
+  - [ ] OAuth URL 
+  - [ ] Session Token
+  - [x] Access Token
+  - [x] f
+  - [x] Game Service Token
+  - [x] Game Web Token
+  - [x] Bullet Token 
+- [x] GraphQL
+  - [x] CoopHistoryQuery
+  - [x] CoopHistoryDetailQuery
+  - [x] StageScheduleQuerey
+- [ ] SP2/SP3変換
+  - [x] CoopHistoryQuery
+  - [x] CoopHistoryDetailQuery
+  - [x] StageScheduleQuerey
 
 ## スクリプト
 
