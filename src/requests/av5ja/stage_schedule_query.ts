@@ -10,13 +10,8 @@ import 'reflect-metadata';
 
 export namespace StageScheduleQuery {
     export class Request implements GraphQL {
-        readonly hash: SHA256Hash;
+        readonly hash: SHA256Hash = SHA256Hash.StageScheduleQuery;
         readonly parameters: Parameters;
-
-        constructor() {
-            this.hash = SHA256Hash.StageScheduleQuery;
-            this.parameters = {};
-        }
 
         request(response: any): Response {
             return plainToInstance(Response, response, { excludeExtraneousValues: false });

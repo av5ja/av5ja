@@ -56,7 +56,7 @@ export namespace Web {
             readonly revision: string;
 
             get web_version(): string {
-                return `${this.version}-${this.revision}`
+                return `${this.version}-${this.revision}`;
             }
 
             constructor(raw_value: string) {

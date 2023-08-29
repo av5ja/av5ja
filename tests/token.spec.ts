@@ -37,7 +37,7 @@ describe('JSONWebToken', () => {
         expect(token.payload.membership.active).toBe(true);
         expect(token.payload.isChildRestricted).toBe(false);
     });
-    
+
     it('Game Web Token', () => {
         const token = new JWT<Token.GameWebToken>(game_web_token);
         expect(token.payload.aud).toBe('6633677291552768');

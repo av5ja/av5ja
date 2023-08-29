@@ -11,13 +11,8 @@ import 'reflect-metadata';
 
 export namespace CoopHistoryQuery {
     export class Request implements GraphQL {
-        readonly hash: SHA256Hash;
+        readonly hash: SHA256Hash = SHA256Hash.CoopHistoryQuery;
         readonly parameters: Parameters;
-
-        constructor() {
-            this.hash = SHA256Hash.CoopHistoryQuery;
-            this.parameters = {};
-        }
 
         request(response: any): Response {
             return plainToInstance(Response, response, { excludeExtraneousValues: true });
