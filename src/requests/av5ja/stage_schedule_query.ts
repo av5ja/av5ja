@@ -3,7 +3,7 @@ import { Expose, Type, plainToInstance } from 'class-transformer';
 import { CoopStageId } from '../../enum/coop_stage_id';
 import { SHA256Hash } from '../../enum/sha256hash';
 import { Common } from '../../utils/common';
-import { GraphQL } from '../../utils/graph_ql';
+import { GraphQL, ResponseType } from '../../utils/graph_ql';
 import { Parameters } from '../../utils/request';
 
 import 'reflect-metadata';
@@ -14,7 +14,7 @@ export namespace StageScheduleQuery {
         readonly parameters: Parameters;
 
         request(response: any): Response {
-            return plainToInstance(Response, response, { excludeExtraneousValues: false });
+            return plainToInstance(Response, { ...response, ...{ rawValue: response } }, { excludeExtraneousValues: false });
         }
     }
 
@@ -66,7 +66,7 @@ export namespace StageScheduleQuery {
         readonly coop_grouping_schedule: CoopGroupingSchedule;
     }
 
-    export class Response {
+    export class Response implements ResponseType {
         @Expose()
         @Type(() => DataClass)
         readonly data: DataClass;
@@ -80,6 +80,13 @@ export namespace StageScheduleQuery {
                 ...this.data.coop_grouping_schedule.big_run_schedules.nodes,
                 ...this.data.coop_grouping_schedule.team_contest_schedules.nodes,
             ];
+        }
+
+        @Expose()
+        private readonly rawValue: JSON;
+
+        json(): JSON {
+            return this.rawValue;
         }
     }
 }

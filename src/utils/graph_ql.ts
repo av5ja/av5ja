@@ -3,7 +3,9 @@ import snakecaseKeys from 'snakecase-keys';
 import { Method } from '../enum/method';
 import { SHA256Hash } from '../enum/sha256hash';
 
-export interface ResponseType {}
+export interface ResponseType {
+    json(): JSON;
+}
 export type Headers = Record<string, string>;
 export type Parameters = string | URLSearchParams | undefined | Record<string, string | number | undefined | Record<string, string | number | undefined>>;
 
