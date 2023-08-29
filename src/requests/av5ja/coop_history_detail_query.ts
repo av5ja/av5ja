@@ -31,6 +31,11 @@ export namespace CoopHistoryDetailQuery {
         }
     }
 
+    class SpecialType extends Common.Hash {
+        @Expose({ name: 'weapon_id'})
+        id: number
+    }
+
     class WaveResult {
         @Expose()
         readonly wave_number: number;
@@ -44,7 +49,9 @@ export namespace CoopHistoryDetailQuery {
         readonly golden_pop_count: number;
         @Expose()
         readonly team_deliver_count: number | null;
-        readonly special_weapon: SpecialId[];
+        @Expose()
+        @Type(() => SpecialType)
+        readonly special_weapon: SpecialType[];
     }
 
     class Background extends Common.HashId {
@@ -91,7 +98,9 @@ export namespace CoopHistoryDetailQuery {
         @Expose()
         @Type(() => Common.Hash)
         readonly weapons: Common.Hash[];
-        readonly special_weapon: SpecialId;
+        @Expose()
+        @Type(() => SpecialType)
+        readonly special_weapon: SpecialType;
         @Expose()
         readonly defeat_enemy_count: number;
         @Expose()
