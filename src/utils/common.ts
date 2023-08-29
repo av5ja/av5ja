@@ -3,8 +3,6 @@ import dayjs from 'dayjs';
 import 'reflect-metadata';
 
 export namespace Common {
-    export type WeaponType = Common.Image<string>;
-
     export class TextColor {
         @Expose()
         a: number;
@@ -22,19 +20,32 @@ export namespace Common {
         readonly npln_user_id: string;
         readonly start_time: Date;
         readonly uuid: string;
-        readonly rawValue: string;
+        readonly suffix: string;
+        readonly host_npln_user_id: string;
+
+        /**
+         * オリジナルのリザルトID
+         */
+        get rawValue(): string {
+            return btoa(
+                `${this.id}-${this.prefix}-${this.host_npln_user_id}:${dayjs(this.start_time).format('YYYYMMDDTHHmmss')}_${this.uuid}:${this.suffix}-${
+                    this.npln_user_id
+                }`
+            );
+        }
 
         constructor(rawValue: string) {
-            this.rawValue = rawValue;
-            const regexp = /([\w]*)-([\w]{1})-([\w\d]{20}):([\dT]{15})_([a-f0-9-]{36})/;
+            const regexp = /([\w]*)-([\w]{1})-([\w\d]{20}):([\dT]{15})_([a-f0-9-]{36}):([\w]{1})-([\w\d]{20})/;
             const match = regexp.exec(atob(rawValue));
             if (match !== null) {
-                const [, id, prefix, npln_user_id, start_time, uuid] = match;
+                const [, id, prefix, host_npln_user_id, start_time, uuid, suffix, npln_user_id] = match;
                 this.id = id;
                 this.prefix = prefix;
                 this.npln_user_id = npln_user_id;
                 this.start_time = dayjs(start_time).toDate();
                 this.uuid = uuid;
+                this.suffix = suffix;
+                this.host_npln_user_id = host_npln_user_id;
             }
         }
     }
@@ -45,17 +56,15 @@ export namespace Common {
         readonly npln_user_id: string;
         readonly start_time: Date;
         readonly uuid: string;
-        readonly rawValue: string;
 
         /**
          * オリジナルのリザルトID
          */
-        get desciption(): string {
+        get rawValue(): string {
             return btoa(`${this.id}-${this.prefix}-${this.npln_user_id}:${dayjs(this.start_time).format('YYYYMMDDTHHmmss')}_${this.uuid}`);
         }
 
         constructor(rawValue: string) {
-            this.rawValue = rawValue;
             const regexp = /([\w]*)-([\w]{1})-([\w\d]{20}):([\dT]{15})_([a-f0-9-]{36})/;
             const match = regexp.exec(atob(rawValue));
             if (match !== null) {
@@ -85,60 +94,41 @@ export namespace Common {
     }
 
     /**
-     * URL
+     * Hash
      */
-    export class URL<T> {
-        @Expose()
-        @Type((options) => (options?.newObject as URL<T>).type)
-        readonly url: T;
-
-        @Exclude()
-        private type: Function;
-        constructor(type: Function) {
-            this.type = type;
-        }
-    }
-    
-    /**
-     * Name and Id
-     */
-    export class Id<T> {
-        @Expose()
-        @Type((options) => (options?.newObject as Id<T>).type)
-        @Transform(({ value }) => atob(value))
-        readonly id: T;
-
-        @Expose()
-        readonly name: string;
-
-        @Exclude()
-        private type: Function;
-        constructor(type: Function) {
-            this.type = type;
-        }
+    export class Hash {
+        @Expose({ name: 'image' })
+        @Transform(({ obj }) => {
+            const regexp = /([a-f0-9]{64})/;
+            const match = regexp.exec(obj.image.url);
+            return match === null ? obj.image.url : match[0];
+        })
+        readonly hash: string;
     }
 
     /**
-     * Image and Name
+     * Hash
      */
-    export class Image<T, U> implements Id<U> {
+    export class Id {
         @Expose()
-        @Type((options) => (options?.newObject as Image<T>).type)
-        readonly image: Common.URL<T>;
-
-        @Expose()
-        readonly name: string;
-
-        @Expose()
-        @Type((options) => (options?.newObject as Id<U>).type)
-        @Transform(({ value }) => atob(value))
-        readonly id: T;
-
-        @Exclude()
-        private type: Function;
-        constructor(type: Function) {
-            this.type = type;
-        }
+        @Transform(({ value }) => parseInt(atob(value).split('-')[1], 10))
+        readonly id: number;
     }
 
+    /**
+     * Hash and Id
+     */
+    export class HashId {
+        @Expose({ name: 'image' })
+        @Transform(({ obj }) => {
+            const regexp = /([a-f0-9]{64})/;
+            const match = regexp.exec(obj.image.url);
+            return match === null ? obj.image.url : match[0];
+        })
+        readonly hash: string;
+
+        @Expose()
+        @Transform(({ value }) => parseInt(atob(value).split('-')[1], 10))
+        readonly id: number;
+    }
 }
