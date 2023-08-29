@@ -1,3 +1,17 @@
+<p align="center">
+  <img alt="GitHub Workflow Status (CI)" src="https://img.shields.io/github/actions/workflow/status/salmonstats3/av5ja/ci.yaml">
+  <img alt="GitHub Workflow Status (CD)" src="https://img.shields.io/github/actions/workflow/status/salmonstats3/av5ja/cd.yaml">
+  <img alt="GitHub" src="https://img.shields.io/github/license/salmonstats3/av5ja">
+  <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/salmonstats3/av5ja">
+  <img alt="Node" src="https://img.shields.io/badge/node-v16.15.0-green">
+  <img src="https://img.shields.io/badge/-NintendoSwitch-E60012.svg?logo=nintendoswitch&style=popout">
+  <img src="https://img.shields.io/badge/XProductVersion-2.7.0-8F8F8F.svg?logo=nintendoswitch&style=popout">
+  <img src="https://img.shields.io/badge/-Prettier-F7B93E.svg?logo=prettier&style=popout">
+  <img src="https://img.shields.io/badge/-Eslint-4B32C3.svg?logo=eslint&style=popout">
+  <img src="https://img.shields.io/badge/-Typescript-007ACC.svg?logo=typescript&style=popout">
+  <img src="https://img.shields.io/badge/-Node.js-339933.svg?logo=node.js&style=popout">
+</p>
+
 ## av5ja
 
 av5jaはSplatNet3のAPIに対応した非同期通信ライブラリです.
