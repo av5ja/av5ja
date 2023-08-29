@@ -22,7 +22,7 @@ export namespace Common {
 
         constructor(rawValue: string) {
             this.rawValue = rawValue;
-            const regexp = /([\w]*)-([\w]{1})-([\w\d]{20}):([\dT]{15})_([a-f0-9\-]{36})/;
+            const regexp = /([\w]*)-([\w]{1})-([\w\d]{20}):([\dT]{15})_([a-f0-9-]{36})/;
             const match = regexp.exec(atob(rawValue));
             if (match !== null) {
                 const [, id, prefix, npln_user_id, start_time, uuid] = match;

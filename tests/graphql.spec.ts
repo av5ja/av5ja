@@ -21,6 +21,7 @@ describe('GraphQL', () => {
             expect(result_id.rawValue).toBe(result_id.desciption);
         });
     }, 5000);
+    
     it('StageScheduleQuery', async () => {
         const stage_schedule_query = await request(new StageScheduleQuery.Request(), bullet_token);
         expect(stage_schedule_query.schedules.length).toBe(4);

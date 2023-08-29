@@ -55,6 +55,10 @@ export namespace Web {
             readonly version: string;
             readonly revision: string;
 
+            get web_version(): string {
+                return `${this.version}-${this.revision}`
+            }
+
             constructor(raw_value: string) {
                 let regexp: RegExp = /`(\d\.\d\.\d)-/;
                 let match: RegExpMatchArray | null = regexp.exec(raw_value);
