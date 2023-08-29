@@ -36,6 +36,7 @@ describe('GraphQL', () => {
         const result_id_list: Common.CoopHistoryDetailId[] = coop_history_query.result_id_list;
         result_id_list.forEach(async (result_id: Common.CoopHistoryDetailId) => {
             const result = (await request(new CoopHistoryDetailQuery.Request(result_id.rawValue), bullet_token)) as CoopHistoryDetailQuery.Response;
-        })
+            expect(result.data.coop_history_detail.weapons.length).toBe(4);
+        });
     }, 50000);
 });
