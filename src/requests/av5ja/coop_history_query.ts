@@ -58,5 +58,10 @@ export namespace CoopHistoryQuery {
         get results(): HistoryDetail[] {
             return this.data.coop_result.history_groups.nodes.flatMap((node) => node.history_details.nodes);
         }
+
+        get result_id_list(): Common.CoopHistoryDetailId[] {
+            const results = this.results;
+            return results.map((result) => new Common.CoopHistoryDetailId(result.id));
+        }
     }
 }
