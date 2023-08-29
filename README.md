@@ -1,7 +1,7 @@
 <p align="center">
 <img alt="CI" src="https://github.com/salmonstats3/av5ja/actions/workflows/ci.yaml/badge.svg">
 <img alt="CD" src="https://github.com/salmonstats3/av5ja/actions/workflows/cd.yaml/badge.svg">
-<img alt="Node" src="https://img.shields.io/badge/node-v16.15.0-green">
+<img alt="Node" src="https://img.shields.io/badge/node-v18.0.0-green">
 <img src="https://img.shields.io/badge/-NintendoSwitch-E60012.svg?logo=nintendoswitch&style=popout">
 <img src="https://img.shields.io/badge/XProductVersion-2.7.0-8F8F8F.svg?logo=nintendoswitch&style=popout">
 <img src="https://img.shields.io/badge/-Prettier-F7B93E.svg?logo=prettier&style=popout">
