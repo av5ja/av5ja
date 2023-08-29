@@ -1,23 +1,21 @@
 import { Expose, Type, plainToInstance } from 'class-transformer';
 
-import { ModeType } from '../../enum/mode';
+import 'reflect-metadata';
+
+import { EnemyId } from '../../enum/enemy';
+import { CoopEventId } from '../../enum/event_id';
+import { GradeId } from '../../enum/grade';
+import { NameplateBdInfoId } from '../../enum/nameplate';
 import { RuleType } from '../../enum/rule';
 import { SHA256Hash } from '../../enum/sha256hash';
+import { SkinId } from '../../enum/skin';
+import { SpecialId } from '../../enum/special';
+import { SpecieKey } from '../../enum/specie';
+import { CoopWaterLevelId } from '../../enum/water_level';
 import { Common } from '../../utils/common';
 import { GraphQL } from '../../utils/graph_ql';
 import { Parameters } from '../../utils/request';
 
-import 'reflect-metadata';
-import { CoopStageId } from '../../enum/coop_stage_id';
-import { CoopWaterLevelId } from '../../enum/water_level';
-import { CoopEventId } from '../../enum/event_id';
-import { BadgeInfoId } from '../../enum/badge_info';
-import { SkinId } from '../../enum/skin';
-import { NameplateBdInfoId } from '../../enum/nameplate';
-import { GradeId } from '../../enum/grade';
-import { SpecieKey } from '../../enum/specie';
-import { SpecialId } from '../../enum/special';
-import { EnemyId } from '../../enum/enemy';
 
 export namespace CoopHistoryDetailQuery {
     export class Request implements GraphQL {
@@ -52,10 +50,10 @@ export namespace CoopHistoryDetailQuery {
         readonly special_weapon: SpecialId[];
     }
 
-    class Badge {
-        readonly id: BadgeInfoId;
-        readonly image: Common.URL<string>;
-    }
+    // class Badge {
+    //     readonly id: BadgeInfoId;
+    //     readonly image: Common.URL<string>;
+    // }
 
     class Nameplate {
         readonly text_color: Common.TextColor;
