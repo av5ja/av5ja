@@ -168,6 +168,7 @@ export namespace CoopHistoryDetailQuery {
         @Expose()
         readonly smell_meter: number | null;
         @Expose()
+        @Type(() => Common.Hash)
         readonly weapons: Common.Hash[];
         @Expose()
         readonly after_grade_point: number | null;

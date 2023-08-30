@@ -9,8 +9,7 @@ interface PayloadType {
     readonly aud: string;
     readonly exp: number;
     readonly iat: number;
-    get isValid(): boolean;
-
+    get is_valid(): boolean,
     readonly typ: TokenType;
 }
 
@@ -21,7 +20,7 @@ export namespace Token {
         readonly typ: TokenType;
         readonly iat: number;
 
-        get isValid(): boolean {
+        get is_valid(): boolean {
             return true;
         }
     }
@@ -36,7 +35,7 @@ export namespace Token {
          */
         readonly sub: string;
 
-        get isValid(): boolean {
+        get is_valid(): boolean {
             return true;
         }
     }
@@ -53,7 +52,7 @@ export namespace Token {
          */
         readonly sub: number;
 
-        get isValid(): boolean {
+        get is_valid(): boolean {
             return true;
         }
     }
@@ -65,7 +64,7 @@ export namespace Token {
         readonly iat: number;
         readonly links: Links;
 
-        get isValid(): boolean {
+        get is_valid(): boolean {
             return true;
         }
     }
@@ -90,6 +89,11 @@ export class JWT<T extends PayloadType> {
     header: Header;
     payload: T;
     rawValue: string;
+
+    get is_valid(): boolean {
+        // 仮コード
+        return this.payload.is_valid
+    }
 
     constructor(rawValue: string) {
         this.rawValue = rawValue;

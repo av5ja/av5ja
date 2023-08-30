@@ -83,13 +83,14 @@ export namespace Common {
      */
     export class Node<T> {
         @Expose()
-        @Type((options) => (options?.newObject as Node<T>).type)
+        @Type((options) => (options?.newObject as Node<T>).T)
         nodes: T[];
 
         @Exclude()
-        private type: Function;
-        constructor(type: Function) {
-            this.type = type;
+        private T: Function;
+
+        constructor(T: Function) {
+            this.T = T;
         }
     }
 
@@ -128,7 +129,12 @@ export namespace Common {
         readonly hash: string;
 
         @Expose()
-        @Transform(({ value }) => parseInt(atob(value).split('-')[1], 10))
-        readonly id: number;
+        @Transform(({ value }) => {
+            const rawValue = atob(value);
+            const regexp = /[\w]*-([\d-]*)/;
+            const match = regexp.exec(rawValue);
+            return match === null ? null : parseInt(match[1]);
+        })
+        readonly id: number | null;
     }
 }
