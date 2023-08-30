@@ -1,3 +1,4 @@
+import { CapacitorHttp } from '@capacitor/core';
 import snakecaseKeys from 'snakecase-keys';
 
 import { Method } from '../enum/method';
@@ -33,10 +34,12 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         'Content-Type': 'application/json',
         'X-Web-View-Ver': version,
     };
-    const response = await fetch(url, {
-        body: body,
+    const options = {
+        data: body,
         headers: headers,
         method: Method.POST,
-    });
-    return request.request(snakecaseKeys(await response.json())) as U;
+        url: url.href,
+    };
+    const response = await CapacitorHttp.request(options);
+    return request.request(snakecaseKeys(JSON.parse(response.data))) as U;
 }
