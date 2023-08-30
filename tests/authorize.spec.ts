@@ -1,5 +1,6 @@
 import fs from 'fs';
 
+import { JWT, Token } from '../src/dto/jwt.dto';
 import { AccessToken } from '../src/requests/access_token';
 import { BulletToken } from '../src/requests/bullet_token';
 import { CoralToken } from '../src/requests/coral_token';
@@ -12,7 +13,7 @@ import { Web } from '../src/utils/web_version';
 import token from './token.json';
 
 describe('Authorize', () => {
-    const session_token = token.session_token;
+    const session_token = new JWT<Token.SessionToken>(token.session_token);
 
     it('Bullet Token', async () => {
         const version: string = (await request(new NSO.Version.Request())).result.version;
