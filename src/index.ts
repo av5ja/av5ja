@@ -1,1 +1,1 @@
-export { OAuth } from './utils/oauth';
+export * from './utils/oauth';
