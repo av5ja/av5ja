@@ -1,4 +1,5 @@
-import { Expose, Type, plainToInstance } from 'class-transformer';
+import { Expose, Transform, Type, plainToInstance } from 'class-transformer';
+import dayjs from 'dayjs';
 
 import { ModeType } from '../../enum/mode';
 import { RuleType } from '../../enum/rule';
@@ -21,22 +22,52 @@ export namespace CoopHistoryQuery {
 
     class HistoryDetail {
         @Expose()
-        readonly id: string;
+        @Transform(({ value }) => new Common.CoopHistoryDetailId(value))
+        readonly id: Common.CoopHistoryDetailId;
     }
 
-    class HistoryGroup {
-        readonly start_time: string;
-        readonly end_time: string;
+    class HistoryGroupNode {
+        @Expose()
+        @Type(() => HistoryGroup)
+        readonly nodes: HistoryGroup[];
+    }
+
+    class HistoryDetailNode {
+        @Expose()
+        @Type(() => HistoryDetail)
+        readonly nodes: HistoryDetail[];
+    }
+
+    export class HistoryGroup {
+        @Expose()
+        @Transform(({ value }) => (value === null ? null : dayjs(value).toDate()))
+        readonly start_time: Date | null;
+
+        @Expose()
+        @Transform(({ value }) => (value === null ? null : dayjs(value).toDate()))
+        readonly end_time: Date | null;
+
+        @Expose()
+        @Transform(({ value }) => Object.values(ModeType).find((mode) => mode === value) || ModeType.UNDEFINED)
         readonly mode: ModeType;
+
+        @Expose()
+        @Transform(({ value }) => Object.values(RuleType).find((mode) => mode === value) || RuleType.UNDEFINED)
         readonly rule: RuleType;
-        @Type(() => Common.Node<HistoryDetail>)
-        readonly history_details: Common.Node<HistoryDetail>;
+
+        @Expose()
+        @Type(() => HistoryDetailNode)
+        readonly history_details: HistoryDetailNode;
+
+        get result_id_list(): Common.CoopHistoryDetailId[] {
+            return this.history_details.nodes.map((node) => node.id);
+        }
     }
 
     class CoopResult {
         @Expose()
-        @Type(() => Common.Node<HistoryGroup>)
-        readonly history_groups: Common.Node<HistoryGroup>;
+        @Type(() => HistoryGroupNode)
+        readonly history_groups: HistoryGroupNode;
     }
 
     class DataClass {
@@ -50,13 +81,8 @@ export namespace CoopHistoryQuery {
         @Type(() => DataClass)
         readonly data: DataClass;
 
-        get results(): HistoryDetail[] {
-            return this.data.coop_result.history_groups.nodes.flatMap((node) => node.history_details.nodes);
-        }
-
-        get result_id_list(): Common.CoopHistoryDetailId[] {
-            const results = this.results;
-            return results.map((result) => new Common.CoopHistoryDetailId(result.id));
+        get history_groups(): HistoryGroup[] {
+            return this.data.coop_result.history_groups.nodes;
         }
 
         @Expose()

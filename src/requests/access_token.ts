@@ -14,11 +14,11 @@ export namespace AccessToken {
         readonly parameters: Parameters;
         readonly path: string = 'connect/1.0.0/api/token';
 
-        constructor(session_token: string) {
+        constructor(session_token: JWT<Token.SessionToken>) {
             this.parameters = {
                 client_id: '71b963c1b7b6d119',
                 grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer-session-token',
-                session_token: session_token,
+                session_token: session_token.rawValue,
             };
         }
 

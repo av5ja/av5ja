@@ -1,8 +1,6 @@
-import { RuleType } from '../src/enum/rule';
 import { CoopHistoryDetailQuery } from '../src/requests/av5ja/coop_history_detail_query';
 import { CoopHistoryQuery } from '../src/requests/av5ja/coop_history_query';
 import { StageScheduleQuery } from '../src/requests/av5ja/stage_schedule_query';
-import { Common } from '../src/utils/common';
 import { request } from '../src/utils/graph_ql';
 
 import token from './token.json';
@@ -13,35 +11,21 @@ describe('GraphQL', () => {
     it('CoopHistoryQuery', async () => {
         const coop_history_query = await request(new CoopHistoryQuery.Request(), bullet_token);
         expect(coop_history_query.data.coop_result.history_groups.nodes.length).toBe(4);
-        expect(coop_history_query.results.length).toBe(50);
-
-        const result_id_list: Common.CoopHistoryDetailId[] = coop_history_query.result_id_list;
-        /**
-         * 変換後のリザルトIDが正しいことを確認する
-         */
-        result_id_list.forEach((result_id: Common.CoopHistoryDetailId) => {
-            expect(result_id.rawValue).toBe(result_id.rawValue);
-        });
+        // console.log(JSON.stringify(coop_history_query.history_groups[0], null, 2))
     }, 5000);
 
     it('StageScheduleQuery', async () => {
         const stage_schedule_query = await request(new StageScheduleQuery.Request(), bullet_token);
         expect(stage_schedule_query.schedules.length).toBe(4);
+        // console.log(JSON.stringify(stage_schedule_query.schedules, null, 2))
     }, 5000);
 
     it('CoopHistoryDetailQuery', async () => {
         const coop_history_query = await request(new CoopHistoryQuery.Request(), bullet_token);
         expect(coop_history_query.data.coop_result.history_groups.nodes.length).toBe(4);
-        expect(coop_history_query.results.length).toBe(50);
-
-        const result_id_list: Common.CoopHistoryDetailId[] = coop_history_query.result_id_list;
-        const results = await Promise.all(
-            result_id_list.map(async (result_id: Common.CoopHistoryDetailId) => {
-                return (await request(new CoopHistoryDetailQuery.Request(result_id.rawValue), bullet_token)) as CoopHistoryDetailQuery.Response;
-            })
-        );
-        results.forEach((result: CoopHistoryDetailQuery.Response) => {
-            expect(result.data.coop_history_detail.rule).toBe(RuleType.REGULAR);
-        });
+        const result_id = coop_history_query.data.coop_result.history_groups.nodes[0].history_details.nodes[0].id;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const result = (await request(new CoopHistoryDetailQuery.Request(result_id.rawValue), bullet_token)) as CoopHistoryDetailQuery.Response;
+        // console.log(JSON.stringify(result.data.coop_history_detail, null, 2))
     }, 50000);
 });

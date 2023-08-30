@@ -1,6 +1,6 @@
-import { Expose, Type, plainToInstance } from 'class-transformer';
+import { Expose, Transform, Type, plainToInstance } from 'class-transformer';
+import dayjs from 'dayjs';
 
-import { CoopStageId } from '../../enum/coop_stage_id';
 import { SHA256Hash } from '../../enum/sha256hash';
 import { Common } from '../../utils/common';
 import { GraphQL, ResponseType } from '../../utils/graph_ql';
@@ -14,50 +14,52 @@ export namespace StageScheduleQuery {
         readonly parameters: Parameters;
 
         request(response: any): Response {
-            return plainToInstance(Response, { ...response, ...{ rawValue: response } }, { excludeExtraneousValues: false });
+            return plainToInstance(Response, { ...response, ...{ rawValue: response } }, { excludeExtraneousValues: true });
         }
-    }
-
-    class CoopStage {
-        @Expose()
-        id: CoopStageId;
-        @Expose()
-        name: string;
     }
 
     class Setting {
         @Expose()
-        @Type(() => CoopStage)
-        coop_stage: CoopStage;
+        @Type(() => Common.HashId)
+        coop_stage: Common.HashId;
 
         @Expose()
+        @Type(() => Common.Hash)
         weapons: Common.Hash[];
     }
 
-    class CoopSchedule {
+    export class CoopSchedule {
         @Expose()
-        readonly start_time: string;
+        @Transform(({ value }) => (value === null ? null : dayjs(value).toDate()))
+        readonly start_time: Date;
 
         @Expose()
-        readonly end_time: string;
+        @Transform(({ value }) => (value === null ? null : dayjs(value).toDate()))
+        readonly end_time: Date;
 
         @Expose()
         @Type(() => Setting)
         readonly setting: Setting;
     }
 
+    class CoopScheduleNode {
+        @Expose()
+        @Type(() => CoopSchedule)
+        readonly nodes: CoopSchedule[];
+    }
+
     class CoopGroupingSchedule {
         @Expose()
-        @Type(() => Common.Node<CoopSchedule>)
-        readonly regular_schedules: Common.Node<CoopSchedule>;
+        @Type(() => CoopScheduleNode)
+        readonly regular_schedules: CoopScheduleNode;
 
         @Expose()
-        @Type(() => Common.Node<CoopSchedule>)
-        readonly big_run_schedules: Common.Node<CoopSchedule>;
+        @Type(() => CoopScheduleNode)
+        readonly big_run_schedules: CoopScheduleNode;
 
         @Expose()
-        @Type(() => Common.Node<CoopSchedule>)
-        readonly team_contest_schedules: Common.Node<CoopSchedule>;
+        @Type(() => CoopScheduleNode)
+        readonly team_contest_schedules: CoopScheduleNode;
     }
 
     class DataClass {

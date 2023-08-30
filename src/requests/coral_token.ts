@@ -11,7 +11,7 @@ export namespace CoralToken {
         readonly parameters: Parameters;
         readonly path: string = 'f';
 
-        constructor(token: string, hash_method: 1 | 2, na_id: string, coral_user_id: string | number | undefined, version: string) {
+        constructor(token: string, hash_method: 1 | 2, na_id: string | undefined, coral_user_id: string | number | undefined, version: string) {
             this.headers = {
                 'Content-Type': 'application/json',
                 'X-znca-Platform': 'Android',
