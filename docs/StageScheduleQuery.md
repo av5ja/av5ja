@@ -1,5 +1,38 @@
 ## StageScheduleQuery 
 
+ステージ情報からサーモンランの情報だけを抜き出して返します.
+
+### レスポンス例
+
+```json
+[
+   {
+      "start_time":"2023-08-31T00:00:00.000Z",
+      "end_time":"2023-09-02T00:00:00.000Z",
+      "setting":{
+         "coop_stage":{
+            "hash":"1a29476c1ab5fdbc813e2df99cd290ce56dfe29755b97f671a7250e5f77f4961",
+            "id":6
+         },
+         "weapons":[
+            {
+               "hash":"e6dbf73aa6ff9d1feb61fcabadb2d31e08b228a9736b4f5d8a5baeab9b493255"
+            },
+            {
+               "hash":"0199e455872acba1ab8ef0040eca7f41afca48c1f9ad2c5d274323d6dbc49133"
+            },
+            {
+               "hash":"0d2963b386b6da598b8da1087eab3f48b99256e2e6a20fc8bbe53b34579fb338"
+            },
+            {
+               "hash":"fe2b351799aa48fcb48154299ff0ccf0b0413fc291ffc49456e93db29d2f1db5"
+            }
+         ]
+      }
+   }
+]
+```
+
 ### 生データ
 
 ```yaml
