@@ -1,5 +1,31 @@
 ## CoopHistoryQuery
 
+リザルト一覧からスケジュールとそのスケジュールのリザルトのIDを返します.
+
+リザルトのIDはデコードされていますが`.rawValue`で元のBase64でエンコードされた値が取得できます.
+
+```json
+{
+   "start_time":"2023-08-26T00:00:00.000Z",
+   "end_time":"2023-08-27T16:00:00.000Z",
+   "mode":"REGULAR",
+   "rule":"REGULAR",
+   "history_details":{
+      "nodes":[
+         {
+            "id":{
+               "id":"CoopHistoryDetail",
+               "prefix":"u",
+               "npln_user_id":"a7grz65rxkvhfsbwmxmm",
+               "start_time":"2023-08-27T01:56:30.000Z",
+               "uuid":"7959dbdb-fe1f-4576-bc3e-0f4dfa0b7b0e"
+            }
+         }
+      ]
+   }
+}
+```
+
 ### 生データ
 
 ```yaml
