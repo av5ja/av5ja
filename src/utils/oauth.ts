@@ -21,7 +21,6 @@ export class OAuth {
     static oauthURL(state: string, verifier: string): URL {
         const baseURL: URL = new URL('https://accounts.nintendo.com/connect/1.0.0/authorize');
         const challenge = base64url.fromBase64(crypto.createHash('sha256').update(verifier).digest('base64'));
-        console.log('Challenge', challenge);
 
         const parameters = new URLSearchParams({
             client_id: '71b963c1b7b6d119',
@@ -41,7 +40,6 @@ export class OAuth {
      */
     static async authorize(code: string, verifier: string): Promise<boolean> {
         try {
-            console.log('Authorize');
             const session_token = await this.get_session_token(code, verifier);
             console.log('SessionToken', session_token.rawValue);
             return this.refresh(session_token);
