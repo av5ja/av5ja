@@ -17,6 +17,7 @@ export interface RequestType {
 }
 
 export async function request<T extends RequestType, U extends ReturnType<T['request']>>(request: T): Promise<U> {
+    console.log("CapacitorHttp", request.baseURL, request.headers, request.parameters)
     const url = new URL(request.path, request.baseURL);
     if (request.method === Method.GET) {
         url.search = new URLSearchParams(request.parameters as Record<string, string>).toString();

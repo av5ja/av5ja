@@ -1,4 +1,4 @@
-import { plainToInstance } from 'class-transformer';
+import { Expose, Transform, plainToInstance } from 'class-transformer';
 
 import { JWT, Token } from '../dto/jwt.dto';
 import { Method } from '../enum/method';
@@ -7,7 +7,9 @@ import { ResponseType, RequestType, Headers, Parameters } from '../utils/request
 export namespace SessionToken {
     export class Request implements RequestType {
         readonly baseURL: string = 'https://accounts.nintendo.com/';
-        readonly headers: Headers;
+        readonly headers: Headers = {
+            'Content-Type': 'application/json',
+        };
         readonly method: Method = Method.POST;
         readonly parameters: Parameters;
         readonly path: string = 'connect/1.0.0/api/session_token';
@@ -21,12 +23,16 @@ export namespace SessionToken {
         }
 
         request(response: any): ResponseType {
-            return plainToInstance(Response, response);
+            return plainToInstance(Response, response, { excludeExtraneousValues: true });
         }
     }
 
     export class Response implements ResponseType {
+        @Expose()
         code: string;
+        
+        @Expose()
+        @Transform(({ value }) => new JWT<Token.SessionToken>(value))
         session_token: JWT<Token.SessionToken>;
     }
 }

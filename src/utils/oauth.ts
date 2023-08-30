@@ -21,6 +21,7 @@ export class OAuth {
     static getURL(state: string, verifier: string): URL {
         const baseURL: URL = new URL('https://accounts.nintendo.com/connect/1.0.0/authorize');
         const challenge = base64url.fromBase64(crypto.createHash('sha256').update(verifier).digest('base64'));
+        console.log('Challenge', challenge);
 
         const parameters = new URLSearchParams({
             client_id: '71b963c1b7b6d119',
@@ -98,7 +99,7 @@ export class OAuth {
         id: string | undefined,
         version: string
     ): Promise<CoralToken.Response> {
-        const hash_method = access_token.payload instanceof Token.Token ? 1 : 2;
+        const hash_method = access_token.payload.typ === 'token' ? 1 : 2;
         const na_id = access_token.payload instanceof Token.Token ? access_token.payload.sub : id;
         const coral_user_id = access_token.payload instanceof Token.Token ? undefined : access_token.payload.sub;
         return await request(new CoralToken.Request(access_token.rawValue, hash_method, na_id, coral_user_id, version));
