@@ -9,7 +9,7 @@ interface PayloadType {
     readonly aud: string;
     readonly exp: number;
     readonly iat: number;
-    get is_valid(): boolean,
+    get is_valid(): boolean;
     readonly typ: TokenType;
 }
 
@@ -92,7 +92,7 @@ export class JWT<T extends PayloadType> {
 
     get is_valid(): boolean {
         // 仮コード
-        return this.payload.is_valid
+        return this.payload.is_valid;
     }
 
     constructor(rawValue: string) {

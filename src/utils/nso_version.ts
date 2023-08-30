@@ -35,7 +35,7 @@ export namespace NSO {
             @Expose()
             @Type(() => Result)
             private readonly results: Result[];
-            
+
             @Expose()
             readonly revision: string;
 
