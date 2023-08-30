@@ -1,6 +1,6 @@
 {
   "name": "@salmonstats3/av5ja",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Asynchronous Communication Library for SplatNet3.",
   "main": "dist/index.js",
   "module": "dist/index.js",
