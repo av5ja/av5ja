@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 import { JWT, Token } from '../src/dto/jwt.dto';
 import { AccessToken } from '../src/requests/access_token';
 import { BulletToken } from '../src/requests/bullet_token';
