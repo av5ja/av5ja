@@ -1,5 +1,5 @@
 import * as crypto from 'crypto';
-import { SHA256 } from 'crypto-ts'
+
 import base64url from 'base64url';
 
 describe('SHA256', () => {
