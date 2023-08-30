@@ -1,5 +1,6 @@
-import base64url from 'base64url';
 import crypto from 'crypto';
+
+import base64url from 'base64url';
 
 import { JWT, Token } from '../dto/jwt.dto';
 import { AccessToken } from '../requests/access_token';
@@ -14,18 +15,13 @@ import { request } from './request';
 import { Web } from './web_version';
 
 export class OAuth {
-    private static state: string
-    private static verifier: string
-
     /**
      * OAuth認証用のURLを返す
      */
-    static get getURL(): URL {
+    static getURL(state: string, verifier: string): URL {
         const baseURL: URL = new URL('https://accounts.nintendo.com/connect/1.0.0/authorize');
-        this.state = this.randomString(64) 
-        this.verifier = this.randomString(64) 
-        const challenge = this.getSHA256Hash(this.verifier)
-        
+        const challenge = base64url.fromBase64(crypto.createHash('sha256').update(verifier).digest('base64'));
+
         const parameters = new URLSearchParams({
             client_id: '71b963c1b7b6d119',
             redirect_uri: 'npf71b963c1b7b6d119://auth',
@@ -33,32 +29,25 @@ export class OAuth {
             scope: 'openid user user.birthday user.mii user.screenName',
             session_token_code_challenge: challenge,
             session_token_code_challenge_method: 'S256',
-            state: this.state,
+            state: state,
         });
         baseURL.search = parameters.toString();
         return baseURL;
     }
 
-    private static getSHA256Hash(context: string): string {
-        return base64url.fromBase64(crypto.createHash('sha256').update(context).digest('base64'));
-    }
-
-    private static randomString(length: number): string {
-        const context = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        return Array.from(Array(length))
-            .map(() => context[Math.floor(Math.random() * context.length)])
-            .join('');
-    }
-
     /**
      * 認証
      */
-    static async authorize(code: string, state: string): Promise<boolean> {
-        if (state !== this.state) return false;
-        const session_token = await this.get_session_token(code, this.verifier);
-        const bullet_token = this.refresh(session_token);
-        console.log(bullet_token);
-        return true;
+    static async authorize(code: string, verifier: string): Promise<boolean> {
+        try {
+            console.log('Authorize');
+            const session_token = await this.get_session_token(code, verifier);
+            console.log('SessionToken', session_token.rawValue);
+            return this.refresh(session_token);
+        } catch (e) {
+            console.error(e);
+            throw e;
+        }
     }
 
     /**
@@ -68,15 +57,23 @@ export class OAuth {
      */
     private static async refresh(session_token: JWT<Token.SessionToken>): Promise<boolean> {
         const hash = ((await request(new Web.Hash.Request())) as Web.Hash.Response).js;
+        console.log('Hash', hash);
         const version = ((await request(new NSO.Version.Request())) as NSO.Version.Response).result;
+        console.log('Version', version.version);
         const web_version = ((await request(new Web.Version.Request(hash))) as Web.Version.Response).web_version;
+        console.log('WebViewVer', web_version);
         const access_token = await this.get_access_token(session_token);
+        console.log('AccessToken', access_token);
         const hash_nso = await this.get_coral_token(access_token, undefined, version.version);
+        console.log('Hash NSO', hash_nso);
         const game_service_token = await this.get_game_service_token(access_token, hash_nso, version.version);
+        console.log('GameServiceToken', game_service_token);
         const hash_app = await this.get_coral_token(game_service_token, access_token.payload.sub, version.version);
+        console.log('Hash APP', hash_app);
         const game_web_token = await this.get_game_web_token(game_service_token, hash_app, version.version);
+        console.log('GameWebToken', game_service_token);
         const bullet_token = await this.get_bullet_token(game_web_token, web_version);
-        console.log(bullet_token);
+        console.log('BulletToken', bullet_token);
         return true;
     }
 
