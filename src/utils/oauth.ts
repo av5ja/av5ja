@@ -18,7 +18,7 @@ export class OAuth {
     /**
      * OAuth認証用のURLを返す
      */
-    static getURL(state: string, verifier: string): URL {
+    static oauthURL(state: string, verifier: string): URL {
         const baseURL: URL = new URL('https://accounts.nintendo.com/connect/1.0.0/authorize');
         const challenge = base64url.fromBase64(crypto.createHash('sha256').update(verifier).digest('base64'));
         console.log('Challenge', challenge);

@@ -30,7 +30,7 @@ export namespace SessionToken {
     export class Response implements ResponseType {
         @Expose()
         code: string;
-        
+
         @Expose()
         @Transform(({ value }) => new JWT<Token.SessionToken>(value))
         session_token: JWT<Token.SessionToken>;

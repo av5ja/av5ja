@@ -34,14 +34,14 @@ export namespace AccessToken {
 
         @Expose()
         expires_in: number;
-        
+
         @Expose()
         @Transform(({ value }) => new JWT<Token.Token>(value))
         id_token: JWT<Token.Token>;
-        
+
         @Expose()
         scope: string[];
-        
+
         @Expose()
         token_type: string;
         /**
