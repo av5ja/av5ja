@@ -20,7 +20,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.0.0
-          # scope: '@salmonstats3'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@salmonstats3'
 
       - name: Cache CDK Dependencies
         uses: actions/cache@v3
@@ -44,11 +45,8 @@ jobs:
       
       - name: Build
         run: yarn build
-      
-      - name: CI
-        run: npm ci
 
       - name: Deploy
-        run: npm publish
+        run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
