@@ -1,5 +1,5 @@
 export enum ModeType {
-    REGULAR,
-    LIMITED,
-    PRIVATE_CUSTOM,
+    REGULAR = 'REGULAR',
+    LIMITED = 'LIMITED',
+    PRIVATE_CUSTOM = 'PRIVATE_CUSTOM',
 }
