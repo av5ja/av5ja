@@ -1,3 +1,4 @@
+import { CapacitorHttp, HttpOptions } from '@capacitor/core';
 import snakecaseKeys from 'snakecase-keys';
 
 import { Method } from '../enum/method';
@@ -21,11 +22,13 @@ export async function request<T extends RequestType, U extends ReturnType<T['req
         url.search = new URLSearchParams(request.parameters as Record<string, string>).toString();
     }
     const body = request.method === Method.GET ? undefined : JSON.stringify(request.parameters);
-    const response = await fetch(url, {
-        body: body,
+    const options: HttpOptions = {
+        data: body,
         headers: request.headers,
         method: request.method,
-    });
-
-    return request.request(snakecaseKeys(await response.json())) as U;
+        responseType: 'json',
+        url: url.href,
+    };
+    const response = await CapacitorHttp.request(options);
+    return request.request(snakecaseKeys(response.data)) as U;
 }

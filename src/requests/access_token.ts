@@ -1,4 +1,4 @@
-import { Transform, plainToInstance } from 'class-transformer';
+import { Expose, Transform, plainToInstance } from 'class-transformer';
 
 import { JWT, Token } from '../dto/jwt.dto';
 import { Method } from '../enum/method';
@@ -23,17 +23,26 @@ export namespace AccessToken {
         }
 
         request(response: any): ResponseType {
-            return plainToInstance(Response, response, { excludeExtraneousValues: false });
+            return plainToInstance(Response, response, { excludeExtraneousValues: true });
         }
     }
 
     export class Response implements ResponseType {
+        @Expose()
         @Transform(({ value }) => new JWT<Token.Token>(value))
         access_token: JWT<Token.Token>;
+
+        @Expose()
         expires_in: number;
+
+        @Expose()
         @Transform(({ value }) => new JWT<Token.Token>(value))
         id_token: JWT<Token.Token>;
+
+        @Expose()
         scope: string[];
+
+        @Expose()
         token_type: string;
         /**
          * NA ID
