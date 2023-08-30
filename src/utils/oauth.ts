@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 
 import base64url from 'base64url';
+import Randomstring from 'randomstring';
 
 import { JWT, Token } from '../dto/jwt.dto';
 import { AccessToken } from '../requests/access_token';
@@ -15,12 +16,19 @@ import { request } from './request';
 import { Web } from './web_version';
 
 export class OAuth {
+    private static state: string = Randomstring.generate(64);
+    private static verifier: string = Randomstring.generate(64);
+
     /**
      * OAuth認証用のURLを返す
      */
-    static oauthURL(state: string, verifier: string): URL {
+    static get oauthURL(): URL {
+        // URLを取得する度にstateとverifierを更新する
+        this.state = Randomstring.generate(64);
+        this.verifier = Randomstring.generate(64);
+
         const baseURL: URL = new URL('https://accounts.nintendo.com/connect/1.0.0/authorize');
-        const challenge = base64url.fromBase64(crypto.createHash('sha256').update(verifier).digest('base64'));
+        const challenge = base64url.fromBase64(crypto.createHash('sha256').update(this.verifier).digest('base64'));
 
         const parameters = new URLSearchParams({
             client_id: '71b963c1b7b6d119',
@@ -29,7 +37,7 @@ export class OAuth {
             scope: 'openid user user.birthday user.mii user.screenName',
             session_token_code_challenge: challenge,
             session_token_code_challenge_method: 'S256',
-            state: state,
+            state: this.state,
         });
         baseURL.search = parameters.toString();
         return baseURL;
@@ -38,9 +46,10 @@ export class OAuth {
     /**
      * 認証
      */
-    static async authorize(code: string, verifier: string): Promise<boolean> {
+    static async authorize(state: string, code: string): Promise<boolean> {
         try {
-            const session_token = await this.get_session_token(code, verifier);
+            if (state !== this.state) throw new Error('Provided state does not match.');
+            const session_token = await this.get_session_token(code, this.verifier);
             console.log('SessionToken', session_token.rawValue);
             return this.refresh(session_token);
         } catch (e) {
