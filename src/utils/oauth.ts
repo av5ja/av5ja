@@ -1,7 +1,5 @@
-import * as crypto from 'crypto';
-
 import base64url from 'base64url';
-import randomstring from 'randomstring';
+import crypto from 'crypto';
 
 import { JWT, Token } from '../dto/jwt.dto';
 import { AccessToken } from '../requests/access_token';
@@ -16,31 +14,40 @@ import { request } from './request';
 import { Web } from './web_version';
 
 export class OAuth {
-    private static state: string;
-    private static verifier: string;
-    private static challenge: string;
+    private static state: string
+    private static verifier: string
 
     /**
      * OAuth認証用のURLを返す
      */
     static get getURL(): URL {
         const baseURL: URL = new URL('https://accounts.nintendo.com/connect/1.0.0/authorize');
-        // 値の更新
-        this.state = base64url.fromBase64(crypto.createHash('sha256').update(randomstring.generate(64)).digest('base64'));
-        this.verifier = base64url.fromBase64(crypto.createHash('sha256').update(randomstring.generate(64)).digest('base64'));
-        this.challenge = base64url.fromBase64(crypto.createHash('sha256').update(this.verifier).digest('base64'));
-
+        this.state = this.randomString(64) 
+        this.verifier = this.randomString(64) 
+        const challenge = this.getSHA256Hash(this.verifier)
+        
         const parameters = new URLSearchParams({
             client_id: '71b963c1b7b6d119',
             redirect_uri: 'npf71b963c1b7b6d119://auth',
             response_type: 'session_token_code',
             scope: 'openid user user.birthday user.mii user.screenName',
-            session_token_code_challenge: this.challenge,
+            session_token_code_challenge: challenge,
             session_token_code_challenge_method: 'S256',
             state: this.state,
         });
         baseURL.search = parameters.toString();
         return baseURL;
+    }
+
+    private static getSHA256Hash(context: string): string {
+        return base64url.fromBase64(crypto.createHash('sha256').update(context).digest('base64'));
+    }
+
+    private static randomString(length: number): string {
+        const context = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        return Array.from(Array(length))
+            .map(() => context[Math.floor(Math.random() * context.length)])
+            .join('');
     }
 
     /**
