@@ -11,13 +11,16 @@ import { GameServiceToken } from '../requests/game_service_token';
 import { GameWebToken } from '../requests/game_web_token';
 import { SessionToken } from '../requests/session_token';
 
+import { Keychain } from './keyhain';
 import { NSO } from './nso_version';
 import { request } from './request';
+import { UserInfo } from './user_info';
 import { Web } from './web_version';
 
 export class OAuth {
     private static state: string = Randomstring.generate(64);
     private static verifier: string = Randomstring.generate(64);
+    private static keychain: Keychain = new Keychain();
 
     /**
      * OAuth認証用のURLを返す
@@ -49,50 +52,33 @@ export class OAuth {
      * 認証
      */
     static async authorize(state: string, code: string): Promise<boolean> {
-        try {
-            if (state !== this.state) throw new Error('Provided state does not match.');
-            const session_token = await this.get_session_token(code, this.verifier);
-            console.log('SessionToken', session_token.rawValue);
-            return this.refresh(session_token);
-        } catch (e) {
-            console.error(e);
-            throw e;
-        }
+        if (state !== this.state) throw new Error('Provided state does not match.');
+        const session_token = await this.get_session_token(code, this.verifier);
+        await this.refresh_from_token(session_token);
+        return true;
     }
 
     /**
      * トークンをリフレッシュして書き込む
-     * 内部的に勝手に呼び出される
      * @returns
      */
-    private static async refresh(session_token: JWT<Token.SessionToken>): Promise<boolean> {
-        const hash = ((await request(new Web.Hash.Request())) as Web.Hash.Response).js;
-        console.log('Hash', hash);
-        const version = ((await request(new NSO.Version.Request())) as NSO.Version.Response).result;
-        console.log('Version', version.version);
-        const web_version = ((await request(new Web.Version.Request(hash))) as Web.Version.Response).web_version;
-        console.log('WebViewVer', web_version);
-        const access_token = await this.get_access_token(session_token);
-        console.log('AccessToken', access_token);
-        const hash_nso = await this.get_coral_token(access_token, undefined, version.version);
-        console.log('Hash NSO', hash_nso);
-        const game_service_token = await this.get_game_service_token(access_token, hash_nso, version.version);
-        console.log('GameServiceToken', game_service_token);
-        const hash_app = await this.get_coral_token(game_service_token, access_token.payload.sub, version.version);
-        console.log('Hash APP', hash_app);
-        const game_web_token = await this.get_game_web_token(game_service_token, hash_app, version.version);
-        console.log('GameWebToken', game_service_token);
-        const bullet_token = await this.get_bullet_token(game_web_token, web_version);
-        console.log('BulletToken', bullet_token);
-        return true;
+    static async refresh(): Promise<string> {
+        const session_token = (await this.keychain.get()).session_token;
+        return await this.refresh_from_token(session_token);
     }
 
-    private static async refresh_from_token(): Promise<boolean> {
-        // const hash = (await request(new Web.Hash.Request()) as Web.Hash.Response).js
-        // const web_version = (await request(new Web.Version.Request(hash)) as Web.Version.Response).web_version
-        // const bullet_token = await this.get_bullet_token(access_token, web_version)
-        // console.log(bullet_token)
-        return true;
+    private static async refresh_from_token(session_token: JWT<Token.SessionToken>): Promise<string> {
+        const hash = ((await request(new Web.Hash.Request())) as Web.Hash.Response).js;
+        const version = ((await request(new NSO.Version.Request())) as NSO.Version.Response).result;
+        const web_version = ((await request(new Web.Version.Request(hash))) as Web.Version.Response).web_version;
+        const access_token = await this.get_access_token(session_token);
+        const hash_nso = await this.get_coral_token(access_token, undefined, version.version);
+        const game_service_token = await this.get_game_service_token(access_token, hash_nso, version.version);
+        const hash_app = await this.get_coral_token(game_service_token, access_token.payload.sub, version.version);
+        const game_web_token = await this.get_game_web_token(game_service_token, hash_app, version.version);
+        const bullet_token = await this.get_bullet_token(game_web_token, web_version);
+        await this.keychain.set(new UserInfo(session_token, access_token, game_service_token, game_web_token, bullet_token));
+        return bullet_token;
     }
 
     private static async get_session_token(code: string, verifier: string): Promise<JWT<Token.SessionToken>> {
@@ -132,5 +118,9 @@ export class OAuth {
 
     private static async get_bullet_token(access_token: JWT<Token.GameWebToken>, version: string) {
         return ((await request(new BulletToken.Request(access_token, version))) as BulletToken.Response).bullet_token;
+    }
+
+    static get user_info(): Promise<UserInfo> {
+        return this.keychain.get();
     }
 }

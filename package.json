@@ -1,6 +1,6 @@
 {
   "name": "@salmonstats3/av5ja",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Asynchronous Communication Library for SplatNet3.",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -52,6 +52,7 @@
     "typescript": "5.1.6"
   },
   "dependencies": {
+    "@aparajita/capacitor-secure-storage": "^4.0.0",
     "@capacitor/core": "^5.3.0",
     "base64url": "^3.0.1",
     "class-transformer": "^0.5.1",
