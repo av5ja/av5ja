@@ -30,8 +30,6 @@ export class OAuth {
         this.state = Randomstring.generate(64);
         this.verifier = Randomstring.generate(64);
 
-        console.log('Challenge', { state: this.state, verifier: this.verifier });
-
         const baseURL: URL = new URL('https://accounts.nintendo.com/connect/1.0.0/authorize');
         const challenge = base64url.fromBase64(crypto.createHash('sha256').update(this.verifier).digest('base64'));
 
@@ -63,9 +61,7 @@ export class OAuth {
      * @returns
      */
     static async refresh(): Promise<string> {
-        console.log('Refresh from session_token');
         const session_token = (await this.keychain.get()).session_token;
-        console.log('SessionToken', session_token);
         return await this.refresh_from_token(session_token);
     }
 
