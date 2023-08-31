@@ -1,4 +1,5 @@
 import { CapacitorHttp, HttpOptions } from '@capacitor/core';
+import dayjs from 'dayjs';
 import snakecaseKeys from 'snakecase-keys';
 
 import { Method } from '../enum/method';
@@ -6,7 +7,6 @@ import { SHA256Hash } from '../enum/sha256hash';
 
 import { OAuth } from './oauth';
 import { UserInfo } from './user_info';
-import dayjs from 'dayjs';
 
 export interface ResponseType {
     json(): JSON;
