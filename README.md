@@ -50,9 +50,9 @@ brew install nvm
 
 ### 機能
 
-- [ ] 認証
-  - [ ] OAuth URL 
-  - [ ] Session Token
+- [x] 認証
+  - [x] OAuth URL 
+  - [x] Session Token
   - [x] Access Token
   - [x] f
   - [x] Game Service Token
@@ -63,9 +63,9 @@ brew install nvm
   - [x] CoopHistoryDetailQuery
   - [x] StageScheduleQuerey
 - [ ] SP2/SP3変換
-  - [x] CoopHistoryQuery
-  - [x] CoopHistoryDetailQuery
-  - [x] StageScheduleQuerey
+  - [ ] CoopHistoryQuery
+  - [ ] CoopHistoryDetailQuery
+  - [ ] StageScheduleQuerey
 
 ## スクリプト
 
