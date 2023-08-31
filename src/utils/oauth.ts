@@ -72,10 +72,12 @@ export class OAuth {
         const access_token = await this.get_access_token(session_token);
         const hash_nso = await this.get_coral_token(access_token, undefined, version.version);
         const game_service_token = await this.get_game_service_token(access_token, hash_nso, version.version);
-        const hash_app = await this.get_coral_token(game_service_token, access_token.payload.sub, version.version);
-        const game_web_token = await this.get_game_web_token(game_service_token, hash_app, version.version);
+        const hash_app = await this.get_coral_token(game_service_token.access_token, access_token.payload.sub, version.version);
+        const game_web_token = await this.get_game_web_token(game_service_token.access_token, hash_app, version.version);
         const bullet_token = await this.get_bullet_token(game_web_token, web_version);
-        await this.keychain.set(new UserInfo(session_token, access_token, game_service_token, game_web_token, bullet_token));
+        await this.keychain.set(
+            new UserInfo(game_service_token.user, session_token, access_token, game_service_token.access_token, game_web_token, bullet_token)
+        );
         return bullet_token;
     }
 
@@ -95,15 +97,15 @@ export class OAuth {
         const hash_method = access_token.payload.typ === 'token' ? 1 : 2;
         const na_id = access_token.payload instanceof Token.Token ? access_token.payload.sub : id;
         const coral_user_id = access_token.payload instanceof Token.Token ? undefined : access_token.payload.sub;
-        return await request(new CoralToken.Request(access_token.rawValue, hash_method, na_id, coral_user_id, version));
+        return await request(new CoralToken.Request(access_token.raw_value, hash_method, na_id, coral_user_id, version));
     }
 
     private static async get_game_service_token(
         access_token: JWT<Token.Token>,
         hash: CoralToken.Response,
         version: string
-    ): Promise<JWT<Token.GameServiceToken>> {
-        return ((await request(new GameServiceToken.Request(access_token, hash, version))) as GameServiceToken.Response).access_token;
+    ): Promise<GameServiceToken.Response> {
+        return (await request(new GameServiceToken.Request(access_token, hash, version))) as GameServiceToken.Response;
     }
 
     private static async get_game_web_token(

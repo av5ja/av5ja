@@ -1,3 +1,7 @@
+import base64url from 'base64url';
+import { Expose } from 'class-transformer';
+import dayjs from 'dayjs';
+
 import { AlgorithmType } from '../enum/algorithm';
 import { TokenType } from '../enum/token_type';
 
@@ -82,23 +86,27 @@ interface Links {
 }
 
 export class Membership {
+    @Expose()
     readonly active: boolean;
 }
 
 export class JWT<T extends PayloadType> {
     header: Header;
     payload: T;
-    rawValue: string;
+    signature: string;
 
     get is_valid(): boolean {
-        // 仮コード
-        return this.payload.is_valid;
+        return dayjs(this.payload.exp).isBefore(dayjs());
     }
 
-    constructor(rawValue: string) {
-        this.rawValue = rawValue;
-        const [header, payload] = rawValue.split('.');
+    get raw_value(): string {
+        return [[this.header, this.payload].map((value) => base64url.fromBase64(btoa(JSON.stringify(value)))), this.signature].flat().join('.');
+    }
+
+    constructor(raw_value: string) {
+        const [header, payload, signature] = raw_value.split('.');
         this.header = JSON.parse(atob(header));
         this.payload = JSON.parse(atob(payload)) as T;
+        this.signature = signature;
     }
 }

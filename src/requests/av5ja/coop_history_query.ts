@@ -16,7 +16,7 @@ export namespace CoopHistoryQuery {
         readonly parameters: Parameters;
 
         request(response: any): Response {
-            return plainToInstance(Response, { ...response, ...{ rawValue: response } }, { excludeExtraneousValues: true });
+            return plainToInstance(Response, { ...response, ...{ raw_value: response } }, { excludeExtraneousValues: true });
         }
     }
 
@@ -86,10 +86,10 @@ export namespace CoopHistoryQuery {
         }
 
         @Expose()
-        private readonly rawValue: JSON;
+        private readonly raw_value: JSON;
 
         json(): JSON {
-            return this.rawValue;
+            return this.raw_value;
         }
     }
 }
