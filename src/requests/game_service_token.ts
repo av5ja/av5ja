@@ -141,5 +141,9 @@ export namespace GameServiceToken {
         get id(): number {
             return this.result.user.id;
         }
+
+        get user(): User {
+            return this.result.user
+        }
     }
 }
