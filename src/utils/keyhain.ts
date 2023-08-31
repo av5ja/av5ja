@@ -1,4 +1,6 @@
 import { SecureStorage, DataType } from '@aparajita/capacitor-secure-storage'
+import { UserInfo } from './user_info'
+import { instanceToPlain, plainToInstance } from 'class-transformer'
 
 enum Typeof {
     Array = 'array',
@@ -9,9 +11,11 @@ enum Typeof {
 }
 
 export class Keychain {
-    constructor(identifier: string) {
-        SecureStorage.setKeyPrefix(identifier)
+    constructor() {
+        console.log('Keychain constructor')
     }
+
+    private identifier = '2790ca15b31bc7eae3a056d2066532499d25a719a601c84c7178fb591f3dc7ad'
 
     private getDataType(value: DataType | null): Typeof {
         if (value === null) {
@@ -36,30 +40,22 @@ export class Keychain {
         throw new Error('Unsupported data type.')
     }
 
-    async get(key: string): Promise<JSON> {
+    async get(): Promise<UserInfo> {
         if (typeof window !== 'undefined') {
-        try {
-            const value = await SecureStorage.get(key, true)
-            const type = this.getDataType(value)
-
-            if (type === Typeof.STRING) {
-                // @ts-expect-error Disable type check
-                return JSON.parse(value)
+            const data: DataType | null = await SecureStorage.get(this.identifier)
+            if (data !== null && typeof data === 'string') {
+                return plainToInstance(UserInfo, data, { excludeExtraneousValues: true })
             }
-            throw new Error('Could not decode data.')
-        } catch (e) {
-            console.error(e)
-            return JSON.parse('{}')
-        }
+            throw new Error('Unsupported data type.')
         } else {
             console.warn('Keychain is not supported in browser.')
             throw new Error('Keychain is not supported in browser.')
         }
     }
 
-    async set(key: string, value: JSON | Record<string, any>) {
+    async set(value: UserInfo): Promise<void> {
         if (typeof window !== 'undefined') {
-            await SecureStorage.set(key, JSON.stringify(value))
+            await SecureStorage.set(this.identifier, JSON.stringify(value))
         } else {
             console.warn('Keychain is not supported in browser.')
             throw new Error('Keychain is not supported in browser.')
