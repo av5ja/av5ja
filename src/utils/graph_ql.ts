@@ -4,6 +4,9 @@ import snakecaseKeys from 'snakecase-keys';
 import { Method } from '../enum/method';
 import { SHA256Hash } from '../enum/sha256hash';
 
+import { OAuth } from './oauth';
+import { UserInfo } from './user_info';
+
 export interface ResponseType {
     json(): JSON;
 }
@@ -17,7 +20,17 @@ export interface GraphQL {
     request(response: any): ResponseType | void;
 }
 
-export async function request<T extends GraphQL, U extends ReturnType<T['request']>>(request: T, bullet_token: string): Promise<U> {
+export async function request<T extends GraphQL, U extends ReturnType<T['request']>>(request: T): Promise<U> {
+    /**
+     * Native app以外はキーを取得できないのでエラーを投げる
+     */
+    if (window === undefined) {
+        throw new Error('This function is only available in the Native app.');
+    }
+    const user_info: UserInfo = await OAuth.user_info;
+    const bullet_token = user_info.requires_refresh ? await OAuth.refresh() : user_info.bullet_token;
+    console.log(bullet_token);
+
     const url = new URL('https://api.lp1.av5ja.srv.nintendo.net/api/graphql');
     const body = JSON.stringify({
         extensions: {
