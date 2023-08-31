@@ -1,3 +1,4 @@
+import base64url from 'base64url';
 import { AlgorithmType } from '../enum/algorithm';
 import { TokenType } from '../enum/token_type';
 
@@ -88,17 +89,21 @@ export class Membership {
 export class JWT<T extends PayloadType> {
     header: Header;
     payload: T;
-    rawValue: string;
+    signature: string;
 
     get is_valid(): boolean {
         // 仮コード
         return this.payload.is_valid;
     }
 
+    get raw_value(): string {
+        return [[this.header, this.payload].map((value) => base64url.fromBase64(btoa(JSON.stringify(value)))), this.signature].flat().join('.');
+    }
+
     constructor(rawValue: string) {
-        this.rawValue = rawValue;
-        const [header, payload] = rawValue.split('.');
+        const [header, payload, signature] = rawValue.split('.');
         this.header = JSON.parse(atob(header));
         this.payload = JSON.parse(atob(payload)) as T;
+        this.signature = signature;
     }
 }
