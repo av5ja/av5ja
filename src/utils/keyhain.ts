@@ -12,9 +12,7 @@ enum Typeof {
 }
 
 export class Keychain {
-    constructor() {
-        console.log('Keychain constructor');
-    }
+    constructor() {}
 
     private identifier = '2790ca15b31bc7eae3a056d2066532499d25a719a601c84c7178fb591f3dc7ad';
 
@@ -49,7 +47,7 @@ export class Keychain {
             }
             throw new Error('Unsupported data type.');
         } else {
-            console.warn('Keychain is not supported in browser.');
+            console.error('Keychain is not supported in browser.');
             throw new Error('Keychain is not supported in browser.');
         }
     }
@@ -58,7 +56,7 @@ export class Keychain {
         if (typeof window !== 'undefined') {
             await SecureStorage.set(this.identifier, JSON.stringify(value));
         } else {
-            console.warn('Keychain is not supported in browser.');
+            console.error('Keychain is not supported in browser.');
             throw new Error('Keychain is not supported in browser.');
         }
     }
