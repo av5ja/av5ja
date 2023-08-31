@@ -18,7 +18,7 @@ export namespace GameWebToken {
 
         constructor(token: JWT<Token.GameServiceToken>, hash: CoralToken.Response, version: string) {
             this.headers = {
-                Authorization: `Bearer ${token.rawValue}`,
+                Authorization: `Bearer ${token.raw_value}`,
                 'Content-Type': 'application/json',
                 'X-Platform': 'Android',
                 'X-ProductVersion': version,
@@ -27,7 +27,7 @@ export namespace GameWebToken {
                 parameter: {
                     f: hash.f,
                     id: 4_834_290_508_791_808,
-                    registrationToken: token.rawValue,
+                    registrationToken: token.raw_value,
                     requestId: hash.request_id,
                     timestamp: hash.timestamp.toString(),
                 },

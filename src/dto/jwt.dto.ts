@@ -1,7 +1,9 @@
 import base64url from 'base64url';
+import dayjs from 'dayjs';
+
 import { AlgorithmType } from '../enum/algorithm';
 import { TokenType } from '../enum/token_type';
-import dayjs from 'dayjs';
+import { Expose } from 'class-transformer';
 
 class Header {
     readonly alg: AlgorithmType;
@@ -84,6 +86,7 @@ interface Links {
 }
 
 export class Membership {
+    @Expose()
     readonly active: boolean;
 }
 
@@ -100,8 +103,8 @@ export class JWT<T extends PayloadType> {
         return [[this.header, this.payload].map((value) => base64url.fromBase64(btoa(JSON.stringify(value)))), this.signature].flat().join('.');
     }
 
-    constructor(rawValue: string) {
-        const [header, payload, signature] = rawValue.split('.');
+    constructor(raw_value: string) {
+        const [header, payload, signature] = raw_value.split('.');
         this.header = JSON.parse(atob(header));
         this.payload = JSON.parse(atob(payload)) as T;
         this.signature = signature;

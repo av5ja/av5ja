@@ -2,6 +2,7 @@ import { Expose } from 'class-transformer';
 import dayjs from 'dayjs';
 
 import { JWT, Token } from '../dto/jwt.dto';
+import { GameServiceToken } from '../requests/game_service_token';
 
 export class UserInfo {
     @Expose()
@@ -22,13 +23,18 @@ export class UserInfo {
     @Expose()
     expires_in: Date;
 
+    @Expose()
+    user: GameServiceToken.User;
+
     constructor(
+        user: GameServiceToken.User,
         session_token: JWT<Token.SessionToken>,
         access_token: JWT<Token.Token>,
         game_service_token: JWT<Token.GameServiceToken>,
         game_web_token: JWT<Token.GameWebToken>,
         bullet_token: string
     ) {
+        this.user = user
         this.session_token = session_token;
         this.access_token = access_token;
         this.game_service_token = game_service_token;
@@ -42,6 +48,6 @@ export class UserInfo {
      * トークンが有効期限切れかどうかを返す
      */
     get requires_refresh(): boolean {
-        return dayjs(this.expires_in).isBefore(dayjs()) 
+        return dayjs(this.expires_in).isBefore(dayjs());
     }
 }

@@ -18,7 +18,7 @@ export namespace AccessToken {
             this.parameters = {
                 client_id: '71b963c1b7b6d119',
                 grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer-session-token',
-                session_token: session_token.rawValue,
+                session_token: session_token.raw_value,
             };
         }
 
