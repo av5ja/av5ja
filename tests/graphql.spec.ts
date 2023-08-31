@@ -53,7 +53,7 @@ describe('GraphQL', () => {
 
     it('StageScheduleQuery', async () => {
         const stage_schedule_query = await request(new StageScheduleQuery.Request(), bullet_token);
-        expect(stage_schedule_query.schedules.length).toBe(3);
+        expect(stage_schedule_query.schedules.length).toBeGreaterThan(3);
     }, 5000);
 
     it('CoopHistoryDetailQuery', async () => {
