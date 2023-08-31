@@ -26,7 +26,7 @@ export namespace Common {
         /**
          * オリジナルのリザルトID
          */
-        get rawValue(): string {
+        get raw_value(): string {
             return btoa(
                 `${this.id}-${this.prefix}-${this.host_npln_user_id}:${dayjs(this.start_time).format('YYYYMMDDTHHmmss')}_${this.uuid}:${this.suffix}-${
                     this.npln_user_id
@@ -34,9 +34,9 @@ export namespace Common {
             );
         }
 
-        constructor(rawValue: string) {
+        constructor(raw_value: string) {
             const regexp = /([\w]*)-([\w]{1})-([\w\d]{20}):([\dT]{15})_([a-f0-9-]{36}):([\w]{1})-([\w\d]{20})/;
-            const match = regexp.exec(atob(rawValue));
+            const match = regexp.exec(atob(raw_value));
             if (match !== null) {
                 const [, id, prefix, host_npln_user_id, start_time, uuid, suffix, npln_user_id] = match;
                 this.id = id;
@@ -60,13 +60,13 @@ export namespace Common {
         /**
          * オリジナルのリザルトID
          */
-        get rawValue(): string {
+        get raw_value(): string {
             return btoa(`${this.id}-${this.prefix}-${this.npln_user_id}:${dayjs(this.start_time).format('YYYYMMDDTHHmmss')}_${this.uuid}`);
         }
 
-        constructor(rawValue: string) {
+        constructor(raw_value: string) {
             const regexp = /([\w]*)-([\w]{1})-([\w\d]{20}):([\dT]{15})_([a-f0-9-]{36})/;
-            const match = regexp.exec(atob(rawValue));
+            const match = regexp.exec(atob(raw_value));
             if (match !== null) {
                 const [, id, prefix, npln_user_id, start_time, uuid] = match;
                 this.id = id;
@@ -130,9 +130,9 @@ export namespace Common {
 
         @Expose()
         @Transform(({ value }) => {
-            const rawValue = atob(value);
+            const raw_value = atob(value);
             const regexp = /[\w]*-([\d-]*)/;
-            const match = regexp.exec(rawValue);
+            const match = regexp.exec(raw_value);
             return match === null ? null : parseInt(match[1]);
         })
         readonly id: number | null;

@@ -15,7 +15,7 @@ export namespace BulletToken {
         constructor(token: JWT<Token.GameWebToken>, version: string) {
             this.headers = {
                 'Content-Type': 'application/json',
-                'X-GameWebToken': token.rawValue,
+                'X-GameWebToken': token.raw_value,
                 'X-NaCountry': 'US',
                 'X-Web-View-Ver': version,
             };

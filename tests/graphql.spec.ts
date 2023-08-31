@@ -61,6 +61,6 @@ describe('GraphQL', () => {
         expect(coop_history_query.data.coop_result.history_groups.nodes.length).toBe(4);
         const result_id = coop_history_query.data.coop_result.history_groups.nodes[0].history_details.nodes[0].id;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const result = (await request(new CoopHistoryDetailQuery.Request(result_id.rawValue), bullet_token)) as CoopHistoryDetailQuery.Response;
+        const result = (await request(new CoopHistoryDetailQuery.Request(result_id.raw_value), bullet_token)) as CoopHistoryDetailQuery.Response;
     }, 50000);
 });

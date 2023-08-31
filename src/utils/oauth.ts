@@ -95,7 +95,7 @@ export class OAuth {
         const hash_method = access_token.payload.typ === 'token' ? 1 : 2;
         const na_id = access_token.payload instanceof Token.Token ? access_token.payload.sub : id;
         const coral_user_id = access_token.payload instanceof Token.Token ? undefined : access_token.payload.sub;
-        return await request(new CoralToken.Request(access_token.rawValue, hash_method, na_id, coral_user_id, version));
+        return await request(new CoralToken.Request(access_token.raw_value, hash_method, na_id, coral_user_id, version));
     }
 
     private static async get_game_service_token(
