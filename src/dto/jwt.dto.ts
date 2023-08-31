@@ -1,6 +1,7 @@
 import base64url from 'base64url';
 import { AlgorithmType } from '../enum/algorithm';
 import { TokenType } from '../enum/token_type';
+import dayjs from 'dayjs';
 
 class Header {
     readonly alg: AlgorithmType;
@@ -92,8 +93,7 @@ export class JWT<T extends PayloadType> {
     signature: string;
 
     get is_valid(): boolean {
-        // 仮コード
-        return this.payload.is_valid;
+        return dayjs(this.payload.exp).isBefore(dayjs());
     }
 
     get raw_value(): string {
