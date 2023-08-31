@@ -29,8 +29,8 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         console.error('This function is only available in the Native app.');
         throw new Error('This function is only available in the Native app.');
     }
-    const user_info: UserInfo = await OAuth.get_user_info()
-    console.log("Remaining validity seconds of token", dayjs().subtract(dayjs(user_info.expires_in).unix(), 'second').unix())
+    const user_info: UserInfo = await OAuth.get_user_info();
+    console.log('Remaining validity seconds of token', dayjs().subtract(dayjs(user_info.expires_in).unix(), 'second').unix());
     const bullet_token = user_info.requires_refresh ? await OAuth.refresh() : user_info.bullet_token;
 
     if (bullet_token === undefined) {
