@@ -30,8 +30,6 @@ export class OAuth {
         this.state = Randomstring.generate(64);
         this.verifier = Randomstring.generate(64);
 
-        console.log('Challenge', { state: this.state, verifier: this.verifier });
-
         const baseURL: URL = new URL('https://accounts.nintendo.com/connect/1.0.0/authorize');
         const challenge = base64url.fromBase64(crypto.createHash('sha256').update(this.verifier).digest('base64'));
 
@@ -120,7 +118,7 @@ export class OAuth {
         return ((await request(new BulletToken.Request(access_token, version))) as BulletToken.Response).bullet_token;
     }
 
-    static get user_info(): Promise<UserInfo> {
-        return this.keychain.get();
+    static async get_user_info(): Promise<UserInfo> {
+        return await this.keychain.get();
     }
 }
