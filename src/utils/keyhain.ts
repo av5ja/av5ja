@@ -45,7 +45,7 @@ export class Keychain {
         if (typeof window !== 'undefined') {
             const data: DataType | null = await SecureStorage.get(this.identifier);
             if (data !== null && typeof data === 'string') {
-                return plainToInstance(UserInfo, data, { excludeExtraneousValues: true });
+                return plainToInstance(UserInfo, JSON.parse(data) as object, { excludeExtraneousValues: true });
             }
             throw new Error('Unsupported data type.');
         } else {

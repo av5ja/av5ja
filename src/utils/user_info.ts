@@ -42,6 +42,6 @@ export class UserInfo {
      * トークンが有効期限切れかどうかを返す
      */
     get requires_refresh(): boolean {
-        return new Date() > this.expires_in;
+        return dayjs().unix() > dayjs(this.expires_in).unix();
     }
 }

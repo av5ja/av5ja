@@ -21,15 +21,25 @@ export interface GraphQL {
 }
 
 export async function request<T extends GraphQL, U extends ReturnType<T['request']>>(request: T): Promise<U> {
+    console.log('QraphQL', request)
     /**
      * Native app以外はキーを取得できないのでエラーを投げる
      */
     if (window === undefined) {
+        console.error('This function is only available in the Native app.');
         throw new Error('This function is only available in the Native app.');
     }
-    const user_info: UserInfo = await OAuth.user_info;
+    const user_info: UserInfo = await OAuth.get_user_info()
+    console.log("Current date", new Date())
+    console.log("Expiration date", user_info.expires_in)
+    console.log("Refresh required", user_info.requires_refresh)
     const bullet_token = user_info.requires_refresh ? await OAuth.refresh() : user_info.bullet_token;
     console.log(bullet_token);
+
+    if (bullet_token === undefined) {
+        console.error('Bullet token is undefined.');
+        throw new Error('Bullet token is undefined.');
+    }
 
     const url = new URL('https://api.lp1.av5ja.srv.nintendo.net/api/graphql');
     const body = JSON.stringify({

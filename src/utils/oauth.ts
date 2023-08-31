@@ -63,7 +63,9 @@ export class OAuth {
      * @returns
      */
     static async refresh(): Promise<string> {
+        console.log('Refresh from session_token');
         const session_token = (await this.keychain.get()).session_token;
+        console.log('SessionToken', session_token);
         return await this.refresh_from_token(session_token);
     }
 
@@ -120,7 +122,7 @@ export class OAuth {
         return ((await request(new BulletToken.Request(access_token, version))) as BulletToken.Response).bullet_token;
     }
 
-    static get user_info(): Promise<UserInfo> {
-        return this.keychain.get();
+    static async get_user_info(): Promise<UserInfo> {
+        return await this.keychain.get();
     }
 }
