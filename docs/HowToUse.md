@@ -6,7 +6,11 @@
 yarn add @salmonstats3/av5ja
 ```
 
-## 対応リクエスト
+## リクエストへの対応状況
+
+SplatNet3には100ほどのエンドポイントが存在しますが、必要と思われるものにのみ対応しています.
+
+他にも必要だと思われるエンドポイントがある場合はIssueを立ててください.
 
 - [ ] [CoopHistoryQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/CoopHistoryQuery.md)
 - [ ] [CoopHistoryDetailQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/CoopHistoryDetailQuery.md)
@@ -14,12 +18,26 @@ yarn add @salmonstats3/av5ja
 
 ## 仕様
 
-- SplatNet2仕様のフォーマット
-- SplatNet3の生データのフォーマット
+内部的にユーザーの認証情報をセキュアな領域に保存しているためクライアント側からは認証部分のロジックを考慮する必要がなく、純粋にアプリ開発に専念することができます.
 
-のどちらも取得できます. 使いやすい方をご利用ください.
+### 自動アップデート対応
 
-> Salmon Stats+にアップロードする際にはSplatNet2のフォーマットに準拠する必要があります.
+NSOの認証に必要なパラメータのうち、変更される可能性があるのは、
+
+- X-ProductVersion
+- X-WebViewVer
+- version (GraphQL)
+- f生成アルゴリズム
+
+の三つですが、av5jaはf生成アルゴリズム以外の全ての値を自動的にサーバーから取得するため、基本的に認証情報に関してライブラリは一切のアップデートを必要としません. 
+
+### レスポンス
+
+SplatNet3から取得されるリザルトはSplatNet2形式に比べて煩雑で、本来必要としている値のいくつかが抜けているため、署名を含むURLなどの削除した上で冗長な構造を取り除いて可能な限りシンプルなフォーマットを返します.
+
+どのようなフォーマットが返ってくるかは[対応リクエスト](#対応リクエスト)をご一読ください.
+
+> また、本来のデータが必要な場合には`json()`のプロパティを参照することでオリジナルのデータが取得できます.
 
 ### 各種ID
 
