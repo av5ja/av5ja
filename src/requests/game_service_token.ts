@@ -1,4 +1,4 @@
-import { Transform, Type, plainToInstance } from 'class-transformer';
+import { Expose, Transform, Type, plainToInstance } from 'class-transformer';
 
 import { JWT, Membership, Token } from '../dto/jwt.dto';
 import { Method } from '../enum/method';
@@ -28,7 +28,7 @@ export namespace GameServiceToken {
                     language: 'ja-JP',
                     naBirthday: '1990-01-01',
                     naCountry: 'JP',
-                    naIdToken: token.rawValue,
+                    naIdToken: token.raw_value,
                     requestId: hash.request_id,
                     timestamp: hash.timestamp.toString(),
                 },
@@ -41,34 +41,56 @@ export namespace GameServiceToken {
     }
 
     class NintendoAccount {
+        @Expose()
+        @Type(() => Membership)
         readonly membership: Membership;
     }
 
     class FriendCode {
+        @Expose()
         readonly regenerable: boolean;
+
+        @Expose()
         readonly regenerable_at: number;
+
+        @Expose()
         readonly id: string;
     }
 
     class Links {
+        @Expose()
+        @Type(() => NintendoAccount)
         readonly nintendo_account: NintendoAccount;
+
+        @Expose()
+        @Type(() => FriendCode)
         readonly friend_code: FriendCode;
     }
 
-    class User {
+    export class User {
         /**
          * Coral User ID
          */
+        @Expose()
         readonly id: number;
         /**
          * Network Service Account ID(NSA ID)
          */
+        @Expose()
         readonly nsa_id: string;
+
+        @Expose()
         readonly image_uri: URL;
+
+        @Expose()
         readonly name: string;
         readonly support_id: string;
+
+        @Expose()
         readonly is_child_restricted: boolean;
+
         readonly etag: string;
+
         readonly links: Links;
     }
 
@@ -79,14 +101,19 @@ export namespace GameServiceToken {
     }
 
     class Result {
+        @Expose()
         @Type(() => User)
         readonly user: User;
+
+        @Expose()
         @Type(() => Credential)
         readonly web_api_server_credential: Credential;
     }
 
     export class Response implements ResponseType {
         readonly status: number;
+
+        @Expose()
         @Type(() => Result)
         readonly result: Result;
 
@@ -113,6 +140,10 @@ export namespace GameServiceToken {
          */
         get id(): number {
             return this.result.user.id;
+        }
+
+        get user(): User {
+            return this.result.user;
         }
     }
 }
