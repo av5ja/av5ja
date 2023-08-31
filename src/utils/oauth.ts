@@ -14,10 +14,13 @@ import { SessionToken } from '../requests/session_token';
 import { NSO } from './nso_version';
 import { request } from './request';
 import { Web } from './web_version';
+import { Keychain } from './keyhain';
+import { UserInfo } from './user_info';
 
 export class OAuth {
     private static state: string = Randomstring.generate(64);
     private static verifier: string = Randomstring.generate(64);
+    private static keychain: Keychain = new Keychain();
 
     /**
      * OAuth認証用のURLを返す
@@ -73,17 +76,22 @@ export class OAuth {
         const web_version = ((await request(new Web.Version.Request(hash))) as Web.Version.Response).web_version;
         console.log('WebViewVer', web_version);
         const access_token = await this.get_access_token(session_token);
-        console.log('AccessToken', access_token);
+        // console.log('AccessToken', access_token);
         const hash_nso = await this.get_coral_token(access_token, undefined, version.version);
-        console.log('Hash NSO', hash_nso);
+        // console.log('Hash NSO', hash_nso);
         const game_service_token = await this.get_game_service_token(access_token, hash_nso, version.version);
-        console.log('GameServiceToken', game_service_token);
+        // console.log('GameServiceToken', game_service_token);
         const hash_app = await this.get_coral_token(game_service_token, access_token.payload.sub, version.version);
-        console.log('Hash APP', hash_app);
+        // console.log('Hash APP', hash_app);
         const game_web_token = await this.get_game_web_token(game_service_token, hash_app, version.version);
-        console.log('GameWebToken', game_service_token);
+        // console.log('GameWebToken', game_service_token);
         const bullet_token = await this.get_bullet_token(game_web_token, web_version);
-        console.log('BulletToken', bullet_token);
+        // console.log('BulletToken', bullet_token);
+
+        const user_info = new UserInfo(session_token, access_token, game_service_token, game_web_token, bullet_token);
+        console.log(user_info)
+        await this.keychain.set(user_info)
+        console.log(await this.keychain.get())
         return true;
     }
 
@@ -132,5 +140,9 @@ export class OAuth {
 
     private static async get_bullet_token(access_token: JWT<Token.GameWebToken>, version: string) {
         return ((await request(new BulletToken.Request(access_token, version))) as BulletToken.Response).bullet_token;
+    }
+
+    static get user_info(): Promise<UserInfo> {
+        return this.keychain.get()
     }
 }
