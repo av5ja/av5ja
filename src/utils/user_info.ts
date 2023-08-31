@@ -34,7 +34,7 @@ export class UserInfo {
         game_web_token: JWT<Token.GameWebToken>,
         bullet_token: string
     ) {
-        this.user = user
+        this.user = user;
         this.session_token = session_token;
         this.access_token = access_token;
         this.game_service_token = game_service_token;

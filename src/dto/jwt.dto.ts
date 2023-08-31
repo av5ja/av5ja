@@ -1,9 +1,9 @@
 import base64url from 'base64url';
+import { Expose } from 'class-transformer';
 import dayjs from 'dayjs';
 
 import { AlgorithmType } from '../enum/algorithm';
 import { TokenType } from '../enum/token_type';
-import { Expose } from 'class-transformer';
 
 class Header {
     readonly alg: AlgorithmType;
