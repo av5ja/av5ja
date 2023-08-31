@@ -49,10 +49,10 @@ export namespace GameServiceToken {
     class FriendCode {
         @Expose()
         readonly regenerable: boolean;
-        
+
         @Expose()
         readonly regenerable_at: number;
-        
+
         @Expose()
         readonly id: string;
     }
@@ -61,7 +61,7 @@ export namespace GameServiceToken {
         @Expose()
         @Type(() => NintendoAccount)
         readonly nintendo_account: NintendoAccount;
-        
+
         @Expose()
         @Type(() => FriendCode)
         readonly friend_code: FriendCode;
@@ -78,19 +78,19 @@ export namespace GameServiceToken {
          */
         @Expose()
         readonly nsa_id: string;
-        
+
         @Expose()
         readonly image_uri: URL;
-        
+
         @Expose()
         readonly name: string;
         readonly support_id: string;
-        
+
         @Expose()
         readonly is_child_restricted: boolean;
-    
+
         readonly etag: string;
-    
+
         readonly links: Links;
     }
 
@@ -104,7 +104,7 @@ export namespace GameServiceToken {
         @Expose()
         @Type(() => User)
         readonly user: User;
-        
+
         @Expose()
         @Type(() => Credential)
         readonly web_api_server_credential: Credential;
@@ -112,7 +112,7 @@ export namespace GameServiceToken {
 
     export class Response implements ResponseType {
         readonly status: number;
-       
+
         @Expose()
         @Type(() => Result)
         readonly result: Result;
@@ -143,7 +143,7 @@ export namespace GameServiceToken {
         }
 
         get user(): User {
-            return this.result.user
+            return this.result.user;
         }
     }
 }

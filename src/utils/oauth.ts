@@ -75,7 +75,9 @@ export class OAuth {
         const hash_app = await this.get_coral_token(game_service_token.access_token, access_token.payload.sub, version.version);
         const game_web_token = await this.get_game_web_token(game_service_token.access_token, hash_app, version.version);
         const bullet_token = await this.get_bullet_token(game_web_token, web_version);
-        await this.keychain.set(new UserInfo(game_service_token.user, session_token, access_token, game_service_token.access_token, game_web_token, bullet_token));
+        await this.keychain.set(
+            new UserInfo(game_service_token.user, session_token, access_token, game_service_token.access_token, game_web_token, bullet_token)
+        );
         return bullet_token;
     }
 
@@ -103,7 +105,7 @@ export class OAuth {
         hash: CoralToken.Response,
         version: string
     ): Promise<GameServiceToken.Response> {
-        return ((await request(new GameServiceToken.Request(access_token, hash, version))) as GameServiceToken.Response);
+        return (await request(new GameServiceToken.Request(access_token, hash, version))) as GameServiceToken.Response;
     }
 
     private static async get_game_web_token(
