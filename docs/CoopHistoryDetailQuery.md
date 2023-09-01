@@ -2,10 +2,28 @@
 
 指定されたリザルトIDのリザルト詳細を返します.
 
+## 注意点
+
+1. `played_time`及び`play_time`は同一のリザルトであってもユーザーごとに持つ可能性があります
+   - この値をDBに保存するときのプライマリキーに設定しないでください
+   - プレイ時間を参照する場合は`id.start_time`を利用して下さい
+2. `id.uuid`はユニークな値ではありません
+   - この値をDBに保存するときのプライマリキーに設定しないでください
+3. `id.host_npln_user_id`
+   - ホストなのかどうか未検証
+   - 部屋を立てた人かどうか未検証
+
 ### SP2形式
 
 ```json
 {
+   "id":{
+      "id":"CoopHistoryDetail",
+      "prefix":"u",
+      "npln_user_id":"a7grz65rxkvhfsbwmxmm",
+      "start_time":"2023-08-27T10:56:30.000Z",
+      "uuid":"7959dbdb-fe1f-4576-bc3e-0f4dfa0b7b0e"
+   },
    "scale":[
       null,
       null,
@@ -17,6 +35,7 @@
    "wave_details":[
       {
          "id":1,
+         "is_clear":true,
          "water_level":0,
          "event_type":7,
          "golden_ikura_num":54,
@@ -25,6 +44,7 @@
       },
       {
          "id":2,
+         "is_clear":true,
          "water_level":1,
          "event_type":1,
          "golden_ikura_num":46,
@@ -33,6 +53,7 @@
       },
       {
          "id":3,
+         "is_clear":true,
          "water_level":1,
          "event_type":null,
          "golden_ikura_num":33,
@@ -51,7 +72,7 @@
          "id":"CoopPlayer",
          "prefix":"u",
          "npln_user_id":"a7grz65rxkvhfsbwmxmm",
-         "start_time":"2023-08-27T01:56:30.000Z",
+         "start_time":"2023-08-27T10:56:30.000Z",
          "uuid":"7959dbdb-fe1f-4576-bc3e-0f4dfa0b7b0e",
          "suffix":"u",
          "host_npln_user_id":"a7grz65rxkvhfsbwmxmm"
@@ -68,13 +89,13 @@
             null
          ],
          "background":{
-            "id":1,
             "text_color":{
                "a":1,
                "b":1,
                "g":1,
                "r":1
-            }
+            },
+            "id":1
          }
       },
       "golden_ikura_assist_num":24,
@@ -119,7 +140,7 @@
             "id":"CoopPlayer",
             "prefix":"u",
             "npln_user_id":"avtpn3umrfntl5i2cnmm",
-            "start_time":"2023-08-27T01:56:30.000Z",
+            "start_time":"2023-08-27T10:56:30.000Z",
             "uuid":"7959dbdb-fe1f-4576-bc3e-0f4dfa0b7b0e",
             "suffix":"u",
             "host_npln_user_id":"a7grz65rxkvhfsbwmxmm"
@@ -136,13 +157,13 @@
                1030301
             ],
             "background":{
-               "id":11003,
                "text_color":{
                   "a":1,
                   "b":0.00293231895,
                   "g":0.302125514,
                   "r":0.73720479
-               }
+               },
+               "id":11003
             }
          },
          "golden_ikura_assist_num":27,
@@ -186,7 +207,7 @@
             "id":"CoopPlayer",
             "prefix":"u",
             "npln_user_id":"ax6jhoz75jkj67eaekpm",
-            "start_time":"2023-08-27T01:56:30.000Z",
+            "start_time":"2023-08-27T10:56:30.000Z",
             "uuid":"7959dbdb-fe1f-4576-bc3e-0f4dfa0b7b0e",
             "suffix":"u",
             "host_npln_user_id":"a7grz65rxkvhfsbwmxmm"
@@ -203,13 +224,13 @@
                5000073
             ],
             "background":{
-               "id":11067,
                "text_color":{
                   "a":1,
                   "b":1,
                   "g":1,
                   "r":1
-               }
+               },
+               "id":11067
             }
          },
          "golden_ikura_assist_num":5,
@@ -253,7 +274,7 @@
             "id":"CoopPlayer",
             "prefix":"u",
             "npln_user_id":"qpaoipxt57ytvyw2qnmm",
-            "start_time":"2023-08-27T01:56:30.000Z",
+            "start_time":"2023-08-27T10:56:30.000Z",
             "uuid":"7959dbdb-fe1f-4576-bc3e-0f4dfa0b7b0e",
             "suffix":"u",
             "host_npln_user_id":"a7grz65rxkvhfsbwmxmm"
@@ -270,13 +291,13 @@
                5110000
             ],
             "background":{
-               "id":11009,
                "text_color":{
                   "a":1,
                   "b":1,
                   "g":1,
                   "r":1
-               }
+               },
+               "id":11009
             }
          },
          "golden_ikura_assist_num":13,
