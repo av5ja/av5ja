@@ -2,6 +2,7 @@ import { CapacitorHttp, HttpOptions } from '@capacitor/core';
 import snakecaseKeys from 'snakecase-keys';
 
 import { Method } from '../src/enum/method';
+import { RuleType } from '../src/enum/rule';
 import { CoopHistoryDetailQuery } from '../src/requests/av5ja/coop_history_detail_query';
 import { CoopHistoryQuery } from '../src/requests/av5ja/coop_history_query';
 import { StageScheduleQuery } from '../src/requests/av5ja/stage_schedule_query';
@@ -66,17 +67,28 @@ async function get_coop_history_results(bullet_token: string): Promise<SplatNet2
     return (await Promise.all(history_groups.map((group) => get_coop_history_details(group, bullet_token)))).flat();
 }
 
+async function get_coop_schedules(bullet_token: string): Promise<SplatNet2.CoopSchedule[]> {
+    const schedules = (await request(new StageScheduleQuery.Request(), bullet_token)).data.coop_grouping_schedule;
+    return [
+        ...schedules.regular_schedules.nodes.map((node) => new SplatNet2.CoopSchedule(node, RuleType.REGULAR)),
+        ...schedules.big_run_schedules.nodes.map((node) => new SplatNet2.CoopSchedule(node, RuleType.BIG_RUN)),
+        ...schedules.team_contest_schedules.nodes.map((node) => new SplatNet2.CoopSchedule(node, RuleType.TEAM_CONTEST)),
+    ];
+}
+
 describe('GraphQL', () => {
     const bullet_token = token.bullet_token;
 
     it('CoopHistoryQuery', async () => {
         const coop_history_query = await request(new CoopHistoryQuery.Request(), bullet_token);
         expect(coop_history_query.data.coop_result.history_groups.nodes.length).toBe(4);
+        // console.log(JSON.stringify(coop_history_query, null, 2))
     }, 5000);
 
     it('StageScheduleQuery', async () => {
-        const stage_schedule_query = await request(new StageScheduleQuery.Request(), bullet_token);
-        expect(stage_schedule_query.schedules.length).toBeGreaterThan(3);
+        const schedules = await get_coop_schedules(bullet_token);
+        expect(schedules.length).toBeGreaterThan(3);
+        // console.log(JSON.stringify(schedules, null, 2))
     }, 5000);
 
     it('CoopHistoryDetailQuery', async () => {
