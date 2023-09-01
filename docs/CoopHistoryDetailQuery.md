@@ -68,7 +68,6 @@
             null
          ],
          "background":{
-            "hash":"dba78c8ed1013d420aacb669d31a002691f2bb4ec0c1c853e34244c40dc68ea8",
             "id":1,
             "text_color":{
                "a":1,
@@ -137,7 +136,6 @@
                1030301
             ],
             "background":{
-               "hash":"d7b61473019f6ac56967bbd306f9d703302f411ff030976660cda56e6f967ea0",
                "id":11003,
                "text_color":{
                   "a":1,
@@ -205,7 +203,6 @@
                5000073
             ],
             "background":{
-               "hash":"caa766d2fee9805163bcd918a494d97ab320ba3d55a3da41d1d49955d36ceaf0",
                "id":11067,
                "text_color":{
                   "a":1,
@@ -273,7 +270,6 @@
                5110000
             ],
             "background":{
-               "hash":"b07918ac5f435d5a7fc92c585979113c3c26a035aa75fbab0be8f68c0d959e83",
                "id":11009,
                "text_color":{
                   "a":1,
