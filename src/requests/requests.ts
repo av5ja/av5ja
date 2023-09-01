@@ -39,6 +39,6 @@ async function get_coop_history_group_details(history_group: CoopHistoryQuery.Hi
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function get_coop_history_details(force_fetch: boolean = false): Promise<SplatNet2.CoopResult[]> {
-    const coop_history_groups: CoopHistoryQuery.HistoryGroup[] = await this.get_coop_history_groups();
+    const coop_history_groups: CoopHistoryQuery.HistoryGroup[] = await get_coop_history_groups();
     return (await Promise.all(coop_history_groups.map((group) => get_coop_history_group_details(group)))).flat();
 }
