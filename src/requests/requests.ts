@@ -1,3 +1,4 @@
+import { RuleType } from '../enum/rule';
 import { request } from '../utils/graph_ql';
 import { SplatNet2 } from '../utils/splatnet2';
 
@@ -9,9 +10,13 @@ import { StageScheduleQuery } from './av5ja/stage_schedule_query';
  * スケジュール取得
  * @returns レギュラー、ビッグラン、チームコンテストのスケジュールを取得します
  */
-export async function get_stage_schedules(): Promise<StageScheduleQuery.CoopSchedule[]> {
-    const stage_schedule_query = await request(new StageScheduleQuery.Request());
-    return stage_schedule_query.schedules;
+export async function get_coop_schedules(): Promise<SplatNet2.CoopSchedule[]> {
+    const schedules = (await request(new StageScheduleQuery.Request())).data.coop_grouping_schedule;
+    return [
+        ...schedules.regular_schedules.nodes.map((node) => new SplatNet2.CoopSchedule(node, RuleType.REGULAR)),
+        ...schedules.big_run_schedules.nodes.map((node) => new SplatNet2.CoopSchedule(node, RuleType.BIG_RUN)),
+        ...schedules.team_contest_schedules.nodes.map((node) => new SplatNet2.CoopSchedule(node, RuleType.TEAM_CONTEST)),
+    ];
 }
 
 /**
@@ -19,8 +24,7 @@ export async function get_stage_schedules(): Promise<StageScheduleQuery.CoopSche
  * @returns
  */
 export async function get_coop_history_groups(): Promise<CoopHistoryQuery.HistoryGroup[]> {
-    const coop_history_query = await request(new CoopHistoryQuery.Request());
-    return coop_history_query.history_groups;
+    return (await request(new CoopHistoryQuery.Request())).history_groups;
 }
 
 /**

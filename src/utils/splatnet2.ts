@@ -7,6 +7,7 @@ import { SkinId } from '../enum/skin';
 import { SpecieKey } from '../enum/specie';
 import { CoopHistoryDetailQuery } from '../requests/av5ja/coop_history_detail_query';
 import { CoopHistoryQuery } from '../requests/av5ja/coop_history_query';
+import { StageScheduleQuery } from '../requests/av5ja/stage_schedule_query';
 
 import { Common } from './common';
 import { id } from './weapon_info_main';
@@ -135,6 +136,24 @@ export namespace SplatNet2 {
             this.rule = scheudle.rule;
             this.weaponList = weapon_list;
             this.stage_id = stage_id;
+        }
+    }
+
+    export class CoopSchedule {
+        readonly start_time: Date | null;
+        readonly end_time: Date | null;
+        readonly mode: ModeType;
+        readonly rule: RuleType;
+        readonly weaponList: number[];
+        readonly stage_id: number;
+
+        constructor(scheudle: StageScheduleQuery.CoopSchedule, rule: RuleType) {
+            this.start_time = scheudle.start_time;
+            this.end_time = scheudle.end_time;
+            this.mode = ModeType.REGULAR;
+            this.rule = rule;
+            this.weaponList = scheudle.setting.weapons.map((weapon) => id(weapon.hash));
+            this.stage_id = scheudle.setting.coop_stage.id;
         }
     }
 
