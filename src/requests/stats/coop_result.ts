@@ -1,4 +1,5 @@
-import { Expose, plainToInstance } from 'class-transformer';
+import { Expose, Transform, plainToInstance } from 'class-transformer';
+import dayjs from 'dayjs';
 
 import { Method } from '../../enum/method';
 import { camelcaseKeys } from '../../utils/camelcase_keys';
@@ -47,6 +48,7 @@ export namespace CoopResult {
         uuid: string;
 
         @Expose()
+        @Transform(({ value }) => dayjs(value).toDate())
         play_time: Date;
     }
 }
