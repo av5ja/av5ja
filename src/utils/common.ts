@@ -6,10 +6,13 @@ export namespace Common {
     export class TextColor {
         @Expose()
         a: number;
+
         @Expose()
         b: number;
+
         @Expose()
         g: number;
+
         @Expose()
         r: number;
     }
@@ -27,6 +30,7 @@ export namespace Common {
          * オリジナルのリザルトID
          */
         get raw_value(): string {
+            // 逆変換時にはJSTからUTCに変換する
             return btoa(
                 `${this.id}-${this.prefix}-${this.host_npln_user_id}:${dayjs(this.start_time).subtract(9, 'hour').format('YYYYMMDDTHHmmss')}_${this.uuid}:${
                     this.suffix
@@ -66,6 +70,7 @@ export namespace Common {
          * オリジナルのリザルトID
          */
         get raw_value(): string {
+            // 逆変換時にはJSTからUTCに変換する
             return btoa(`${this.id}-${this.prefix}-${this.npln_user_id}:${dayjs(this.play_time).subtract(9, 'hour').format('YYYYMMDDTHHmmss')}_${this.uuid}`);
         }
 

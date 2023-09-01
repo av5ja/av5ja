@@ -204,7 +204,7 @@ export namespace SplatNet2 {
                 result.weapons.map((weapon) => id(weapon.hash))
             );
             this.golden_ikura_num = result.golden_deliver_count;
-            this.golden_ikura_assist_num = result.golden_assist_count
+            this.golden_ikura_assist_num = result.golden_assist_count;
             this.ikura_num = result.deliver_count;
             this.smell_meter = result.smell_meter;
             this.scenario_code = result.scenario_code;
