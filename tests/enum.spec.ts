@@ -1,4 +1,4 @@
-import { WeaponInfoMain, hash, id } from "../src/utils/weapon_type";
+import { WeaponInfoMain, hash, id } from "../src/utils/weapon_info_main";
 
 describe('Enum', () => {
     const verifier: string = 'OwaTAOolhambwvY3RXSD-efxqdBEVNnQkc0bBJ7zaak';
