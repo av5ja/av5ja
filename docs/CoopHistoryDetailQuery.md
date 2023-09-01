@@ -89,6 +89,11 @@
          3010
       ],
       "special_id":20012,
+      "special_counts":[
+         0,
+         0,
+         1
+      ],
       "boss_kill_counts":[
          1,
          0,
@@ -149,6 +154,11 @@
             8000
          ],
          "special_id":20007,
+         "special_counts":[
+            0,
+            2,
+            0
+         ],
          "boss_kill_counts":[
             null,
             null,
@@ -212,6 +222,11 @@
             310
          ],
          "special_id":20010,
+         "special_counts":[
+            0,
+            0,
+            1
+         ],
          "boss_kill_counts":[
             null,
             null,
@@ -275,6 +290,11 @@
             2070
          ],
          "special_id":20014,
+         "special_counts":[
+            0,
+            1,
+            1
+         ],
          "boss_kill_counts":[
             null,
             null,
