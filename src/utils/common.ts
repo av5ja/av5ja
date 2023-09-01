@@ -28,9 +28,9 @@ export namespace Common {
          */
         get raw_value(): string {
             return btoa(
-                `${this.id}-${this.prefix}-${this.host_npln_user_id}:${dayjs(this.start_time).subtract(9, 'hour').format('YYYYMMDDTHHmmss')}_${this.uuid}:${this.suffix}-${
-                    this.npln_user_id
-                }`
+                `${this.id}-${this.prefix}-${this.host_npln_user_id}:${dayjs(this.start_time).subtract(9, 'hour').format('YYYYMMDDTHHmmss')}_${this.uuid}:${
+                    this.suffix
+                }-${this.npln_user_id}`
             );
         }
 

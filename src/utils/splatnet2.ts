@@ -1,19 +1,20 @@
 import dayjs from 'dayjs';
+
 import { GradeId } from '../enum/grade';
 import { ModeType } from '../enum/mode';
 import { RuleType } from '../enum/rule';
 import { SkinId } from '../enum/skin';
 import { SpecieKey } from '../enum/specie';
 import { CoopHistoryDetailQuery } from '../requests/av5ja/coop_history_detail_query';
+import { CoopHistoryQuery } from '../requests/av5ja/coop_history_query';
 
 import { Common } from './common';
 import { id } from './weapon_info_main';
-import { CoopHistoryQuery } from '../requests/av5ja/coop_history_query';
 
 export namespace SplatNet2 {
     class Background {
         readonly text_color: Common.TextColor;
-        readonly id: number
+        readonly id: number;
 
         constructor(background: CoopHistoryDetailQuery.Background) {
             this.text_color = background.text_color;
@@ -42,9 +43,7 @@ export namespace SplatNet2 {
 
         constructor(result: CoopHistoryDetailQuery.WaveResult, result_wave: number, is_boss_defeated: boolean | null) {
             this.id = result.wave_number;
-            this.is_clear = is_boss_defeated !== null 
-            ? result.deliver_norm === null ? is_boss_defeated : true
-            : result.wave_number !== result_wave
+            this.is_clear = is_boss_defeated !== null ? (result.deliver_norm === null ? is_boss_defeated : true) : result.wave_number !== result_wave;
             this.water_level = result.water_level;
             this.event_type = result.event_wave;
             this.golden_ikura_num = result.team_deliver_count;

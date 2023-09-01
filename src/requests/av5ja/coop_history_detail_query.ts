@@ -2,6 +2,7 @@ import { Expose, Transform, Type, plainToInstance } from 'class-transformer';
 
 import 'reflect-metadata';
 
+import { CoopEnemyInfoId } from '../../enum/coop_enemy_info_id';
 import { CoopEventId } from '../../enum/event_id';
 import { RuleType } from '../../enum/rule';
 import { SHA256Hash } from '../../enum/sha256hash';
@@ -10,8 +11,6 @@ import { CoopWaterLevelId } from '../../enum/water_level';
 import { Common } from '../../utils/common';
 import { GraphQL, ResponseType } from '../../utils/graph_ql';
 import { Parameters } from '../../utils/request';
-import { extend } from 'dayjs';
-import { CoopEnemyInfoId } from '../../enum/coop_enemy_info_id';
 
 export namespace CoopHistoryDetailQuery {
     export class Request implements GraphQL {
@@ -163,7 +162,7 @@ export namespace CoopHistoryDetailQuery {
         @Type(() => Common.CoopHistoryDetailId)
         @Transform(({ value }) => new Common.CoopHistoryDetailId(value))
         readonly id: Common.CoopHistoryDetailId;
-        
+
         @Expose()
         @Type(() => Common.Id)
         readonly after_grade: Common.Id;
