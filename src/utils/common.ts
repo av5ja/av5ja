@@ -46,7 +46,8 @@ export namespace Common {
                 this.id = id;
                 this.prefix = prefix;
                 this.npln_user_id = npln_user_id;
-                this.start_time = dayjs(start_time).toDate();
+                // JSTのサーバーの時間なので+09:00する
+                this.start_time = dayjs(start_time).add(9, 'hour').toDate();
                 this.uuid = uuid;
                 this.suffix = suffix;
                 this.host_npln_user_id = host_npln_user_id;
@@ -76,8 +77,11 @@ export namespace Common {
                 this.id = id;
                 this.prefix = prefix;
                 this.npln_user_id = npln_user_id;
-                this.start_time = dayjs(start_time).toDate();
+                // JSTのサーバーの時間なので+09:00する
+                this.start_time = dayjs(start_time).add(9, 'hour').toDate();
                 this.uuid = uuid;
+            } else {
+                throw new Error('Invalid CoopHistoryDetailId');
             }
         }
     }

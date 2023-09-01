@@ -40,8 +40,11 @@ export namespace SplatNet2 {
         readonly quota_num: number | null;
         readonly golden_ikura_pop_num: number;
 
-        constructor(result: CoopHistoryDetailQuery.WaveResult) {
+        constructor(result: CoopHistoryDetailQuery.WaveResult, result_wave: number, is_boss_defeated: boolean | null) {
             this.id = result.wave_number;
+            this.is_clear = is_boss_defeated !== null 
+            ? result.deliver_norm === null ? is_boss_defeated : true
+            : result.wave_number !== result_wave
             this.water_level = result.water_level;
             this.event_type = result.event_wave;
             this.golden_ikura_num = result.team_deliver_count;
@@ -166,7 +169,7 @@ export namespace SplatNet2 {
             this.job_score = result.job_score;
             this.grade_id = result.after_grade.id;
             this.kuma_point = result.job_point;
-            this.wave_details = result.wave_results.map((wave) => new WaveResult(wave));
+            this.wave_details = result.wave_results.map((wave) => new WaveResult(wave, result.result_wave, result.boss_result?.has_defeat_boss ?? null));
             this.job_result = new JobResult(result.result_wave, result.boss_result);
             this.my_result = new MemberResult(result.my_result, result.wave_results, result.enemy_defeat_counts);
             this.other_results = result.member_results.map((member) => new MemberResult(member, result.wave_results));
