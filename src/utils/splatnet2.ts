@@ -11,13 +11,23 @@ import { id } from './weapon_info_main';
 import { CoopHistoryQuery } from '../requests/av5ja/coop_history_query';
 
 export namespace SplatNet2 {
+    class Background {
+        readonly text_color: Common.TextColor;
+        readonly id: number
+
+        constructor(background: CoopHistoryDetailQuery.Background) {
+            this.text_color = background.text_color;
+            this.id = background.id;
+        }
+    }
+
     class Nameplate {
         readonly badges: (number | null)[];
-        readonly background: CoopHistoryDetailQuery.Background;
+        readonly background: Background;
 
         constructor(nameplate: CoopHistoryDetailQuery.Nameplate) {
             this.badges = nameplate.badges.map((badge) => badge?.id ?? null);
-            this.background = nameplate.background;
+            this.background = new Background(nameplate.background);
         }
     }
 
