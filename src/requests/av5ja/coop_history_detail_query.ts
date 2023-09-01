@@ -32,7 +32,7 @@ export namespace CoopHistoryDetailQuery {
         id: number;
     }
 
-    class WaveResult {
+    export class WaveResult {
         @Expose()
         readonly wave_number: number;
         @Expose()
@@ -67,7 +67,7 @@ export namespace CoopHistoryDetailQuery {
         readonly background: Background;
     }
 
-    class ResultPlayer {
+    export class ResultPlayer {
         @Expose()
         @Type(() => Common.PlayerId)
         @Transform(({ value }) => new Common.PlayerId(value))
@@ -88,7 +88,7 @@ export namespace CoopHistoryDetailQuery {
         readonly species: SpecieKey;
     }
 
-    class MemberResult {
+    export class MemberResult {
         @Expose()
         @Type(() => ResultPlayer)
         readonly player: ResultPlayer;
@@ -112,7 +112,7 @@ export namespace CoopHistoryDetailQuery {
         readonly rescued_count: number;
     }
 
-    class EnemyResult {
+    export class EnemyResult {
         @Expose()
         readonly defeat_count: number;
         @Expose()
@@ -124,7 +124,7 @@ export namespace CoopHistoryDetailQuery {
         readonly enemy: Common.HashId;
     }
 
-    class BossResult {
+    export class BossResult {
         @Expose()
         readonly has_defeat_boss: boolean;
         @Expose()
@@ -132,7 +132,7 @@ export namespace CoopHistoryDetailQuery {
         readonly boss: Common.HashId;
     }
 
-    class CoopHistoryDetail {
+    export class CoopHistoryDetail {
         readonly id: Common.CoopHistoryDetailId;
         @Expose()
         @Type(() => Common.Id)
