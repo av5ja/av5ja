@@ -6,6 +6,7 @@ import { RuleType } from '../src/enum/rule';
 import { CoopHistoryDetailQuery } from '../src/requests/av5ja/coop_history_detail_query';
 import { CoopHistoryQuery } from '../src/requests/av5ja/coop_history_query';
 import { StageScheduleQuery } from '../src/requests/av5ja/stage_schedule_query';
+import { set_coop_history_details } from '../src/requests/stats/coop_result';
 import { GraphQL } from '../src/utils/graph_ql';
 import { SplatNet2 } from '../src/utils/splatnet2';
 
@@ -98,6 +99,8 @@ describe('GraphQL', () => {
         // 正常にリクエストが送れるかどうか
         const detail = await request(new CoopHistoryDetailQuery.Request(history_group.result_id_list[0].raw_value), bullet_token);
         const result = new SplatNet2.CoopResult(history_group, detail.data.coop_history_detail);
+        const response = await set_coop_history_details([result]);
+        console.log(response);
         // 変換後のテスト 特に意味はない気がするが、念のため
         expect(result.id.raw_value).toBe(detail.data.coop_history_detail.id.raw_value);
         expect(result.danger_rate).toBe(detail.data.coop_history_detail.danger_rate);

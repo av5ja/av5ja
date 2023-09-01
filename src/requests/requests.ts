@@ -42,7 +42,7 @@ async function get_coop_history_group_details(history_group: CoopHistoryQuery.Hi
  * @param force_fetch 強制的に全件リザルトを取得します
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function get_coop_history_details(force_fetch: boolean = false): Promise<SplatNet2.CoopResult[]> {
+export async function get_coop_history_details(upload: boolean = true, force_fetch: boolean = false): Promise<SplatNet2.CoopResult[]> {
     const coop_history_groups: CoopHistoryQuery.HistoryGroup[] = await get_coop_history_groups();
     return (await Promise.all(coop_history_groups.map((group) => get_coop_history_group_details(group)))).flat();
 }

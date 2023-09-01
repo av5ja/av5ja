@@ -59,14 +59,14 @@ export namespace Common {
         readonly id: string;
         readonly prefix: string;
         readonly npln_user_id: string;
-        readonly start_time: Date;
+        readonly play_time: Date;
         readonly uuid: string;
 
         /**
          * オリジナルのリザルトID
          */
         get raw_value(): string {
-            return btoa(`${this.id}-${this.prefix}-${this.npln_user_id}:${dayjs(this.start_time).subtract(9, 'hour').format('YYYYMMDDTHHmmss')}_${this.uuid}`);
+            return btoa(`${this.id}-${this.prefix}-${this.npln_user_id}:${dayjs(this.play_time).subtract(9, 'hour').format('YYYYMMDDTHHmmss')}_${this.uuid}`);
         }
 
         constructor(raw_value: string) {
@@ -78,7 +78,7 @@ export namespace Common {
                 this.prefix = prefix;
                 this.npln_user_id = npln_user_id;
                 // JSTのサーバーの時間なので+09:00する
-                this.start_time = dayjs(start_time).add(9, 'hour').toDate();
+                this.play_time = dayjs(start_time).add(9, 'hour').toDate();
                 this.uuid = uuid;
             } else {
                 throw new Error('Invalid CoopHistoryDetailId');
