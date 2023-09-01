@@ -11,6 +11,7 @@ import { Common } from '../../utils/common';
 import { GraphQL, ResponseType } from '../../utils/graph_ql';
 import { Parameters } from '../../utils/request';
 import { extend } from 'dayjs';
+import { CoopEnemyInfoId } from '../../enum/coop_enemy_info_id';
 
 export namespace CoopHistoryDetailQuery {
     export class Request implements GraphQL {
@@ -233,15 +234,21 @@ export namespace CoopHistoryDetailQuery {
         }
 
         get enemy_pop_counts(): number[] {
-            return this.enemy_results.sort((a, b) => a.enemy.id - b.enemy.id).map((enemy) => enemy.pop_count);
+            return Object.values(CoopEnemyInfoId)
+                .filter((id) => !isNaN(id as number))
+                .map((id) => this.enemy_results.find((enemy) => enemy.enemy.id === id)?.pop_count ?? 0);
         }
 
         get enemy_defeat_counts(): number[] {
-            return this.enemy_results.sort((a, b) => a.enemy.id - b.enemy.id).map((enemy) => enemy.defeat_count);
+            return Object.values(CoopEnemyInfoId)
+                .filter((id) => !isNaN(id as number))
+                .map((id) => this.enemy_results.find((enemy) => enemy.enemy.id === id)?.defeat_count ?? 0);
         }
 
         get enemy_team_defeat_counts(): number[] {
-            return this.enemy_results.sort((a, b) => a.enemy.id - b.enemy.id).map((enemy) => enemy.team_defeat_count);
+            return Object.values(CoopEnemyInfoId)
+                .filter((id) => !isNaN(id as number))
+                .map((id) => this.enemy_results.find((enemy) => enemy.enemy.id === id)?.team_defeat_count ?? 0);
         }
 
         get golden_deliver_count(): number {
