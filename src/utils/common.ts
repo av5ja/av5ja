@@ -34,6 +34,10 @@ export namespace Common {
             );
         }
 
+        get is_myself(): boolean {
+            return this.npln_user_id === this.host_npln_user_id;
+        }
+
         constructor(raw_value: string) {
             const regexp = /([\w]*)-([\w]{1})-([\w\d]{20}):([\dT]{15})_([a-f0-9-]{36}):([\w]{1})-([\w\d]{20})/;
             const match = regexp.exec(atob(raw_value));
@@ -135,6 +139,6 @@ export namespace Common {
             const match = regexp.exec(raw_value);
             return match === null ? null : parseInt(match[1]);
         })
-        readonly id: number | null;
+        readonly id: number
     }
 }
