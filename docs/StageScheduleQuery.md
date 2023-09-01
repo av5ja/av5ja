@@ -2,7 +2,16 @@
 
 ステージ情報からサーモンランの情報だけを抜き出して返します.
 
-### レスポンス例
+## 注意点
+
+1 `mode`
+   - `REGULAR`, `PRIVATE_CUSTOM`, `PRIVATE_SCENARIO`の三通りあります
+   - スケジュールから取得する場合はすべて`REGULAR`が入ります
+   - `PRIVATE_SCENARIO`は過去に一時的に存在した種類で現在はシナリオであっても`PRIVATE_CUSTOM`が返りますが、わかりやすくするために本ライブラリでは旧仕様で返しています
+2. `rule` 
+   - `REGULAR`, `BIG_RUN`, `TEAM_CONTEST`が入ります
+
+### SP2形式
 
 ```json
 [
@@ -72,6 +81,11 @@
       "stage_id":104
    }
 ]
+```
+
+### SP3形式
+
+```json
 ```
 
 ### 生データ
