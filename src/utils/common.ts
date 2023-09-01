@@ -139,6 +139,6 @@ export namespace Common {
             const match = regexp.exec(raw_value);
             return match === null ? null : parseInt(match[1]);
         })
-        readonly id: number
+        readonly id: number;
     }
 }

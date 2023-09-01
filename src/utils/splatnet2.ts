@@ -16,8 +16,8 @@ export namespace SplatNet2 {
         readonly background: CoopHistoryDetailQuery.Background;
 
         constructor(nameplate: CoopHistoryDetailQuery.Nameplate) {
-            this.badges = nameplate.badges.map((badge) => badge?.id ?? null)
-            this.background = nameplate.background
+            this.badges = nameplate.badges.map((badge) => badge?.id ?? null);
+            this.background = nameplate.background;
         }
     }
 
@@ -31,12 +31,12 @@ export namespace SplatNet2 {
         readonly golden_ikura_pop_num: number;
 
         constructor(result: CoopHistoryDetailQuery.WaveResult) {
-            this.id = result.wave_number
-            this.water_level = result.water_level
-            this.event_type = result.event_wave
-            this.golden_ikura_num = result.team_deliver_count
-            this.quota_num = result.deliver_norm
-            this.golden_ikura_pop_num = result.golden_pop_count
+            this.id = result.wave_number;
+            this.water_level = result.water_level;
+            this.event_type = result.event_wave;
+            this.golden_ikura_num = result.team_deliver_count;
+            this.quota_num = result.deliver_norm;
+            this.golden_ikura_pop_num = result.golden_pop_count;
         }
     }
 
@@ -53,10 +53,10 @@ export namespace SplatNet2 {
             // 1: WAVE1 失敗
             // 2: WAVE2 失敗
             // 3: WAVE3 失敗
-            this.is_clear = result_wave === 0
-            this.failure_wave = result_wave === 0 ? null : result_wave 
-            this.is_boss_defeated = boss_result?.has_defeat_boss ?? null
-            this.boss_id = boss_result?.boss.id ?? null
+            this.is_clear = result_wave === 0;
+            this.failure_wave = result_wave === 0 ? null : result_wave;
+            this.is_boss_defeated = boss_result?.has_defeat_boss ?? null;
+            this.boss_id = boss_result?.boss.id ?? null;
         }
     }
 
@@ -81,26 +81,30 @@ export namespace SplatNet2 {
         readonly uniform: SkinId;
         readonly species: SpecieKey;
 
-        constructor(member_result: CoopHistoryDetailQuery.MemberResult, enemy_results: number[] = Array(14).fill(null)) {
-            this.id = member_result.player.id
-            this.npln_user_id = member_result.player.id.npln_user_id
-            this.is_myself = member_result.player.id.is_myself
-            this.byname = member_result.player.byname
-            this.name = member_result.player.name
-            this.name_id = member_result.player.name_id
-            this.nameplate = new Nameplate(member_result.player.nameplate)
-            this.golden_ikura_assist_num = member_result.golden_assist_count
-            this.golden_ikura_num = member_result.golden_deliver_count
-            this.ikura_num = member_result.deliver_count
-            this.dead_count = member_result.rescued_count
-            this.help_count = member_result.rescue_count
-            this.weapon_list = member_result.weapons.map((weapon) => id(weapon.hash))
-            this.special_id = member_result.special_weapon.id
-            // this.special_counts = member_result.special_weapon
-            this.boss_kill_counts = member_result.player.id.is_myself ? enemy_results : Array(14).fill(null)
-            this.boss_counts_total = member_result.defeat_enemy_count
-            this.uniform = member_result.player.uniform.id
-            this.species = member_result.player.species
+        constructor(
+            member_result: CoopHistoryDetailQuery.MemberResult,
+            wave_results: CoopHistoryDetailQuery.WaveResult[],
+            enemy_results: number[] = Array(14).fill(null)
+        ) {
+            this.id = member_result.player.id;
+            this.npln_user_id = member_result.player.id.npln_user_id;
+            this.is_myself = member_result.player.id.is_myself;
+            this.byname = member_result.player.byname;
+            this.name = member_result.player.name;
+            this.name_id = member_result.player.name_id;
+            this.nameplate = new Nameplate(member_result.player.nameplate);
+            this.golden_ikura_assist_num = member_result.golden_assist_count;
+            this.golden_ikura_num = member_result.golden_deliver_count;
+            this.ikura_num = member_result.deliver_count;
+            this.dead_count = member_result.rescued_count;
+            this.help_count = member_result.rescue_count;
+            this.weapon_list = member_result.weapons.map((weapon) => id(weapon.hash));
+            this.special_id = member_result.special_weapon.id;
+            this.special_counts = wave_results.map((wave) => wave.special_weapons.filter((special) => special.id === member_result.special_weapon.id).length);
+            this.boss_kill_counts = member_result.player.id.is_myself ? enemy_results : Array(14).fill(null);
+            this.boss_counts_total = member_result.defeat_enemy_count;
+            this.uniform = member_result.player.uniform.id;
+            this.species = member_result.player.species;
         }
     }
 
@@ -113,12 +117,12 @@ export namespace SplatNet2 {
         readonly stage_id: number;
 
         constructor(scheudle: CoopHistoryQuery.HistoryGroup, stage_id: number, weapon_list: number[]) {
-            this.start_time = scheudle.start_time
-            this.end_time = scheudle.end_time
-            this.mode = scheudle.mode
-            this.rule = scheudle.rule
-            this.weaponList = weapon_list
-            this.stage_id = stage_id
+            this.start_time = scheudle.start_time;
+            this.end_time = scheudle.end_time;
+            this.mode = scheudle.mode;
+            this.rule = scheudle.rule;
+            this.weaponList = weapon_list;
+            this.stage_id = stage_id;
         }
     }
 
@@ -147,29 +151,31 @@ export namespace SplatNet2 {
         readonly scenario_code: string | null;
 
         constructor(schedule: CoopHistoryQuery.HistoryGroup, result: CoopHistoryDetailQuery.CoopHistoryDetail) {
-            this.id = result.id
-            this.scale = result.scale === null
-            ? [null, null, null]
-            : result.scale;
+            this.id = result.id;
+            this.scale = result.scale === null ? [null, null, null] : result.scale;
             this.job_score = result.job_score;
-            this.grade_id = result.after_grade.id
-            this.kuma_point = result.job_point
-            this.wave_details = result.wave_results.map((wave) => new WaveResult(wave))
-            this.job_result = new JobResult(result.result_wave, result.boss_result) 
-            this.my_result = new MemberResult(result.my_result, result.enemy_defeat_counts)
-            this.other_results = result.member_results.map((member) => new MemberResult(member))
-            this.grade_point = result.after_grade_point
-            this.job_rate = result.job_rate
-            this.play_time = dayjs(result.played_time).toDate()
-            this.boss_counts = result.enemy_results.map((enemy) => enemy.pop_count)
-            this.boss_kill_counts = result.enemy_results.map((enemy) => enemy.team_defeat_count)
-            this.danger_rate = result.danger_rate
-            this.job_bonus = result.job_bonus
-            this.schedule = new Schedule(schedule, result.coop_stage.id, result.weapons.map((weapon) => id(weapon.hash)))
-            this.golden_ikura_num = result.golden_deliver_count
-            this.ikura_num = result.deliver_count
-            this.smell_meter = result.smell_meter
-            this.scenario_code = result.scenario_code
+            this.grade_id = result.after_grade.id;
+            this.kuma_point = result.job_point;
+            this.wave_details = result.wave_results.map((wave) => new WaveResult(wave));
+            this.job_result = new JobResult(result.result_wave, result.boss_result);
+            this.my_result = new MemberResult(result.my_result, result.wave_results, result.enemy_defeat_counts);
+            this.other_results = result.member_results.map((member) => new MemberResult(member, result.wave_results));
+            this.grade_point = result.after_grade_point;
+            this.job_rate = result.job_rate;
+            this.play_time = dayjs(result.played_time).toDate();
+            this.boss_counts = result.enemy_results.map((enemy) => enemy.pop_count);
+            this.boss_kill_counts = result.enemy_results.map((enemy) => enemy.team_defeat_count);
+            this.danger_rate = result.danger_rate;
+            this.job_bonus = result.job_bonus;
+            this.schedule = new Schedule(
+                schedule,
+                result.coop_stage.id,
+                result.weapons.map((weapon) => id(weapon.hash))
+            );
+            this.golden_ikura_num = result.golden_deliver_count;
+            this.ikura_num = result.deliver_count;
+            this.smell_meter = result.smell_meter;
+            this.scenario_code = result.scenario_code;
         }
     }
 }
