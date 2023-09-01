@@ -12,6 +12,12 @@
 3. `id.host_npln_user_id`
    - ホストなのかどうか未検証
    - 部屋を立てた人かどうか未検証
+4. `job_result.is_clear`
+   - オカシラ討伐に失敗しても`true`が返ります
+   - オカシラの討伐結果は`job_result.is_boss_defeated`を利用してください
+5. `wave.is_clear`
+   - そのWAVEをクリアできたかの値です
+   - オカシラ討伐失敗時は`false`が返ります
 
 ### SP2形式
 
