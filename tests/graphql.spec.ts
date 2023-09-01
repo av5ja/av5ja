@@ -51,6 +51,7 @@ async function get_coop_history_details(group: CoopHistoryQuery.HistoryGroup, bu
     return details.map((detail) => new SplatNet2.CoopResult(group, detail.data.coop_history_detail));
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function get_coop_history_detail(group: CoopHistoryQuery.HistoryGroup, bullet_token: string): Promise<SplatNet2.CoopResult> {
     const detail: CoopHistoryDetailQuery.Response = await request(
         new CoopHistoryDetailQuery.Request(group.history_details.nodes[0].id.raw_value),
@@ -59,6 +60,7 @@ async function get_coop_history_detail(group: CoopHistoryQuery.HistoryGroup, bul
     return new SplatNet2.CoopResult(group, detail.data.coop_history_detail);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function get_coop_history_results(bullet_token: string): Promise<SplatNet2.CoopResult[]> {
     const history_groups = (await request(new CoopHistoryQuery.Request(), bullet_token)).history_groups;
     return (await Promise.all(history_groups.map((group) => get_coop_history_details(group, bullet_token)))).flat();
