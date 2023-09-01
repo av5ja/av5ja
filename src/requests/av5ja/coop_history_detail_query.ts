@@ -159,7 +159,11 @@ export namespace CoopHistoryDetailQuery {
     }
 
     export class CoopHistoryDetail {
+        @Expose()
+        @Type(() => Common.CoopHistoryDetailId)
+        @Transform(({ value }) => new Common.CoopHistoryDetailId(value))
         readonly id: Common.CoopHistoryDetailId;
+        
         @Expose()
         @Type(() => Common.Id)
         readonly after_grade: Common.Id;
