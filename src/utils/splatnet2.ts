@@ -75,7 +75,7 @@ export namespace SplatNet2 {
         readonly help_count: number;
         readonly weapon_list: number[];
         readonly special_id: number;
-        readonly spedal_counts: number[];
+        readonly special_counts: number[];
         readonly boss_kill_counts: number[];
         readonly boss_counts_total: number;
         readonly uniform: SkinId;
@@ -96,7 +96,7 @@ export namespace SplatNet2 {
             this.help_count = member_result.rescue_count
             this.weapon_list = member_result.weapons.map((weapon) => id(weapon.hash))
             this.special_id = member_result.special_weapon.id
-            // this.spedal_counts = member_result.special_weapon
+            // this.special_counts = member_result.special_weapon
             this.boss_kill_counts = member_result.player.id.is_myself ? enemy_results : Array(14).fill(null)
             this.boss_counts_total = member_result.defeat_enemy_count
             this.uniform = member_result.player.uniform.id
