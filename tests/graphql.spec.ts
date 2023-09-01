@@ -100,10 +100,11 @@ describe('GraphQL', () => {
         const detail = await request(new CoopHistoryDetailQuery.Request(history_group.result_id_list[0].raw_value), bullet_token);
         // 最初の一件だけアップロード
         const result = new SplatNet2.CoopResult(history_group, detail.data.coop_history_detail);
-        const response = await set_coop_history_details([result])[0];
+        console.log(JSON.stringify(result, null, 2));
+        const response = (await set_coop_history_details([result]))[0];
         // 返ってきた値と等しいかどうか
         expect(response.uuid).toBe(result.id.uuid);
-        expect(response.play_time).toBe(result.play_time);
+        expect(response.play_time).toStrictEqual(result.play_time);
         // 変換後のテスト 特に意味はない気がするが、念のため
         expect(result.id.raw_value).toBe(detail.data.coop_history_detail.id.raw_value);
         expect(result.danger_rate).toBe(detail.data.coop_history_detail.danger_rate);
