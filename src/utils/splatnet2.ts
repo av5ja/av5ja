@@ -163,8 +163,8 @@ export namespace SplatNet2 {
             this.grade_point = result.after_grade_point;
             this.job_rate = result.job_rate;
             this.play_time = dayjs(result.played_time).toDate();
-            this.boss_counts = result.enemy_results.map((enemy) => enemy.pop_count);
-            this.boss_kill_counts = result.enemy_results.map((enemy) => enemy.team_defeat_count);
+            this.boss_counts = result.enemy_pop_counts;
+            this.boss_kill_counts = result.enemy_team_defeat_counts;
             this.danger_rate = result.danger_rate;
             this.job_bonus = result.job_bonus;
             this.schedule = new Schedule(
