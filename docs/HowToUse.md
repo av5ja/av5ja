@@ -12,13 +12,41 @@ SplatNet3には100ほどのエンドポイントが存在しますが、必要�
 
 他にも必要だと思われるエンドポイントがある場合はIssueを立ててください.
 
-- [ ] [CoopHistoryQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/CoopHistoryQuery.md)
-- [ ] [CoopHistoryDetailQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/CoopHistoryDetailQuery.md)
-- [ ] [StageScheudleQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/StageScheduleQuery.md)
+- [x] [CoopHistoryQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/CoopHistoryQuery.md)
+- [x] [CoopHistoryDetailQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/CoopHistoryDetailQuery.md)
+- [x] [StageScheudleQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/StageScheduleQuery.md)
 
-## 仕様
+### メソッド
+
+```ts
+import { get_coop_history_groups, get_coop_schedules, get_coop_history_details } from '@salmonstats3/av5ja';
+
+// 未取得のリザルトを取得してアップロード　
+async function get_history_details(upload: boolean, force_fetch: boolean) {
+  const history_details = await get_coop_history_details(upload, force_fetch)
+  console.log(history_details)
+}
+
+// スケジュール一覧取得 
+async function get_schedule() {
+  const schedules = await get_coop_schedules()
+  console.log(schedules)
+}
+
+// リザルト一覧取得
+async function get_history() {
+  const history_group = await get_coop_history_groups() 
+  console.log(history_group)
+}
+```
+
+## 便利な仕様
 
 内部的にユーザーの認証情報をセキュアな領域に保存しているためクライアント側からは認証部分のロジックを考慮する必要がなく、純粋にアプリ開発に専念することができます.
+
+上記コードを見てわかるように、リクエストの際にトークンを設定したり、再生成することを一切意識せずにコードを書くことができます.
+
+トークンの再生成が必要な場合、av5jaは内部的に自動でトークンを書き換えてリクエストを送ります.
 
 ### 自動アップデート対応
 
