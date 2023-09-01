@@ -80,16 +80,16 @@ export namespace SplatNet2 {
             this.byname = member_result.player.byname
             this.name = member_result.player.name
             this.name_id = member_result.player.name_id
-            this.nameplate = member_result.player.nameplate
+            // this.nameplate = member_result.player.nameplate
             this.golden_ikura_assist_num = member_result.golden_assist_count
             this.golden_ikura_num = member_result.golden_deliver_count
             this.ikura_num = member_result.deliver_count
             this.dead_count = member_result.rescued_count
             this.help_count = member_result.rescue_count
-            this.weapon_list = member_result.weapons.map((weapon) => weapon.id)
+            // this.weapon_list = member_result.weapons.map((weapon) => weapon.id)
             this.special_id = member_result.special_weapon.id
-            this.spedal_counts = member_result.special_weapon
-            this.boss_kill_counts = member_result.defeat_enemy_count
+            // this.spedal_counts = member_result.special_weapon
+            // this.boss_kill_counts = member_result.defeat_enemy_count
             this.boss_counts_total = member_result.defeat_enemy_count
             this.uniform = member_result.player.uniform.id
             this.species = member_result.player.species
@@ -137,20 +137,20 @@ export namespace SplatNet2 {
             this.job_score = result.job_score;
             this.grade_id = result.after_grade.id
             this.kuma_point = result.job_point
-            this.wave_details = result.wave_results
-            this.job_result = result.job_result
-            this.my_result = result.my_result
-            this.other_results = result.other_results
+            // this.wave_details = result.wave_results
+            // this.job_result = result.job_result
+            // this.my_result = result.my_result
+            // this.other_results = result.other_results
             this.grade_point = result.after_grade_point
             this.job_rate = result.job_rate
             this.play_time = dayjs(result.played_time).toDate()
-            this.boss_counts = result.boss_result
-            this.boss_kill_counts = result.boss_result
+            // this.boss_counts = result.boss_result
+            // this.boss_kill_counts = result.boss_result
             this.danger_rate = result.danger_rate
             this.job_bonus = result.job_bonus
-            this.schedule = result.schedule
-            this.golden_ikura_num = result
-            this.ikura_num = result
+            // this.schedule = result.schedule
+            // this.golden_ikura_num = result
+            // this.ikura_num = result
             this.smell_meter = result.smell_meter
             this.scenario_code = result.scenario_code
         }
