@@ -62,10 +62,12 @@ brew install nvm
   - [x] CoopHistoryQuery
   - [x] CoopHistoryDetailQuery
   - [x] StageScheduleQuerey
-- [ ] SP2/SP3変換
+- [x] SP2/SP3変換
   - [ ] CoopHistoryQuery
-  - [ ] CoopHistoryDetailQuery
-  - [ ] StageScheduleQuerey
+  - [x] CoopHistoryDetailQuery
+  - [x] StageScheduleQuerey
+- [x] Salmon Stats
+  - [x] Upload  
 
 ## スクリプト
 
