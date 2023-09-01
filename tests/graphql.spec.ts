@@ -83,7 +83,6 @@ describe('GraphQL', () => {
         const history_group = coop_history_query.history_groups[0]
         // 正常にリクエストが送れるかどうか
         const detail = await request(new CoopHistoryDetailQuery.Request(history_group.result_id_list[0].raw_value), bullet_token);
-        console.log(detail.data)
         const result = new SplatNet2.CoopResult(history_group, detail.data.coop_history_detail);
         // 変換後のテスト 特に意味はない気がするが、念のため
         expect(result.id.raw_value).toBe(detail.data.coop_history_detail.id.raw_value);
@@ -110,20 +109,5 @@ describe('GraphQL', () => {
         expect(result.wave_details.map((wave) => wave.golden_ikura_pop_num)).toStrictEqual(detail.data.coop_history_detail.wave_results.map((wave) => wave.golden_pop_count));
         expect(result.wave_details.map((wave) => wave.quota_num)).toStrictEqual(detail.data.coop_history_detail.wave_results.map((wave) => wave.deliver_norm));
         expect(result.wave_details.map((wave) => wave.id)).toStrictEqual(detail.data.coop_history_detail.wave_results.map((wave) => wave.wave_number));
-        console.log(JSON.stringify(result, null, 2))
     }, 50000);
-
-    // it('CoopHistoryDetailQuery', async () => {
-    //     const coop_history_query = await request(new CoopHistoryQuery.Request(), bullet_token);
-    //     expect(coop_history_query.data.coop_result.history_groups.nodes.length).toBe(4);
-    //     const history_group = coop_history_query.history_groups[0];
-    //     const coop_history_detail = await get_coop_history_detail(history_group, bullet_token);
-    //     console.log(JSON.stringify(coop_history_detail, null, 2));
-    // }, 50000);
-
-    // it('CoopHistoryDetailQuery All', async () => {
-    //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    //     const results = await get_coop_history_results(bullet_token);
-    //     console.log(results.length)
-    // }, 50000);
 });

@@ -28,7 +28,7 @@ export namespace Common {
          */
         get raw_value(): string {
             return btoa(
-                `${this.id}-${this.prefix}-${this.host_npln_user_id}:${dayjs(this.start_time).format('YYYYMMDDTHHmmss')}_${this.uuid}:${this.suffix}-${
+                `${this.id}-${this.prefix}-${this.host_npln_user_id}:${dayjs(this.start_time).subtract(9, 'hour').format('YYYYMMDDTHHmmss')}_${this.uuid}:${this.suffix}-${
                     this.npln_user_id
                 }`
             );
@@ -66,7 +66,7 @@ export namespace Common {
          * オリジナルのリザルトID
          */
         get raw_value(): string {
-            return btoa(`${this.id}-${this.prefix}-${this.npln_user_id}:${dayjs(this.start_time).format('YYYYMMDDTHHmmss')}_${this.uuid}`);
+            return btoa(`${this.id}-${this.prefix}-${this.npln_user_id}:${dayjs(this.start_time).subtract(9, 'hour').format('YYYYMMDDTHHmmss')}_${this.uuid}`);
         }
 
         constructor(raw_value: string) {
