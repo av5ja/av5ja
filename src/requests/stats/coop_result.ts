@@ -1,11 +1,11 @@
-import { Expose, Type, plainToInstance } from 'class-transformer';
+import { Expose, plainToInstance } from 'class-transformer';
 
 import { Method } from '../../enum/method';
+import { camelcaseKeys } from '../../utils/camelcase_keys';
 import { RequestType, Headers, Parameters, ResponseType, request } from '../../utils/request';
 import { SplatNet2 } from '../../utils/splatnet2';
 
 import 'reflect-metadata';
-import { camelcaseKeys } from '../../utils/camelcase_keys';
 
 export namespace CoopResult {
     export class Request implements RequestType {
@@ -22,7 +22,13 @@ export namespace CoopResult {
                 'Content-Type': 'application/json',
                 version: '0.0.6',
             };
-            console.log(JSON.stringify(results.map((result) => camelcaseKeys(result)), null, 2));
+            console.log(
+                JSON.stringify(
+                    results.map((result) => camelcaseKeys(result)),
+                    null,
+                    2
+                )
+            );
             this.parameters = {
                 results: JSON.parse(JSON.stringify(camelcaseKeys(results))),
             };
@@ -31,9 +37,6 @@ export namespace CoopResult {
         request(response: any): ResponseType {
             return response.map((v: any) => plainToInstance(Response, v, { excludeExtraneousValues: true }));
         }
-    }
-
-    class Result {
     }
 
     export class Response implements ResponseType {
