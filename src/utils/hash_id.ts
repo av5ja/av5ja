@@ -1,4 +1,4 @@
-import { WeaponInfoMain } from '../enum/weapon_info_main';
+import { WeaponInfoMain } from '../utils/weapon_info_main';
 
 export type Id = WeaponInfoMain.Id;
 
