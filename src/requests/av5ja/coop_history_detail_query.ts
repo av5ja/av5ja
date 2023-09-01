@@ -51,13 +51,13 @@ export namespace CoopHistoryDetailQuery {
         readonly special_weapon: SpecialType[];
     }
 
-    class Background extends Common.HashId {
+    export class Background extends Common.HashId {
         @Expose()
         @Type(() => Common.TextColor)
         readonly text_color: Common.TextColor;
     }
 
-    class Nameplate {
+    export class Nameplate {
         @Expose()
         @Type(() => Common.HashId)
         readonly badges: Common.HashId[];
@@ -183,6 +183,30 @@ export namespace CoopHistoryDetailQuery {
         readonly job_rate: number | null;
         @Expose()
         readonly job_bonus: number | null;
+
+        get members(): MemberResult[] {
+            return [this.my_result, ...this.member_results]
+        }
+
+        get enemy_pop_counts(): number[] {
+            return this.enemy_results.sort((a, b) => a.enemy.id - b.enemy.id).map((enemy) => enemy.pop_count)
+        }
+
+        get enemy_defeat_counts(): number[] {
+            return this.enemy_results.sort((a, b) => a.enemy.id - b.enemy.id).map((enemy) => enemy.defeat_count)
+        }
+       
+        get enemy_team_defeat_counts(): number[] {
+            return this.enemy_results.sort((a, b) => a.enemy.id - b.enemy.id).map((enemy) => enemy.team_defeat_count)
+        }
+
+        get golden_deliver_count(): number {
+            return this.members.map((member) => member.golden_deliver_count).reduce((a, b) => a + b)
+        }
+
+        get deliver_count(): number {
+            return this.members.map((member) => member.deliver_count).reduce((a, b) => a + b)
+        }
     }
 
     class DataClass {
