@@ -10,6 +10,7 @@ import { CoopWaterLevelId } from '../../enum/water_level';
 import { Common } from '../../utils/common';
 import { GraphQL, ResponseType } from '../../utils/graph_ql';
 import { Parameters } from '../../utils/request';
+import { extend } from 'dayjs';
 
 export namespace CoopHistoryDetailQuery {
     export class Request implements GraphQL {
@@ -53,8 +54,8 @@ export namespace CoopHistoryDetailQuery {
         readonly team_deliver_count: number | null;
 
         @Expose()
-        @Type(() => SpecialType)
-        readonly special_weapons: SpecialType[];
+        @Type(() => Common.HashId)
+        readonly special_weapons: Common.HashId[];
     }
 
     export class Background extends Common.HashId {
