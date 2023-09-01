@@ -35,20 +35,26 @@ export namespace CoopHistoryDetailQuery {
     export class WaveResult {
         @Expose()
         readonly wave_number: number;
+
         @Expose()
         readonly water_level: CoopWaterLevelId;
+
         @Expose()
         @Transform(({ value }) => (value === null ? null : plainToInstance(Common.Id, value).id))
         readonly event_wave: CoopEventId;
+
         @Expose()
         readonly deliver_norm: number | null;
+
         @Expose()
         readonly golden_pop_count: number;
+
         @Expose()
         readonly team_deliver_count: number | null;
+
         @Expose()
         @Type(() => SpecialType)
-        readonly special_weapon: SpecialType[];
+        readonly special_weapons: SpecialType[];
     }
 
     export class Background extends Common.HashId {
@@ -72,18 +78,24 @@ export namespace CoopHistoryDetailQuery {
         @Type(() => Common.PlayerId)
         @Transform(({ value }) => new Common.PlayerId(value))
         readonly id: Common.PlayerId;
+
         @Expose()
         readonly byname: string;
+
         @Expose()
         readonly name: string;
+
         @Expose()
         readonly name_id: string;
+
         @Expose()
         @Type(() => Nameplate)
         readonly nameplate: Nameplate;
+
         @Expose()
         @Type(() => Common.HashId)
         readonly uniform: Common.HashId;
+
         @Expose()
         readonly species: SpecieKey;
     }
@@ -92,22 +104,30 @@ export namespace CoopHistoryDetailQuery {
         @Expose()
         @Type(() => ResultPlayer)
         readonly player: ResultPlayer;
+
         @Expose()
         @Type(() => Common.Hash)
         readonly weapons: Common.Hash[];
+
         @Expose()
         @Type(() => SpecialType)
         readonly special_weapon: SpecialType;
+
         @Expose()
         readonly defeat_enemy_count: number;
+
         @Expose()
         readonly deliver_count: number;
+
         @Expose()
         readonly golden_assist_count: number;
+
         @Expose()
         readonly golden_deliver_count: number;
+
         @Expose()
         readonly rescue_count: number;
+
         @Expose()
         readonly rescued_count: number;
     }
@@ -115,10 +135,13 @@ export namespace CoopHistoryDetailQuery {
     export class EnemyResult {
         @Expose()
         readonly defeat_count: number;
+
         @Expose()
         readonly team_defeat_count: number;
+
         @Expose()
         readonly pop_count: number;
+
         @Expose()
         @Type(() => Common.HashId)
         readonly enemy: Common.HashId;
@@ -127,6 +150,7 @@ export namespace CoopHistoryDetailQuery {
     export class BossResult {
         @Expose()
         readonly has_defeat_boss: boolean;
+
         @Expose()
         @Type(() => Common.HashId)
         readonly boss: Common.HashId;
@@ -137,75 +161,94 @@ export namespace CoopHistoryDetailQuery {
         @Expose()
         @Type(() => Common.Id)
         readonly after_grade: Common.Id;
+
         @Expose()
         readonly rule: RuleType;
+
         @Expose()
         @Type(() => MemberResult)
         readonly my_result: MemberResult;
+
         @Expose()
         @Type(() => MemberResult)
         readonly member_results: MemberResult[];
+
         @Expose()
         @Type(() => BossResult)
         readonly boss_result: BossResult | null;
+
         @Expose()
         @Type(() => EnemyResult)
         readonly enemy_results: EnemyResult[];
+
         @Expose()
         @Type(() => WaveResult)
         readonly wave_results: WaveResult[];
+
         @Expose()
         readonly result_wave: number;
+
         @Expose()
         readonly played_time: string;
+
         @Expose()
         @Type(() => Common.HashId)
         readonly coop_stage: Common.HashId;
+
         @Expose()
         readonly danger_rate: number;
+
         @Expose()
         readonly scenario_code: string | null;
+
         @Expose()
         readonly smell_meter: number | null;
+
         @Expose()
         @Type(() => Common.Hash)
         readonly weapons: Common.Hash[];
+
         @Expose()
         readonly after_grade_point: number | null;
+
         @Expose()
         @Transform(({ value }) => (value === null ? null : [value.bronze, value.silver, value.gold]))
         readonly scale: number[] | null;
+
         @Expose()
         readonly job_point: number | null;
+
         @Expose()
         readonly job_score: number | null;
+
         @Expose()
         readonly job_rate: number | null;
+
         @Expose()
         readonly job_bonus: number | null;
 
         get members(): MemberResult[] {
-            return [this.my_result, ...this.member_results]
+            return [this.my_result, ...this.member_results];
         }
 
         get enemy_pop_counts(): number[] {
-            return this.enemy_results.sort((a, b) => a.enemy.id - b.enemy.id).map((enemy) => enemy.pop_count)
+            return this.enemy_results.sort((a, b) => a.enemy.id - b.enemy.id).map((enemy) => enemy.pop_count);
         }
 
         get enemy_defeat_counts(): number[] {
-            return this.enemy_results.sort((a, b) => a.enemy.id - b.enemy.id).map((enemy) => enemy.defeat_count)
+            return this.enemy_results.sort((a, b) => a.enemy.id - b.enemy.id).map((enemy) => enemy.defeat_count);
         }
-       
+
         get enemy_team_defeat_counts(): number[] {
-            return this.enemy_results.sort((a, b) => a.enemy.id - b.enemy.id).map((enemy) => enemy.team_defeat_count)
+            return this.enemy_results.sort((a, b) => a.enemy.id - b.enemy.id).map((enemy) => enemy.team_defeat_count);
         }
 
         get golden_deliver_count(): number {
-            return this.members.map((member) => member.golden_deliver_count).reduce((a, b) => a + b)
+            return this.members.map((member) => member.golden_deliver_count).reduce((a, b) => a + b);
         }
 
         get deliver_count(): number {
-            return this.members.map((member) => member.deliver_count).reduce((a, b) => a + b)
+            return this.members.map((member) => member.deliver_count).reduce((a, b) => a + b);
         }
     }
 
