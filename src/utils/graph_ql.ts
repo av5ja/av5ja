@@ -1,5 +1,4 @@
 import { CapacitorHttp, HttpOptions } from '@capacitor/core';
-import dayjs from 'dayjs';
 import snakecaseKeys from 'snakecase-keys';
 
 import { Method } from '../enum/method';
