@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 
 import { GradeId } from '../enum/grade';
 import { ModeType } from '../enum/mode';
@@ -193,7 +192,7 @@ export namespace SplatNet2 {
             this.other_results = result.member_results.map((member) => new MemberResult(member, result.wave_results));
             this.grade_point = result.after_grade_point;
             this.job_rate = result.job_rate;
-            this.play_time = result.id.play_time
+            this.play_time = result.id.play_time;
             this.boss_counts = result.enemy_pop_counts;
             this.boss_kill_counts = result.enemy_team_defeat_counts;
             this.danger_rate = result.danger_rate;
