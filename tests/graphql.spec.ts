@@ -6,9 +6,9 @@ import { CoopHistoryDetailQuery } from '../src/requests/av5ja/coop_history_detai
 import { CoopHistoryQuery } from '../src/requests/av5ja/coop_history_query';
 import { StageScheduleQuery } from '../src/requests/av5ja/stage_schedule_query';
 import { GraphQL } from '../src/utils/graph_ql';
+import { SplatNet2 } from '../src/utils/splatnet2';
 
 import token from './token.json';
-import { SplatNet2 } from '../src/utils/splatnet2';
 
 /**
  * GraphQLリクエストを送信する
@@ -80,7 +80,7 @@ describe('GraphQL', () => {
     it('CoopHistoryDetailQuery', async () => {
         const coop_history_query = await request(new CoopHistoryQuery.Request(), bullet_token);
         expect(coop_history_query.data.coop_result.history_groups.nodes.length).toBe(4);
-        const history_group = coop_history_query.history_groups[0]
+        const history_group = coop_history_query.history_groups[0];
         // 正常にリクエストが送れるかどうか
         const detail = await request(new CoopHistoryDetailQuery.Request(history_group.result_id_list[0].raw_value), bullet_token);
         const result = new SplatNet2.CoopResult(history_group, detail.data.coop_history_detail);
@@ -105,8 +105,12 @@ describe('GraphQL', () => {
         expect(result.wave_details.length).toBe(detail.data.coop_history_detail.wave_results.length);
         expect(result.wave_details.map((wave) => wave.event_type)).toStrictEqual(detail.data.coop_history_detail.wave_results.map((wave) => wave.event_wave));
         expect(result.wave_details.map((wave) => wave.water_level)).toStrictEqual(detail.data.coop_history_detail.wave_results.map((wave) => wave.water_level));
-        expect(result.wave_details.map((wave) => wave.golden_ikura_num)).toStrictEqual(detail.data.coop_history_detail.wave_results.map((wave) => wave.team_deliver_count));
-        expect(result.wave_details.map((wave) => wave.golden_ikura_pop_num)).toStrictEqual(detail.data.coop_history_detail.wave_results.map((wave) => wave.golden_pop_count));
+        expect(result.wave_details.map((wave) => wave.golden_ikura_num)).toStrictEqual(
+            detail.data.coop_history_detail.wave_results.map((wave) => wave.team_deliver_count)
+        );
+        expect(result.wave_details.map((wave) => wave.golden_ikura_pop_num)).toStrictEqual(
+            detail.data.coop_history_detail.wave_results.map((wave) => wave.golden_pop_count)
+        );
         expect(result.wave_details.map((wave) => wave.quota_num)).toStrictEqual(detail.data.coop_history_detail.wave_results.map((wave) => wave.deliver_norm));
         expect(result.wave_details.map((wave) => wave.id)).toStrictEqual(detail.data.coop_history_detail.wave_results.map((wave) => wave.wave_number));
     }, 50000);

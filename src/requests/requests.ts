@@ -1,5 +1,6 @@
 import { request } from '../utils/graph_ql';
 import { SplatNet2 } from '../utils/splatnet2';
+
 import { CoopHistoryDetailQuery } from './av5ja/coop_history_detail_query';
 import { CoopHistoryQuery } from './av5ja/coop_history_query';
 import { StageScheduleQuery } from './av5ja/stage_schedule_query';
@@ -38,5 +39,5 @@ async function get_coop_history_group_details(history_group: CoopHistoryQuery.Hi
  */
 export async function get_coop_history_details(force_fetch: boolean = false): Promise<SplatNet2.CoopResult[]> {
     const coop_history_groups: CoopHistoryQuery.HistoryGroup[] = await this.get_coop_history_groups();
-    return (await Promise.all(coop_history_groups.map((group) => this.get_coop_history_group_details(group)))).flat();
+    return (await Promise.all(coop_history_groups.map((group) => get_coop_history_group_details(group)))).flat();
 }
