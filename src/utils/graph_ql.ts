@@ -4,7 +4,7 @@ import snakecaseKeys from 'snakecase-keys';
 import { Method } from '../enum/method';
 import { SHA256Hash } from '../enum/sha256hash';
 
-import { OAuth } from './oauth';
+import { refresh, get_user_info } from './oauth';
 import { UserInfo } from './user_info';
 
 export interface ResponseType {
@@ -28,8 +28,8 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         console.error('This function is only available in the Native app.');
         throw new Error('This function is only available in the Native app.');
     }
-    const user_info: UserInfo = await OAuth.get_user_info();
-    const bullet_token = user_info.requires_refresh ? await OAuth.refresh() : user_info.bullet_token;
+    const user_info: UserInfo = await get_user_info();
+    const bullet_token = user_info.requires_refresh ? await refresh() : user_info.bullet_token;
 
     if (bullet_token === undefined) {
         console.error('Bullet token is undefined.');
