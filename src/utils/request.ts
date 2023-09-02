@@ -30,5 +30,10 @@ export async function request<T extends RequestType, U extends ReturnType<T['req
         url: url.href,
     };
     const response = await CapacitorHttp.request(options);
+
+    if (response.status !== 200 && response.status !== 201) {
+        console.error(JSON.stringify(response.data));
+        throw new Error(`Request failed with status code ${response.status}`);
+    }
     return request.request(snakecaseKeys(response.data)) as U;
 }

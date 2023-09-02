@@ -1,5 +1,3 @@
-import dayjs from 'dayjs';
-
 import { GradeId } from '../enum/grade';
 import { ModeType } from '../enum/mode';
 import { RuleType } from '../enum/rule';
@@ -28,7 +26,7 @@ export namespace SplatNet2 {
         readonly background: Background;
 
         constructor(nameplate: CoopHistoryDetailQuery.Nameplate) {
-            this.badges = nameplate.badges.map((badge) => badge?.id ?? null);
+            this.badges = nameplate.badges.map((badge) => badge?.id ?? -1);
             this.background = new Background(nameplate.background);
         }
     }
@@ -90,14 +88,14 @@ export namespace SplatNet2 {
         readonly special_id: number;
         readonly special_counts: number[];
         readonly boss_kill_counts: number[];
-        readonly boss_counts_total: number;
+        readonly boss_kill_counts_total: number;
         readonly uniform: SkinId;
         readonly species: SpecieKey;
 
         constructor(
             member_result: CoopHistoryDetailQuery.MemberResult,
             wave_results: CoopHistoryDetailQuery.WaveResult[],
-            enemy_results: number[] = Array(14).fill(null)
+            enemy_results: number[] = Array(14).fill(-1)
         ) {
             this.id = member_result.player.id;
             this.npln_user_id = member_result.player.id.npln_user_id;
@@ -114,8 +112,8 @@ export namespace SplatNet2 {
             this.weapon_list = member_result.weapons.map((weapon) => id(weapon.hash));
             this.special_id = member_result.special_weapon.id;
             this.special_counts = wave_results.map((wave) => wave.special_weapons.filter((special) => special.id === member_result.special_weapon.id).length);
-            this.boss_kill_counts = member_result.player.id.is_myself ? enemy_results : Array(14).fill(null);
-            this.boss_counts_total = member_result.defeat_enemy_count;
+            this.boss_kill_counts = member_result.player.id.is_myself ? enemy_results : Array(14).fill(-1);
+            this.boss_kill_counts_total = member_result.defeat_enemy_count;
             this.uniform = member_result.player.uniform.id;
             this.species = member_result.player.species;
         }
@@ -126,7 +124,7 @@ export namespace SplatNet2 {
         readonly end_time: Date | null;
         readonly mode: ModeType;
         readonly rule: RuleType;
-        readonly weaponList: number[];
+        readonly weapon_list: number[];
         readonly stage_id: number;
 
         constructor(scheudle: CoopHistoryQuery.HistoryGroup, stage_id: number, weapon_list: number[]) {
@@ -134,7 +132,7 @@ export namespace SplatNet2 {
             this.end_time = scheudle.end_time;
             this.mode = scheudle.mode;
             this.rule = scheudle.rule;
-            this.weaponList = weapon_list;
+            this.weapon_list = weapon_list;
             this.stage_id = stage_id;
         }
     }
@@ -193,7 +191,7 @@ export namespace SplatNet2 {
             this.other_results = result.member_results.map((member) => new MemberResult(member, result.wave_results));
             this.grade_point = result.after_grade_point;
             this.job_rate = result.job_rate;
-            this.play_time = dayjs(result.played_time).toDate();
+            this.play_time = result.id.play_time;
             this.boss_counts = result.enemy_pop_counts;
             this.boss_kill_counts = result.enemy_team_defeat_counts;
             this.danger_rate = result.danger_rate;
@@ -204,6 +202,7 @@ export namespace SplatNet2 {
                 result.weapons.map((weapon) => id(weapon.hash))
             );
             this.golden_ikura_num = result.golden_deliver_count;
+            this.golden_ikura_assist_num = result.golden_assist_count;
             this.ikura_num = result.deliver_count;
             this.smell_meter = result.smell_meter;
             this.scenario_code = result.scenario_code;
