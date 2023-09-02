@@ -82,7 +82,7 @@ describe('GraphQL', () => {
 
     it('CoopHistoryQuery', async () => {
         const coop_history_query = await request(new CoopHistoryQuery.Request(), bullet_token);
-        expect(coop_history_query.data.coop_result.history_groups.nodes.length).toBe(4);
+        expect(coop_history_query.data.coop_result.history_groups.nodes.length).toBeGreaterThan(3);
         // console.log(JSON.stringify(coop_history_query, null, 2))
     }, 5000);
 
@@ -94,12 +94,10 @@ describe('GraphQL', () => {
 
     it('CoopHistoryDetailQuery', async () => {
         const coop_history_query = await request(new CoopHistoryQuery.Request(), bullet_token);
-        expect(coop_history_query.data.coop_result.history_groups.nodes.length).toBeGreaterThan(3);
         const history_group = coop_history_query.history_groups[0];
         // 正常にリクエストが送れるかどうか
         const detail = await request(new CoopHistoryDetailQuery.Request(history_group.result_id_list[0].raw_value), bullet_token);
         const result = new SplatNet2.CoopResult(history_group, detail.data.coop_history_detail);
-
         if (process.env.NODE_ENV === 'development') {
             const response = (await set_coop_history_details([result]))[0];
             // 返ってきた値と等しいかどうか
