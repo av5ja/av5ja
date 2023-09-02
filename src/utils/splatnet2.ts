@@ -1,4 +1,4 @@
-import { plainToInstance } from 'class-transformer';
+import { Expose, plainToInstance } from 'class-transformer';
 
 import { GradeId } from '../enum/grade';
 import { ModeType } from '../enum/mode';
@@ -126,7 +126,7 @@ export namespace SplatNet2 {
         readonly end_time: Date | null;
         readonly mode: ModeType;
         readonly rule: RuleType;
-        readonly weaponList: number[];
+        readonly weapon_list: number[];
         readonly stage_id: number;
 
         constructor(scheudle: StageScheduleQuery.CoopSchedule, rule: RuleType) {
@@ -134,23 +134,19 @@ export namespace SplatNet2 {
             this.end_time = scheudle.end_time;
             this.mode = ModeType.REGULAR;
             this.rule = rule;
-            this.weaponList = scheudle.setting.weapons.map((weapon) => id(weapon.hash));
+            this.weapon_list = scheudle.setting.weapons.map((weapon) => id(weapon.hash));
             this.stage_id = scheudle.setting.coop_stage.id;
         }
 
         static from(schedule: CoopHistoryQuery.HistoryGroup, stage_id: number, weapon_list: number[]): CoopSchedule {
-            return plainToInstance(
-                CoopSchedule,
-                {
-                    end_time: schedule.end_time,
-                    mode: schedule.mode,
-                    rule: schedule.rule,
-                    stage_id: stage_id,
-                    start_time: schedule.start_time,
-                    weapon_list: weapon_list,
-                },
-                { excludeExtraneousValues: true }
-            );
+            return {
+                end_time: schedule.end_time,
+                mode: schedule.mode,
+                rule: schedule.rule,
+                stage_id: stage_id,
+                start_time: schedule.start_time,
+                weapon_list: weapon_list,
+            } as CoopSchedule
         }
     }
 
