@@ -1,4 +1,3 @@
-import { Expose, plainToInstance } from 'class-transformer';
 
 import { GradeId } from '../enum/grade';
 import { ModeType } from '../enum/mode';
@@ -146,7 +145,7 @@ export namespace SplatNet2 {
                 stage_id: stage_id,
                 start_time: schedule.start_time,
                 weapon_list: weapon_list,
-            } as CoopSchedule
+            } as CoopSchedule;
         }
     }
 
