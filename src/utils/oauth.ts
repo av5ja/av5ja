@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 
 import base64url from 'base64url';
+import dayjs from 'dayjs';
 import Randomstring from 'randomstring';
 
 import { JWT, Token } from '../dto/jwt.dto';
@@ -50,24 +51,34 @@ export const oauthURL: URL = (() => {
 
 /**
  * 認証
+ * 最終プレイ時間をリセットする
  */
 export async function authorize(state: string, code: string): Promise<boolean> {
     if (state !== state) throw new Error('Provided state does not match.');
     const session_token = await get_session_token(code, verifier);
-    await refresh_from_token(session_token);
-    return true;
+    try {
+        // 旧データがあるならそれを利用する
+        const { last_play_time }= await keychain.get();
+        await refresh_from_token(session_token, last_play_time);
+        return true;
+    } catch {
+        // ないなら新規で作成する
+        await refresh_from_token(session_token, dayjs(0).toDate());
+        return true;
+    }
 }
 
 /**
  * トークンをリフレッシュして書き込む
+ * 最終プレイ時間は継続する
  * @returns
  */
 export async function refresh(): Promise<string> {
-    const session_token = (await keychain.get()).session_token;
-    return await refresh_from_token(session_token);
+    const {session_token, last_play_time} = (await keychain.get())
+    return await refresh_from_token(session_token, last_play_time);
 }
 
-async function refresh_from_token(session_token: JWT<Token.SessionToken>): Promise<string> {
+async function refresh_from_token(session_token: JWT<Token.SessionToken>, last_play_time: Date): Promise<string> {
     const hash = ((await request(new Web.Hash.Request())) as Web.Hash.Response).js;
     const version = ((await request(new NSO.Version.Request())) as NSO.Version.Response).result;
     const web_version = ((await request(new Web.Version.Request(hash))) as Web.Version.Response).web_version;
@@ -77,7 +88,7 @@ async function refresh_from_token(session_token: JWT<Token.SessionToken>): Promi
     const hash_app = await get_coral_token(game_service_token.access_token, access_token.payload.sub, version.version);
     const game_web_token = await get_game_web_token(game_service_token.access_token, hash_app, version.version);
     const bullet_token = await get_bullet_token(game_web_token, web_version);
-    await keychain.set(new UserInfo(game_service_token.user, session_token, access_token, game_service_token.access_token, game_web_token, bullet_token));
+    await keychain.set(new UserInfo(game_service_token.user, session_token, access_token, game_service_token.access_token, game_web_token, bullet_token, last_play_time));
     return bullet_token;
 }
 
