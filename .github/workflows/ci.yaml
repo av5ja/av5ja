@@ -33,7 +33,7 @@ jobs:
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
       - name: Install Dependencies
-        # if: ${{ steps.cache_cdk_dependency_id.outputs.cache-hit != 'true' }}
+        if: ${{ steps.cache_cdk_dependency_id.outputs.cache-hit != 'true' }}
         run: yarn install
 
       - name: Format
