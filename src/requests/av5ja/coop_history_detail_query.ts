@@ -41,7 +41,7 @@ export namespace CoopHistoryDetailQuery {
         readonly water_level: CoopWaterLevelId;
 
         @Expose()
-        @Transform(({ value }) => (value === null ? null : plainToInstance(Common.Id, value).id))
+        @Transform(({ value }) => (value === null ? 0 : plainToInstance(Common.Id, value).id))
         readonly event_wave: CoopEventId;
 
         @Expose()
@@ -252,6 +252,10 @@ export namespace CoopHistoryDetailQuery {
             return Object.values(CoopEnemyInfoId)
                 .filter((id) => !isNaN(id as number))
                 .map((id) => this.enemy_results.find((enemy) => enemy.enemy.id === id)?.team_defeat_count ?? 0);
+        }
+
+        get golden_assist_count(): number {
+            return this.members.map((member) => member.golden_assist_count).reduce((a, b) => a + b);
         }
 
         get golden_deliver_count(): number {
