@@ -120,7 +120,7 @@ export namespace SplatNet2 {
             this.species = member_result.player.species;
         }
     }
-    
+
     export class CoopSchedule {
         readonly start_time: Date | null;
         readonly end_time: Date | null;
@@ -139,14 +139,18 @@ export namespace SplatNet2 {
         }
 
         static from(schedule: CoopHistoryQuery.HistoryGroup, stage_id: number, weapon_list: number[]): CoopSchedule {
-            return plainToInstance(CoopSchedule, {
-                end_time: schedule.end_time,
-                mode: schedule.mode,
-                rule: schedule.rule,
-                stage_id: stage_id,
-                start_time: schedule.start_time,
-                weapon_list: weapon_list,
-            }, { excludeExtraneousValues: true });
+            return plainToInstance(
+                CoopSchedule,
+                {
+                    end_time: schedule.end_time,
+                    mode: schedule.mode,
+                    rule: schedule.rule,
+                    stage_id: stage_id,
+                    start_time: schedule.start_time,
+                    weapon_list: weapon_list,
+                },
+                { excludeExtraneousValues: true }
+            );
         }
     }
 
@@ -191,7 +195,11 @@ export namespace SplatNet2 {
             this.boss_kill_counts = result.enemy_team_defeat_counts;
             this.danger_rate = result.danger_rate;
             this.job_bonus = result.job_bonus;
-            this.schedule = CoopSchedule.from(schedule, result.coop_stage.id, result.weapons.map((weapon) => id(weapon.hash)));
+            this.schedule = CoopSchedule.from(
+                schedule,
+                result.coop_stage.id,
+                result.weapons.map((weapon) => id(weapon.hash))
+            );
             this.golden_ikura_num = result.golden_deliver_count;
             this.golden_ikura_assist_num = result.golden_assist_count;
             this.ikura_num = result.deliver_count;

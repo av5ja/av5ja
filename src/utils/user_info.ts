@@ -27,7 +27,7 @@ export class UserInfo {
     user: GameServiceToken.User;
 
     @Expose()
-    last_play_time: Date
+    last_play_time: Date;
 
     constructor(
         user: GameServiceToken.User,
