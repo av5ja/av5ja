@@ -1,5 +1,4 @@
 import { CapacitorHttp, HttpOptions } from '@capacitor/core';
-import dayjs from 'dayjs';
 import snakecaseKeys from 'snakecase-keys';
 
 import { Method } from '../enum/method';
@@ -30,7 +29,6 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         throw new Error('This function is only available in the Native app.');
     }
     const user_info: UserInfo = await OAuth.get_user_info();
-    console.log('Remaining validity seconds of token', dayjs().subtract(dayjs(user_info.expires_in).unix(), 'second').unix());
     const bullet_token = user_info.requires_refresh ? await OAuth.refresh() : user_info.bullet_token;
 
     if (bullet_token === undefined) {
