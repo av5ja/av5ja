@@ -1,4 +1,4 @@
-import { WeaponInfoMain, hash, id } from '../src/utils/weapon_info_main';
+import { WeaponInfoMain } from '../src/utils/weapon_info_main';
 
 describe('Enum', () => {
     describe('WeaponInfoMain', () => {
