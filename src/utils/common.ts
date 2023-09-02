@@ -28,10 +28,14 @@ export namespace Common {
          */
         get raw_value(): string {
             return btoa(
-                `${this.id}-${this.prefix}-${this.host_npln_user_id}:${dayjs(this.start_time).format('YYYYMMDDTHHmmss')}_${this.uuid}:${this.suffix}-${
-                    this.npln_user_id
-                }`
+                `${this.id}-${this.prefix}-${this.host_npln_user_id}:${dayjs(this.start_time).subtract(9, 'hour').format('YYYYMMDDTHHmmss')}_${this.uuid}:${
+                    this.suffix
+                }-${this.npln_user_id}`
             );
+        }
+
+        get is_myself(): boolean {
+            return this.npln_user_id === this.host_npln_user_id;
         }
 
         constructor(raw_value: string) {
@@ -42,7 +46,8 @@ export namespace Common {
                 this.id = id;
                 this.prefix = prefix;
                 this.npln_user_id = npln_user_id;
-                this.start_time = dayjs(start_time).toDate();
+                // JSTのサーバーの時間なので+09:00する
+                this.start_time = dayjs(start_time).add(9, 'hour').toDate();
                 this.uuid = uuid;
                 this.suffix = suffix;
                 this.host_npln_user_id = host_npln_user_id;
@@ -61,7 +66,7 @@ export namespace Common {
          * オリジナルのリザルトID
          */
         get raw_value(): string {
-            return btoa(`${this.id}-${this.prefix}-${this.npln_user_id}:${dayjs(this.start_time).format('YYYYMMDDTHHmmss')}_${this.uuid}`);
+            return btoa(`${this.id}-${this.prefix}-${this.npln_user_id}:${dayjs(this.start_time).subtract(9, 'hour').format('YYYYMMDDTHHmmss')}_${this.uuid}`);
         }
 
         constructor(raw_value: string) {
@@ -72,8 +77,11 @@ export namespace Common {
                 this.id = id;
                 this.prefix = prefix;
                 this.npln_user_id = npln_user_id;
-                this.start_time = dayjs(start_time).toDate();
+                // JSTのサーバーの時間なので+09:00する
+                this.start_time = dayjs(start_time).add(9, 'hour').toDate();
                 this.uuid = uuid;
+            } else {
+                throw new Error('Invalid CoopHistoryDetailId');
             }
         }
     }
@@ -135,6 +143,6 @@ export namespace Common {
             const match = regexp.exec(raw_value);
             return match === null ? null : parseInt(match[1]);
         })
-        readonly id: number | null;
+        readonly id: number;
     }
 }
