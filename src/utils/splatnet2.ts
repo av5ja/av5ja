@@ -1,4 +1,3 @@
-
 import { GradeId } from '../enum/grade';
 import { ModeType } from '../enum/mode';
 import { RuleType } from '../enum/rule';
