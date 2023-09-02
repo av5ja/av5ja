@@ -58,7 +58,7 @@ export async function authorize(state: string, code: string): Promise<boolean> {
     const session_token = await get_session_token(code, verifier);
     try {
         // 旧データがあるならそれを利用する
-        const { last_play_time }= await keychain.get();
+        const { last_play_time } = await keychain.get();
         await refresh_from_token(session_token, last_play_time);
         return true;
     } catch {
@@ -74,7 +74,7 @@ export async function authorize(state: string, code: string): Promise<boolean> {
  * @returns
  */
 export async function refresh(): Promise<string> {
-    const {session_token, last_play_time} = (await keychain.get())
+    const { session_token, last_play_time } = await keychain.get();
     return await refresh_from_token(session_token, last_play_time);
 }
 
@@ -88,7 +88,9 @@ async function refresh_from_token(session_token: JWT<Token.SessionToken>, last_p
     const hash_app = await get_coral_token(game_service_token.access_token, access_token.payload.sub, version.version);
     const game_web_token = await get_game_web_token(game_service_token.access_token, hash_app, version.version);
     const bullet_token = await get_bullet_token(game_web_token, web_version);
-    await keychain.set(new UserInfo(game_service_token.user, session_token, access_token, game_service_token.access_token, game_web_token, bullet_token, last_play_time));
+    await keychain.set(
+        new UserInfo(game_service_token.user, session_token, access_token, game_service_token.access_token, game_web_token, bullet_token, last_play_time)
+    );
     return bullet_token;
 }
 
@@ -125,4 +127,10 @@ async function get_bullet_token(access_token: JWT<Token.GameWebToken>, version: 
 
 export async function get_user_info(): Promise<UserInfo> {
     return await keychain.get();
+}
+
+export async function set_user_info(last_play_time: Date): Promise<void> {
+    const user_info = await keychain.get();
+    user_info.last_play_time = last_play_time;
+    await keychain.set(user_info);
 }
