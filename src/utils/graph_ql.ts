@@ -24,16 +24,21 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
     /**
      * Native app以外はキーを取得できないのでエラーを投げる
      */
-    if (window === undefined) {
+    if (this.window === 'undefined') {
         console.error('This function is only available in the Native app.');
         throw new Error('This function is only available in the Native app.');
     }
-    const user_info: UserInfo = await get_user_info();
-    const bullet_token = user_info.requires_refresh ? await refresh() : user_info.bullet_token;
+    let { bullet_token, requires_refresh, web_version }: UserInfo = await get_user_info();
 
+    // 未ログインの場合はエラーを返す
     if (bullet_token === undefined) {
         console.error('Bullet token is undefined.');
         throw new Error('Bullet token is undefined.');
+    }
+   
+    // 有効期限切れの場合は再発行して上書きする
+    if (requires_refresh) {
+        bullet_token = await refresh();
     }
 
     const url = new URL('https://api.lp1.av5ja.srv.nintendo.net/api/graphql');
@@ -46,11 +51,10 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         },
         variables: request.parameters,
     });
-    const version = '4.0.0-b8c1e0fc';
     const headers = {
         Authorization: `Bearer ${bullet_token}`,
         'Content-Type': 'application/json',
-        'X-Web-View-Ver': version,
+        'X-Web-View-Ver': web_version,
     };
     const options: HttpOptions = {
         data: body,
@@ -60,5 +64,12 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         url: url.href,
     };
     const response = await CapacitorHttp.request(options);
+    
+    if (response.status === 401) {
+        throw new Error('Unauthorized.'); 
+    }
+    if (response.status === 403) {
+        throw new Error('Forbidden.'); 
+    }
     return request.request(snakecaseKeys(response.data)) as U;
 }
