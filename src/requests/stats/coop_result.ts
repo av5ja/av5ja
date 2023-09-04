@@ -11,7 +11,7 @@ import 'reflect-metadata';
 
 export namespace CoopResult {
     export class Request implements RequestType {
-        readonly baseURL: string = base_url
+        readonly baseURL: string = base_url;
         readonly headers: Headers = {
             'Content-Type': 'application/json',
         };
