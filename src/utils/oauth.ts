@@ -75,19 +75,30 @@ export async function authorize(state: string, code: string): Promise<boolean> {
  */
 export async function refresh(): Promise<string> {
     const { session_token, last_play_time } = await keychain.get();
+    console.log('Refreshing token...', session_token, typeof session_token)
     return await refresh_from_token(session_token, last_play_time);
 }
 
 async function refresh_from_token(session_token: JWT<Token.SessionToken>, last_play_time: Date): Promise<string> {
+    console.log('Refreshing from token...', session_token, last_play_time)
     const hash = ((await request(new Web.Hash.Request())) as Web.Hash.Response).js;
+    console.log('Hash', hash)
     const version = ((await request(new NSO.Version.Request())) as NSO.Version.Response).result;
+    console.log('Version', version)
     const web_version = ((await request(new Web.Version.Request(hash))) as Web.Version.Response).web_version;
+    console.log('Web version', web_version)
     const access_token = await get_access_token(session_token);
+    console.log('Access Token', access_token)
     const hash_nso = await get_coral_token(access_token, undefined, version.version);
+    console.log('Hash NSO', hash_nso)
     const game_service_token = await get_game_service_token(access_token, hash_nso, version.version);
+    console.log('Game Service Token', game_service_token)
     const hash_app = await get_coral_token(game_service_token.access_token, access_token.payload.sub, version.version);
+    console.log('Hash APP', hash_app)
     const game_web_token = await get_game_web_token(game_service_token.access_token, hash_app, version.version);
+    console.log('Game Web Token', game_web_token)
     const bullet_token = await get_bullet_token(game_web_token, web_version);
+    console.log('Bullet Token', game_web_token)
     await keychain.set(
         new UserInfo(
             game_service_token.user,
