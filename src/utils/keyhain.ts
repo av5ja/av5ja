@@ -4,7 +4,6 @@ import { plainToInstance } from 'class-transformer';
 import { node_env, user_info } from './env';
 import { UserInfo } from './user_info';
 
-
 export class Keychain {
     constructor() {}
 
@@ -12,7 +11,7 @@ export class Keychain {
 
     async get(): Promise<UserInfo> {
         if (node_env === 'test') {
-            return user_info
+            return user_info;
         }
         if (typeof window !== 'undefined') {
             const data: DataType | null = await SecureStorage.get(this.identifier);
@@ -27,7 +26,7 @@ export class Keychain {
 
     async set(value: UserInfo): Promise<void> {
         if (node_env === 'test') {
-            return
+            return;
         }
         if (typeof window !== 'undefined') {
             await SecureStorage.set(this.identifier, JSON.stringify(value));

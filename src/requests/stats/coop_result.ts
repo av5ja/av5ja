@@ -3,15 +3,15 @@ import dayjs from 'dayjs';
 
 import { Method } from '../../enum/method';
 import { camelcaseKeys } from '../../utils/camelcase_keys';
+import { base_url } from '../../utils/env';
 import { RequestType, Headers, Parameters, ResponseType, request } from '../../utils/request';
 import { SplatNet2 } from '../../utils/splatnet2';
 
 import 'reflect-metadata';
-import { node_env } from '../../utils/env';
 
 export namespace CoopResult {
     export class Request implements RequestType {
-        readonly baseURL: string = node_env === 'development' ?  'http://localhost:3000' : 'https://api.splatnet3.com'
+        readonly baseURL: string = base_url
         readonly headers: Headers = {
             'Content-Type': 'application/json',
         };
