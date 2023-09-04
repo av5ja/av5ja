@@ -59,7 +59,6 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         responseType: 'json',
         url: url.href,
     };
-    console.log("Request", options)
     const response = await CapacitorHttp.request(options);
 
     if (response.status === 401) {

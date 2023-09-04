@@ -35,6 +35,7 @@ describe('GraphQL', () => {
         // 正常にリクエストが送れるかどうか
         const detail = await request(new CoopHistoryDetailQuery.Request(history_group.result_id_list[0].raw_value));
         const result = new SplatNet2.CoopResult(history_group, detail.data.coop_history_detail);
+        // ローカルテストのみ
         if (node_env === 'test') {
             const response = (await set_coop_history_details([result]))[0];
             // 返ってきた値と等しいかどうか
