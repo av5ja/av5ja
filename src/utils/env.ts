@@ -1,7 +1,7 @@
-import { plainToInstance } from "class-transformer";
-import dayjs from "dayjs";
+import { plainToInstance } from 'class-transformer';
+import dayjs from 'dayjs';
 
-import { UserInfo } from "./user_info";
+import { UserInfo } from './user_info';
 
 enum Env {
     DEV = 'development',
@@ -60,19 +60,39 @@ export const bullet_token: string = (() => {
 export const web_version: string = (() => {
     const web_version = process.env.WEB_VERSION;
     if (web_version === undefined) {
-        return '4.0.0-22ddb0fd'
+        return '4.0.0-22ddb0fd';
     }
     return web_version;
 })();
 
+export const expires_in: Date = (() => {
+    const expires_in = process.env.EXPIRES_IN;
+    if (expires_in === undefined) {
+        return dayjs().subtract(2, 'hours').toDate();
+    }
+    return dayjs(expires_in).toDate();
+})();
+
+export const base_url: string = (() => {
+    const base_url = process.env.BASE_URL;
+    if (base_url === undefined) {
+        return 'http://localhost:3000';
+    }
+    return base_url;
+})();
+
 export const user_info: UserInfo = (() => {
-    return plainToInstance(UserInfo, {
-        access_token: access_token,
-        bullet_token: bullet_token,
-        expires_in: dayjs().subtract(2, 'hours').toDate(),
-        game_service_token: game_service_token,
-        game_web_token: game_web_token,
-        session_token: session_token,
-        web_version: web_version
-    }, { excludeExtraneousValues: true })
-})()
+    return plainToInstance(
+        UserInfo,
+        {
+            access_token: access_token,
+            bullet_token: bullet_token,
+            expires_in: expires_in,
+            game_service_token: game_service_token,
+            game_web_token: game_web_token,
+            session_token: session_token,
+            web_version: web_version,
+        },
+        { excludeExtraneousValues: true }
+    );
+})();
