@@ -22,7 +22,7 @@ export namespace SessionToken {
             };
         }
 
-        request(response: any): ResponseType {
+        request(response: any): SessionToken.Response {
             return plainToInstance(Response, response, { excludeExtraneousValues: true });
         }
     }

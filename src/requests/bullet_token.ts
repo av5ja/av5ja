@@ -21,7 +21,7 @@ export namespace BulletToken {
             };
         }
 
-        request(response: any): ResponseType {
+        request(response: any): BulletToken.Response {
             return plainToInstance(Response, response, { excludeExtraneousValues: false });
         }
     }

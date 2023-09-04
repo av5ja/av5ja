@@ -23,7 +23,7 @@ export namespace CoopHistoryDetailQuery {
             };
         }
 
-        request(response: any): Response {
+        request(response: any): CoopHistoryDetailQuery.Response {
             return plainToInstance(Response, { ...response, ...{ raw_value: response } }, { excludeExtraneousValues: true });
         }
     }

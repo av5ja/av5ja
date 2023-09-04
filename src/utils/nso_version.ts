@@ -18,7 +18,7 @@ export namespace NSO {
 
             constructor() {}
 
-            request(response: any): Response {
+            request(response: any): NSO.Version.Response {
                 return plainToInstance(Response, response);
             }
         }

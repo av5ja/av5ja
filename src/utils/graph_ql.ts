@@ -28,14 +28,17 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         console.error('This function is only available in the Native app.');
         throw new Error('This function is only available in the Native app.');
     }
-    let { bullet_token, requires_refresh, web_version }: UserInfo = await get_user_info();
+    const user_info: UserInfo = await get_user_info();
+
+    let { bullet_token } = user_info;
+    const { requires_refresh, web_version } = user_info;
 
     // 未ログインの場合はエラーを返す
     if (bullet_token === undefined) {
         console.error('Bullet token is undefined.');
         throw new Error('Bullet token is undefined.');
     }
-   
+
     // 有効期限切れの場合は再発行して上書きする
     if (requires_refresh) {
         bullet_token = await refresh();
@@ -64,12 +67,12 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         url: url.href,
     };
     const response = await CapacitorHttp.request(options);
-    
+
     if (response.status === 401) {
-        throw new Error('Unauthorized.'); 
+        throw new Error('Unauthorized.');
     }
     if (response.status === 403) {
-        throw new Error('Forbidden.'); 
+        throw new Error('Forbidden.');
     }
     return request.request(snakecaseKeys(response.data)) as U;
 }

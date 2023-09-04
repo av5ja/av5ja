@@ -44,10 +44,10 @@ async function request<T extends GraphQL, U extends ReturnType<T['request']>>(re
     };
     const response = await CapacitorHttp.request(options);
     if (response.status === 401) {
-        throw new Error('Unauthorized.'); 
+        throw new Error('Unauthorized.');
     }
     if (response.status === 403) {
-        throw new Error('Forbidden.'); 
+        throw new Error('Forbidden.');
     }
     return request.request(snakecaseKeys(response.data)) as U;
 }

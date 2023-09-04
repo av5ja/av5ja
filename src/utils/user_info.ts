@@ -27,7 +27,7 @@ export class UserInfo {
     user: GameServiceToken.User;
 
     @Expose()
-    web_version: string
+    web_version: string;
 
     @Expose()
     last_play_time: Date;

@@ -23,19 +23,12 @@ export namespace CoopResult {
                 'Content-Type': 'application/json',
                 version: '0.0.6',
             };
-            console.log(
-                JSON.stringify(
-                    results.map((result) => camelcaseKeys(result)),
-                    null,
-                    2
-                )
-            );
             this.parameters = {
                 results: JSON.parse(JSON.stringify(camelcaseKeys(results))),
             };
         }
 
-        request(response: any): ResponseType {
+        request(response: any): CoopResult.Response[] {
             return response.map((v: any) => plainToInstance(Response, v, { excludeExtraneousValues: true }));
         }
     }

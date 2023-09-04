@@ -89,7 +89,16 @@ async function refresh_from_token(session_token: JWT<Token.SessionToken>, last_p
     const game_web_token = await get_game_web_token(game_service_token.access_token, hash_app, version.version);
     const bullet_token = await get_bullet_token(game_web_token, web_version);
     await keychain.set(
-        new UserInfo(game_service_token.user, session_token, access_token, game_service_token.access_token, game_web_token, bullet_token, web_version, last_play_time)
+        new UserInfo(
+            game_service_token.user,
+            session_token,
+            access_token,
+            game_service_token.access_token,
+            game_web_token,
+            bullet_token,
+            web_version,
+            last_play_time
+        )
     );
     return bullet_token;
 }
