@@ -32,6 +32,7 @@ export async function request<T extends RequestType, U extends ReturnType<T['req
     const response = await CapacitorHttp.request(options);
 
     if (response.status !== 200 && response.status !== 201) {
+        console.error(request)
         console.error(JSON.stringify(response.data));
         throw new Error(`Request failed with status code ${response.status}`);
     }

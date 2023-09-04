@@ -21,13 +21,6 @@ export interface GraphQL {
 }
 
 export async function request<T extends GraphQL, U extends ReturnType<T['request']>>(request: T): Promise<U> {
-    /**
-     * Native app以外はキーを取得できないのでエラーを投げる
-     */
-    if (this.window === 'undefined') {
-        console.error('This function is only available in the Native app.');
-        throw new Error('This function is only available in the Native app.');
-    }
     const user_info: UserInfo = await get_user_info();
 
     let { bullet_token } = user_info;
@@ -66,6 +59,7 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         responseType: 'json',
         url: url.href,
     };
+    console.log("Request", options)
     const response = await CapacitorHttp.request(options);
 
     if (response.status === 401) {
