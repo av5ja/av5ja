@@ -7,10 +7,11 @@ import { RequestType, Headers, Parameters, ResponseType, request } from '../../u
 import { SplatNet2 } from '../../utils/splatnet2';
 
 import 'reflect-metadata';
+import { node_env } from '../../utils/env';
 
 export namespace CoopResult {
     export class Request implements RequestType {
-        readonly baseURL: string = 'http://localhost:3000/';
+        readonly baseURL: string = node_env === 'test' ?  'http://localhost:3000' : 'https://api.splatnet3.com'
         readonly headers: Headers = {
             'Content-Type': 'application/json',
         };
