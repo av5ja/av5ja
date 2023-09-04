@@ -27,6 +27,9 @@ export class UserInfo {
     user: GameServiceToken.User;
 
     @Expose()
+    web_version: string
+
+    @Expose()
     last_play_time: Date;
 
     constructor(
@@ -36,6 +39,7 @@ export class UserInfo {
         game_service_token: JWT<Token.GameServiceToken>,
         game_web_token: JWT<Token.GameWebToken>,
         bullet_token: string,
+        web_version: string,
         last_play_time: Date = dayjs().toDate()
     ) {
         this.user = user;
@@ -45,7 +49,8 @@ export class UserInfo {
         this.game_web_token = game_web_token;
         this.bullet_token = bullet_token;
         // とりあえず有効期限を二時間で設定
-        this.expires_in = dayjs().add(2, 'hour').toDate();
+        this.expires_in = dayjs().add(2, 'hours').toDate();
+        this.web_version = web_version;
         this.last_play_time = last_play_time;
     }
 
