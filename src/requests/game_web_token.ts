@@ -34,7 +34,7 @@ export namespace GameWebToken {
             };
         }
 
-        request(response: any): ResponseType {
+        request(response: any): GameWebToken.Response {
             return plainToInstance(Response, response, { excludeExtraneousValues: false });
         }
     }

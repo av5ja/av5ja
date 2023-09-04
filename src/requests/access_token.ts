@@ -22,7 +22,7 @@ export namespace AccessToken {
             };
         }
 
-        request(response: any): ResponseType {
+        request(response: any): AccessToken.Response {
             return plainToInstance(Response, response, { excludeExtraneousValues: true });
         }
     }
