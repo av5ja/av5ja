@@ -11,7 +11,7 @@ import { node_env } from '../../utils/env';
 
 export namespace CoopResult {
     export class Request implements RequestType {
-        readonly baseURL: string = node_env === 'test' ?  'http://localhost:3000' : 'https://api.splatnet3.com'
+        readonly baseURL: string = node_env === 'development' ?  'http://localhost:3000' : 'https://api.splatnet3.com'
         readonly headers: Headers = {
             'Content-Type': 'application/json',
         };
