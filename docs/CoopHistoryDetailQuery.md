@@ -148,7 +148,7 @@
          "id":{
             "id":"CoopPlayer",
             "prefix":"u",
-            "npln_user_id":"avtpn3umrfntl5i2cnmm",
+            "npln_user_id":"********************",
             "start_time":"2023-08-27T10:56:30.000Z",
             "uuid":"7959dbdb-fe1f-4576-bc3e-0f4dfa0b7b0e",
             "suffix":"u",
@@ -157,7 +157,7 @@
          "npln_user_id":"avtpn3umrfntl5i2cnmm",
          "is_myself":false,
          "byname":"朝型の一般人",
-         "name":"がひゅー",
+         "name":"****************",
          "name_id":"3338",
          "nameplate":{
             "badges":[
@@ -215,7 +215,7 @@
          "id":{
             "id":"CoopPlayer",
             "prefix":"u",
-            "npln_user_id":"ax6jhoz75jkj67eaekpm",
+            "npln_user_id":"********************",
             "start_time":"2023-08-27T10:56:30.000Z",
             "uuid":"7959dbdb-fe1f-4576-bc3e-0f4dfa0b7b0e",
             "suffix":"u",
@@ -224,7 +224,7 @@
          "npln_user_id":"ax6jhoz75jkj67eaekpm",
          "is_myself":false,
          "byname":"ムニ・エール海洋発電所のサーモンラン好き",
-         "name":"*しんげきの m*~",
+         "name":"****************",
          "name_id":"2011",
          "nameplate":{
             "badges":[
@@ -282,7 +282,7 @@
          "id":{
             "id":"CoopPlayer",
             "prefix":"u",
-            "npln_user_id":"qpaoipxt57ytvyw2qnmm",
+            "npln_user_id":"********************",
             "start_time":"2023-08-27T10:56:30.000Z",
             "uuid":"7959dbdb-fe1f-4576-bc3e-0f4dfa0b7b0e",
             "suffix":"u",
@@ -291,7 +291,7 @@
          "npln_user_id":"qpaoipxt57ytvyw2qnmm",
          "is_myself":false,
          "byname":"ゲーミング大統領",
-         "name":"ゲーミングチェア",
+         "name":"****************",
          "name_id":"2575",
          "nameplate":{
             "badges":[
@@ -588,7 +588,7 @@ data:
     - player:
         __isPlayer: CoopPlayer
         byname: 朝型の一般人
-        name: がひゅー
+        name: ****************
         nameId: '3338'
         nameplate:
           badges:
@@ -639,7 +639,7 @@ data:
     - player:
         __isPlayer: CoopPlayer
         byname: ムニ・エール海洋発電所のサーモンラン好き
-        name: "*しんげきの m*~"
+        name: "****************"
         nameId: '2011'
         nameplate:
           badges:
@@ -692,7 +692,7 @@ data:
     - player:
         __isPlayer: CoopPlayer
         byname: ゲーミング大統領
-        name: ゲーミングチェア
+        name: ****************
         nameId: '2575'
         nameplate:
           badges:
