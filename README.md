@@ -18,21 +18,17 @@ av5jaはSplatNet3のAPIに対応した非同期通信ライブラリです.
 
 ### 導入
 
-パッケージマネージャーとしてyarnを利用しています.
+動作条件は以下のとおりです.
 
-> npmでも使い方は大体同じです.
+- NodeJS >= 18.0.0
+- npm >= 7.0.0
+- yarn >= 1.22.0
 
+各種パッケージマネージャに対応していますが、yarnを例に紹介します.
+
+```yarn
+yarn add @salmonstats3/av5ja
 ```
-git clone https://github.com/salmonstats3/av5ja.git
-cd av5ja
-yarn install
-```
-
-> 現在執筆中です.
-
-#### 使い方
-
-詳しくは[ドキュメント](https://github.com/salmonstats3/av5ja/blob/master/docs/HowToUse.md)をご参照ください.
 
 ### NodeJSのバージョン切り替え
 
@@ -48,7 +44,13 @@ brew install nvm
 - [NVM for Windows](https://github.com/coreybutler/nvm-windows)
 - [Node Version Manager](https://github.com/nvm-sh/nvm#installing-and-updating)
 
+## 使い方/コード例
+
+詳しくは[ドキュメント](https://github.com/salmonstats3/av5ja/blob/master/docs/HowToUse.md)をご参照ください.
+
 ### 機能
+
+基本的な機能には概ね対応しています. 
 
 - [x] 認証
   - [x] OAuth URL 
@@ -59,107 +61,112 @@ brew install nvm
   - [x] Game Web Token
   - [x] Bullet Token 
 - [x] GraphQL
-  - [x] CoopHistoryQuery
+  - [ ] BankaraBattleHistoriesQuery
+  - [ ] BankaraBattleHistoriesRefetchQuery
+  - [ ] BattleHistoryCurrentPlayerQuery
+  - [ ] CatalogQuery
+  - [ ] CatalogRefetchQuery
+  - [ ] ChallengeQuery
+  - [ ] ChallengeRefetchQuery
+  - [ ] CheckinQuery
+  - [ ] CheckinWithQrCodeMutation
+  - [ ] ConfigureAnalyticsQuery
   - [x] CoopHistoryDetailQuery
-  - [x] StageScheduleQuerey
+  - [ ] CoopHistoryDetailRefetchQuery
+  - [x] CoopHistoryQuery
+  - [ ] CoopPagerLatestCoopQuery
+  - [ ] CoopRecordBigRunRecordContainerPaginationQuery
+  - [ ] CoopRecordQuery
+  - [ ] CoopRecordRefetchQuery
+  - [ ] CreateMyOutfitMutation 
+  - [ ] DetailFestRecordDetailQuery
+  - [ ] DetailFestRefethQuery
+  - [ ] DetailFestVotingStatusRefethQuery
+  - [ ] DetailRankingQuery
+  - [ ] DetailTabViewWeaponTopsArRefetchQuery
+  - [ ] DetailTabViewWeaponTopsClRefetchQuery
+  - [ ] DetailTabViewWeaponTopsGlRefetchQuery
+  - [ ] DetailTabViewWeaponTopsLfRefetchQuery
+  - [ ] DetailTabViewXrankingArRefetchQuery
+  - [ ] DetailTabViewXrankingClRefetchQuery
+  - [ ] DetailTabViewXrankingGlRefetchQuery
+  - [ ] DetailTabViewXrankingLfRefetchQuery
+  - [ ] DetailVotingStatusQuery
+  - [ ] DownloadSearchReplayQuery
+  - [ ] EventBattleHistoriesQuery
+  - [ ] EventBattleHistoriesRefetchQuery
+  - [ ] EventMatchRankingPeriodQuery
+  - [ ] EventMatchRankingQuery
+  - [ ] EventMatchRankingRefetchQuery
+  - [ ] EventMatchRankingSeasonRefetchQuery
+  - [ ] FestRecordQuery
+  - [ ] FestRecordRefetchQuery
+  - [ ] FriendListQuery
+  - [ ] FriendListRefetchQuery
+  - [ ] GesotownQuery
+  - [ ] GesotownRefetchQuery
+  - [ ] HeroHistoryQuery
+  - [ ] HeroHistoryRefetchQuery
+  - [ ] HistoryRecordQuery
+  - [ ] HistoryRecordRefetchQuery
+  - [ ] HomeQuery
+  - [ ] JourneyChallengeDetailQuery
+  - [ ] JourneyChallengeDetailRefetchQuery
+  - [ ] JourneyQuery
+  - [ ] JourneyRefetchQuery
+  - [ ] LatestBattleHistoriesQuery
+  - [ ] LatestBattleHistoriesRefetchQuery
+  - [ ] MyOutfitCommonDataEquipmentsQuery
+  - [ ] MyOutfitCommonDataFilteringConditionQuery
+  - [ ] MyOutfitDetailQuery
+  - [ ] MyOutfitsQuery
+  - [ ] MyOutfitsRefetchQuery
+  - [ ] PagerLatestVsDetailQuery
+  - [ ] PagerUpdateBattleHistoriesByVsModeQuery
+  - [ ] PhotoAlbumQuery
+  - [ ] PhotoAlbumRefetchQuery
+  - [ ] PrivateBattleHistoriesQuery
+  - [ ] PrivateBattleHistoriesRefetchQuery
+  - [ ] RankingHoldersFestTeamRankingHoldersPaginationQuery
+  - [ ] RefetchableCoopHistoryCoopResultQuery
+  - [ ] RegularBattleHistoriesQuery
+  - [ ] RegularBattleHistoriesRefetchQuery
+  - [ ] ReplayModalReserveReplayDownloadMutation
+  - [ ] ReplayQuery
+  - [ ] ReplayUploadedReplayListRefetchQuery
+  - [ ] SaleGearDetailOrderGesotownGearMutation
+  - [ ] SaleGearDetailQuery
+  - [ ] SettingQuery
+  - [ ] StageRecordQuery
+  - [ ] StageRecordsRefetchQuery
+  - [x] StageScheduleQuery
+  - [ ] SupportButtonSupportChallengeMutation
+  - [ ] UpdateMyOutfitMutation
+  - [ ] UseCurrentFestQuery
+  - [ ] UseShareMyOutfitQuery
+  - [ ] VotesUpdateFestVoteMutation
+  - [ ] VsHistoryDetailPagerRefetchQuery
+  - [ ] VsHistoryDetailQuery
+  - [ ] WeaponRecordQuery
+  - [ ] WeaponRecordsRefetchQuery
+  - [ ] XbattleHistoriesQuery
+  - [ ] XbattleHistoriesRefetchQuery
+  - [ ] XrankingDetailQuery
+  - [ ] XrankingDetailRefetchQuery
+  - [ ] XrankingQuery
+  - [ ] XrankingRefetchQuery
 - [x] SP2/SP3変換
   - [ ] CoopHistoryQuery
   - [x] CoopHistoryDetailQuery
   - [x] StageScheduleQuerey
 - [x] Salmon Stats
-  - [x] Upload  
+  - [x] Upload
 
-## スクリプト
+> サーモンランでの利用を目的としているため、SplatNet3に実装されている大部分のAPIには未対応です.
 
-以下のスクリプトに対応しています。
+### 開発者向け
 
-- `dev`
-  - tscでindex.tsを実行します
-  - 特に使う場面はありません
-- `build`
-  - tscでビルドを行います
-  - 特に使う場面はありません
-- `update`
-  - authorize.spec.tsを実行し、トークンを更新します
-- `format`
-  - prettierを使ってコード整形を行います
-  - 未整形のコードが残っている場合はCIが失敗します
-- `lint`
-  - eslintを使ってコードのチェックを行います
-  - エラーが発生した場合はCIが失敗します
-- `test`
-  - jestでテストを実行します
-  - テストが通らない場合CIが失敗します
-  - プッシュ前にテストが通るかどうかをチェックしてください
-
-> NodeJSのバージョンが低い場合、`fetch`が認識できずにテストに失敗する場合があります. `nvm use`でNodeJSのバージョンを合わせるようにしてください.
- 
-## リリース
-
-GitHubのPersonal Access Tokenが必要です.
-
-このとき権限として, `repo`, `write:packages`, `read:packages`を付与しておいてください.
-
-### GitHub Actionsを利用する場合(推奨)
-
-`master`ブランチに`v*.*.*`を満たすタグをプッシュしてください.
-
-バージョンが被っているとリリースに失敗するので`package.json`のバージョンをアップデートしてください.
-
-ビルドとリリースは自動で行われます.
-
-### npmを利用する方法
-
-```
-npm login --registry=https://npm.pkg.github.com
-```
-
-パスワードが要求されますが、Personal Access Tokenを入力してください.
-
-```
-npm publish --dry-run
-```
-
-> 実際にリリースする場合は`--dry-run`を外してください
-
-### actを利用する方法
-
-actを利用するにはDockerが必要です.
-
-```
-cp .secrets.example .secrets
-```
-
-`.secrets`ファイルにGitHubのPersonal Access Tokenを貼り付けます.
-```
-act --secret-file .secrets -j cd
-```
-
-## ローカルCI
-
-ローカルでCIを実行してGitHub Actionsをパスするかを確かめることができます. 無意味にプッシュしてGitHub Actionsのクレジットを消費しないようにしてください.
-
-### actを利用する方法(推奨)
-
-以下のコマンドでGitHub Actionsに代わってローカルでCIが実行できます.
-
-```
-act --secret-file .secrets -j ci
-```
-
-### 手動でコマンドを入力する方法
-
-以下のコマンドを実行して何も警告がでなければOKです.
-
-```
-yarn format
-yarn lint
-yarn test
-```
-
-### GitHub Actionsを利用する方法
-
-いずれかのブランチにプッシュすると自動でCIが実行されます.
+詳しくは[ドキュメント](https://github.com/salmonstats3/av5ja/blob/master/docs/Developer.md)をご参照ください.
 
 ## 貢献者
 

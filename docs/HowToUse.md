@@ -1,19 +1,20 @@
 ## av5ja
 
-## 導入方法
-
-```
-yarn add @salmonstats3/av5ja
-```
-
 ## リクエストへの対応状況
 
 SplatNet3には100ほどのエンドポイントが存在しますが、必要と思われるものにのみ対応しています.
 
 他にも必要だと思われるエンドポイントがある場合はIssueを立ててください.
 
+以下の章で得られるレスポンスの生データと整形したデータのフォーマットが確認できます.
+
+### Coop
+
 - [x] [CoopHistoryQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/CoopHistoryQuery.md)
 - [x] [CoopHistoryDetailQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/CoopHistoryDetailQuery.md)
+
+### Stage
+
 - [x] [StageScheudleQuery](https://github.com/salmonstats3/av5ja/blob/master/docs/StageScheduleQuery.md)
 
 ### メソッド

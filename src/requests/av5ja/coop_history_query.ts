@@ -52,7 +52,7 @@ export namespace CoopHistoryQuery {
         readonly mode: ModeType;
 
         @Expose()
-        @Transform(({ value }) => Object.values(RuleType).find((mode) => mode === value) || RuleType.UNDEFINED)
+        @Transform(({ value }) => Object.values(RuleType).find((rule) => rule === value) || RuleType.UNDEFINED)
         readonly rule: RuleType;
 
         @Expose()
