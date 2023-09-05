@@ -1,5 +1,42 @@
 ## av5ja
 
+### 認証
+
+以下に記述している多くの点はav5jaが自動で処理するのでライブラリを利用する上であまり考える必要はありません.
+
+av5jaはランダム文字列の`state`及び同様にランダム文字列`verifier`から生成された`challenge`を含む認証用URLである`oauthURL`を返します. 
+
+```ts
+import { oauthURL } from '@salmonstats3/av5ja';
+
+console.log(oauthURL.href)
+```
+
+> `oauthURL`は`string`ではなく`URL`であることに注意してください
+
+`oauthURL`でログインをすると`session_token_code`と`state`の値が得られるCustom URL Schemeが得られます.
+
+> Cusomt URL SchemeはNative AppであればHookして、それ以外であればコピー・アンド・ペーストすることで値を取得してください
+
+得られた`session_token_code`と`state`を`authorize()`に与えます. このときに正規表現が利用できるのであれば、
+
+```ts
+const regexp = /&session_token_code=(.*)&state=(.*)$/;
+const match = regexp.exec(scheme);
+```
+
+のようなコードでそれぞれの値を取得することができます.
+
+```ts
+import { authorize } from '@salmonstats3/av5ja';
+
+const result: boolean = await autorize(session_token_code, state)
+```
+
+を呼べば認証に成功すれば`true`が返り、それ以外の場合であれば何らかのエラーが返ります. `true`しか返らないので`Promise<void>`でいいんじゃないかという考えもあります.
+
+一度ログインに成功すればNintendo Switch OnlineのアカウントのID、パスワードなどの情報を変更して`session_token`がrevokeされない限り、730日間は一切の変更なしにSplatNet3のAPIを叩くことができます.
+
 ## リクエストへの対応状況
 
 SplatNet3には100ほどのエンドポイントが存在しますが、必要と思われるものにのみ対応しています.
