@@ -35,7 +35,7 @@ export namespace GameServiceToken {
             };
         }
 
-        request(response: any): ResponseType {
+        request(response: any): GameServiceToken.Response {
             return plainToInstance(Response, response, { excludeExtraneousValues: false });
         }
     }

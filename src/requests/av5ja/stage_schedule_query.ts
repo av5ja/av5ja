@@ -13,7 +13,7 @@ export namespace StageScheduleQuery {
         readonly hash: SHA256Hash = SHA256Hash.StageScheduleQuery;
         readonly parameters: Parameters;
 
-        request(response: any): Response {
+        request(response: any): StageScheduleQuery.Response {
             return plainToInstance(Response, { ...response, ...{ raw_value: response } }, { excludeExtraneousValues: true });
         }
     }

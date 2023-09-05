@@ -17,6 +17,7 @@ const config: Config = {
         "default",
     ],
     verbose: true,
+    globalSetup: "<rootDir>/setup.ts",
 };
 
 export default config;

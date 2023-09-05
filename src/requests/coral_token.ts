@@ -25,7 +25,7 @@ export namespace CoralToken {
             };
         }
 
-        request(response: any): ResponseType {
+        request(response: any): CoralToken.Response {
             return plainToInstance(Response, response, { excludeExtraneousValues: false });
         }
     }

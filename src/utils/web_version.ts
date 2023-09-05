@@ -13,7 +13,7 @@ export namespace Web {
 
             constructor() {}
 
-            request(response: any): Response {
+            request(response: any): Web.Hash.Response {
                 return new Response(response);
             }
         }
@@ -46,7 +46,7 @@ export namespace Web {
                 this.path = `static/js/main.${hash}.js`;
             }
 
-            request(response: any): Response {
+            request(response: any): Web.Version.Response {
                 return new Response(response);
             }
         }

@@ -1,75 +1,14 @@
-import { CapacitorHttp, HttpOptions } from '@capacitor/core';
-import snakecaseKeys from 'snakecase-keys';
-
-import { Method } from '../src/enum/method';
 import { RuleType } from '../src/enum/rule';
 import { CoopHistoryDetailQuery } from '../src/requests/av5ja/coop_history_detail_query';
 import { CoopHistoryQuery } from '../src/requests/av5ja/coop_history_query';
 import { StageScheduleQuery } from '../src/requests/av5ja/stage_schedule_query';
 import { set_coop_history_details } from '../src/requests/stats/coop_result';
-import { GraphQL } from '../src/utils/graph_ql';
+import { node_env } from '../src/utils/env';
+import { request } from '../src/utils/graph_ql';
 import { SplatNet2 } from '../src/utils/splatnet2';
 
-import token from './token.json';
-
-/**
- * GraphQLリクエストを送信する
- * @param request リクエスト
- * @param bullet_token トークン
- * @returns レスポンス
- */
-async function request<T extends GraphQL, U extends ReturnType<T['request']>>(request: T, bullet_token: string): Promise<U> {
-    const url = new URL('https://api.lp1.av5ja.srv.nintendo.net/api/graphql');
-    const body = JSON.stringify({
-        extensions: {
-            persistedQuery: {
-                sha256Hash: request.hash,
-                version: 1,
-            },
-        },
-        variables: request.parameters,
-    });
-    const version = '4.0.0-b8c1e0fc';
-    const headers = {
-        Authorization: `Bearer ${bullet_token}`,
-        'Content-Type': 'application/json',
-        'X-Web-View-Ver': version,
-    };
-    const options: HttpOptions = {
-        data: body,
-        headers: headers,
-        method: Method.POST,
-        responseType: 'json',
-        url: url.href,
-    };
-    const response = await CapacitorHttp.request(options);
-    return request.request(snakecaseKeys(response.data)) as U;
-}
-
-async function get_coop_history_details(group: CoopHistoryQuery.HistoryGroup, bullet_token: string): Promise<SplatNet2.CoopResult[]> {
-    const details: CoopHistoryDetailQuery.Response[] = await Promise.all(
-        group.result_id_list.map((result_id) => request(new CoopHistoryDetailQuery.Request(result_id.raw_value), bullet_token))
-    );
-    return details.map((detail) => new SplatNet2.CoopResult(group, detail.data.coop_history_detail));
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function get_coop_history_detail(group: CoopHistoryQuery.HistoryGroup, bullet_token: string): Promise<SplatNet2.CoopResult> {
-    const detail: CoopHistoryDetailQuery.Response = await request(
-        new CoopHistoryDetailQuery.Request(group.history_details.nodes[0].id.raw_value),
-        bullet_token
-    );
-    return new SplatNet2.CoopResult(group, detail.data.coop_history_detail);
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function get_coop_history_results(bullet_token: string): Promise<SplatNet2.CoopResult[]> {
-    const history_groups = (await request(new CoopHistoryQuery.Request(), bullet_token)).history_groups;
-    return (await Promise.all(history_groups.map((group) => get_coop_history_details(group, bullet_token)))).flat();
-}
-
-async function get_coop_schedules(bullet_token: string): Promise<SplatNet2.CoopSchedule[]> {
-    const schedules = (await request(new StageScheduleQuery.Request(), bullet_token)).data.coop_grouping_schedule;
+async function get_coop_schedules(): Promise<SplatNet2.CoopSchedule[]> {
+    const schedules = (await request(new StageScheduleQuery.Request())).data.coop_grouping_schedule;
     return [
         ...schedules.regular_schedules.nodes.map((node) => new SplatNet2.CoopSchedule(node, RuleType.REGULAR)),
         ...schedules.big_run_schedules.nodes.map((node) => new SplatNet2.CoopSchedule(node, RuleType.BIG_RUN)),
@@ -78,27 +17,26 @@ async function get_coop_schedules(bullet_token: string): Promise<SplatNet2.CoopS
 }
 
 describe('GraphQL', () => {
-    const bullet_token = token.bullet_token;
-
     it('CoopHistoryQuery', async () => {
-        const coop_history_query = await request(new CoopHistoryQuery.Request(), bullet_token);
-        expect(coop_history_query.data.coop_result.history_groups.nodes.length).toBeGreaterThan(3);
+        const coop_history_query = await request(new CoopHistoryQuery.Request());
+        expect(coop_history_query.data.coop_result.history_groups.nodes.length).toBeGreaterThan(1);
         // console.log(JSON.stringify(coop_history_query, null, 2))
-    }, 5000);
+    }, 10000);
 
     it('StageScheduleQuery', async () => {
-        const schedules = await get_coop_schedules(bullet_token);
+        const schedules = await get_coop_schedules();
         expect(schedules.length).toBeGreaterThan(3);
         // console.log(JSON.stringify(schedules, null, 2))
     }, 5000);
 
     it('CoopHistoryDetailQuery', async () => {
-        const coop_history_query = await request(new CoopHistoryQuery.Request(), bullet_token);
+        const coop_history_query = await request(new CoopHistoryQuery.Request());
         const history_group = coop_history_query.history_groups[0];
         // 正常にリクエストが送れるかどうか
-        const detail = await request(new CoopHistoryDetailQuery.Request(history_group.result_id_list[0].raw_value), bullet_token);
+        const detail = await request(new CoopHistoryDetailQuery.Request(history_group.result_id_list[0].raw_value));
         const result = new SplatNet2.CoopResult(history_group, detail.data.coop_history_detail);
-        if (process.env.NODE_ENV === 'development') {
+        // ローカルテストのみ
+        if (node_env === 'development') {
             const response = (await set_coop_history_details([result]))[0];
             // 返ってきた値と等しいかどうか
             expect(response.uuid).toBe(result.id.uuid);

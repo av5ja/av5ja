@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 
 import { Method } from '../../enum/method';
 import { camelcaseKeys } from '../../utils/camelcase_keys';
+import { base_url } from '../../utils/env';
 import { RequestType, Headers, Parameters, ResponseType, request } from '../../utils/request';
 import { SplatNet2 } from '../../utils/splatnet2';
 
@@ -10,7 +11,7 @@ import 'reflect-metadata';
 
 export namespace CoopResult {
     export class Request implements RequestType {
-        readonly baseURL: string = 'http://localhost:3000/';
+        readonly baseURL: string = base_url;
         readonly headers: Headers = {
             'Content-Type': 'application/json',
         };
@@ -23,19 +24,12 @@ export namespace CoopResult {
                 'Content-Type': 'application/json',
                 version: '0.0.6',
             };
-            console.log(
-                JSON.stringify(
-                    results.map((result) => camelcaseKeys(result)),
-                    null,
-                    2
-                )
-            );
             this.parameters = {
                 results: JSON.parse(JSON.stringify(camelcaseKeys(results))),
             };
         }
 
-        request(response: any): ResponseType {
+        request(response: any): CoopResult.Response[] {
             return response.map((v: any) => plainToInstance(Response, v, { excludeExtraneousValues: true }));
         }
     }

@@ -15,7 +15,7 @@ export namespace CoopHistoryQuery {
         readonly hash: SHA256Hash = SHA256Hash.CoopHistoryQuery;
         readonly parameters: Parameters;
 
-        request(response: any): Response {
+        request(response: any): CoopHistoryQuery.Response {
             return plainToInstance(Response, { ...response, ...{ raw_value: response } }, { excludeExtraneousValues: true });
         }
     }
