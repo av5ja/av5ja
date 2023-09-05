@@ -67,8 +67,13 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
     if (response.status === 403) {
         throw new Error('Forbidden.');
     }
-    if (snakecaseKeys(response.data).errors[0].message === 'PersistedQueryNotFound') {
-        throw new Error('SHA256Hash update required.');
+
+    const errors = snakecaseKeys(response.data).errors;
+    if (errors !== undefined) {
+        if (errors[0].message === 'PersistedQueryNotFound') {
+            throw new Error('SHA256Hash update required.');
+        }
+        throw new Error('Unknown error occurred.');
     }
 
     return request.request(snakecaseKeys(response.data)) as U;
