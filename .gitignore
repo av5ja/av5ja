@@ -85,6 +85,7 @@ web_modules/
 .secrets
 .secrets.*
 !.secrets.example
+secrets.json
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

@@ -1,7 +1,7 @@
 import { SecureStorage, DataType } from '@aparajita/capacitor-secure-storage';
 import { plainToInstance } from 'class-transformer';
 
-import { node_env, user_info } from './env';
+import { get_user_info, node_env } from './env';
 import { UserInfo } from './user_info';
 
 export class Keychain {
@@ -11,7 +11,7 @@ export class Keychain {
 
     async get(): Promise<UserInfo> {
         if (node_env === 'test') {
-            return user_info;
+            return get_user_info();
         }
         if (typeof window !== 'undefined') {
             const data: DataType | null = await SecureStorage.get(this.identifier);

@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import { RuleType } from '../src/enum/rule';
 import { CoopHistoryDetailQuery } from '../src/requests/av5ja/coop_history_detail_query';
 import { CoopHistoryQuery } from '../src/requests/av5ja/coop_history_query';
@@ -6,6 +8,8 @@ import { set_coop_history_details } from '../src/requests/stats/coop_result';
 import { node_env } from '../src/utils/env';
 import { request } from '../src/utils/graph_ql';
 import { SplatNet2 } from '../src/utils/splatnet2';
+
+import secrets from './secrets.json';
 
 async function get_coop_schedules(): Promise<SplatNet2.CoopSchedule[]> {
     const schedules = (await request(new StageScheduleQuery.Request())).data.coop_grouping_schedule;
@@ -17,6 +21,9 @@ async function get_coop_schedules(): Promise<SplatNet2.CoopSchedule[]> {
 }
 
 describe('GraphQL', () => {
+    process.env.EXPIRES_IN = dayjs().add(2, 'hours').toISOString();
+    process.env.BULLET_TOKEN = secrets.bullet_token;
+
     it('CoopHistoryQuery', async () => {
         const coop_history_query = await request(new CoopHistoryQuery.Request());
         expect(coop_history_query.data.coop_result.history_groups.nodes.length).toBeGreaterThan(1);

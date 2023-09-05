@@ -1,18 +1,18 @@
 import fs from 'fs';
 
-import { JWT, Token } from '../src/dto/jwt.dto';
 import { AccessToken } from '../src/requests/access_token';
 import { BulletToken } from '../src/requests/bullet_token';
 import { CoralToken } from '../src/requests/coral_token';
 import { GameServiceToken } from '../src/requests/game_service_token';
 import { GameWebToken } from '../src/requests/game_web_token';
+import { get_user_info } from '../src/utils/env';
 import { NSO } from '../src/utils/nso_version';
 import { request } from '../src/utils/request';
 import { Web } from '../src/utils/web_version';
-import { user_info } from '../src/utils/env';
-import dayjs from 'dayjs';
 
 describe('Authorize', () => {
+    const user_info = get_user_info();
+
     it('Bullet Token', async () => {
         const version: string = (await request(new NSO.Version.Request())).result.version;
         const hash: string = (await request(new Web.Hash.Request())).js;
@@ -40,6 +40,20 @@ describe('Authorize', () => {
         expect(game_web_token.access_token.payload.typ).toBe('id_token');
         expect(bullet_token.lang).toBe('ja-JP');
         expect(bullet_token.is_noe_country).toBe(false);
-        process.env.EXPIRES_IN = dayjs().add(2, 'hours').toDate().toISOString();
+        // トークンを生成する
+        fs.writeFileSync(
+            'tests/secrets.json',
+            JSON.stringify(
+                {
+                    access_token: access_token.access_token.raw_value,
+                    bullet_token: bullet_token.bullet_token,
+                    game_service_token: game_service_token.access_token.raw_value,
+                    game_web_token: game_web_token.access_token.raw_value,
+                    session_token: user_info.session_token.raw_value,
+                },
+                null,
+                2
+            )
+        );
     }, 10000);
 });

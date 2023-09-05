@@ -7,6 +7,13 @@ on:
       - '!main'
       - '!master'
 
+env:
+  SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  GAME_SERVICE_TOKEN: ${{ secrets.GAME_SERVICE_TOKEN }}
+  GAME_WEB_TOKEN: ${{ secrets.GAME_WEB_TOKEN }}
+  BULLET_TOKEN: ${{ secrets.BULLET_TOKEN }}
+
 jobs:
   ci:
     runs-on: ubuntu-20.04
@@ -47,12 +54,6 @@ jobs:
       
       - name: Test
         run: yarn test
-        env:
-          SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          GAME_SERVICE_TOKEN: ${{ secrets.GAME_SERVICE_TOKEN }}
-          GAME_WEB_TOKEN: ${{ secrets.GAME_WEB_TOKEN }}
-          BULLET_TOKEN: ${{ secrets.BULLET_TOKEN }}
       
       - name: Build
         run: yarn build
