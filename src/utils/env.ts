@@ -17,7 +17,7 @@ export const node_env: Env = (() => {
     return Object.values(Env).find((env) => env === node_env) ?? Env.DEV;
 })();
 
-export const session_token: string = (() => {
+const session_token: string = (() => {
     const session_token = process.env.SESSION_TOKEN;
     if (session_token === undefined) {
         throw new Error('SESSION_TOKEN is not defined.');
@@ -25,7 +25,7 @@ export const session_token: string = (() => {
     return session_token;
 })();
 
-export const access_token: string = (() => {
+const access_token: string = (() => {
     const access_token = process.env.ACCESS_TOKEN;
     if (access_token === undefined) {
         throw new Error('ACCESS_TOKEN is not defined.');
@@ -33,7 +33,7 @@ export const access_token: string = (() => {
     return access_token;
 })();
 
-export const game_service_token: string = (() => {
+const game_service_token: string = (() => {
     const game_service_token = process.env.GAME_SERVICE_TOKEN;
     if (game_service_token === undefined) {
         throw new Error('GAME_SERVICE_TOKEN is not defined.');
@@ -41,7 +41,7 @@ export const game_service_token: string = (() => {
     return game_service_token;
 })();
 
-export const game_web_token: string = (() => {
+const game_web_token: string = (() => {
     const game_web_token = process.env.GAME_WEB_TOKEN;
     if (game_web_token === undefined) {
         throw new Error('GAME_WEB_TOKEN is not defined.');
@@ -49,7 +49,7 @@ export const game_web_token: string = (() => {
     return game_web_token;
 })();
 
-export const bullet_token: string = (() => {
+const bullet_token: string = (() => {
     const bullet_token = process.env.BULLET_TOKEN;
     if (bullet_token === undefined) {
         throw new Error('BULLET_TOKEN is not defined.');
@@ -57,7 +57,7 @@ export const bullet_token: string = (() => {
     return bullet_token;
 })();
 
-export const web_version: string = (() => {
+const web_version: string = (() => {
     const web_version = process.env.WEB_VERSION;
     if (web_version === undefined) {
         return '4.0.0-22ddb0fd';
@@ -65,7 +65,7 @@ export const web_version: string = (() => {
     return web_version;
 })();
 
-export const expires_in: Date = (() => {
+const expires_in: Date = (() => {
     const expires_in = process.env.EXPIRES_IN;
     if (expires_in === undefined) {
         return dayjs().subtract(2, 'hours').toDate();

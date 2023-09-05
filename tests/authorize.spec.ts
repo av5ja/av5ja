@@ -9,17 +9,15 @@ import { GameWebToken } from '../src/requests/game_web_token';
 import { NSO } from '../src/utils/nso_version';
 import { request } from '../src/utils/request';
 import { Web } from '../src/utils/web_version';
-
-import token from './token.json';
+import { user_info } from '../src/utils/env';
+import dayjs from 'dayjs';
 
 describe('Authorize', () => {
-    const session_token = new JWT<Token.SessionToken>(token.session_token);
-
     it('Bullet Token', async () => {
         const version: string = (await request(new NSO.Version.Request())).result.version;
         const hash: string = (await request(new Web.Hash.Request())).js;
         const web_version = (await request(new Web.Version.Request(hash))).web_version;
-        const access_token = (await request(new AccessToken.Request(session_token))) as AccessToken.Response;
+        const access_token = (await request(new AccessToken.Request(user_info.session_token))) as AccessToken.Response;
         const coral_token_nso: CoralToken.Response = await request(
             new CoralToken.Request(access_token.access_token.raw_value, 1, access_token.na_id, undefined, version)
         );
@@ -42,12 +40,6 @@ describe('Authorize', () => {
         expect(game_web_token.access_token.payload.typ).toBe('id_token');
         expect(bullet_token.lang).toBe('ja-JP');
         expect(bullet_token.is_noe_country).toBe(false);
-
-        token.access_token = access_token.access_token.raw_value;
-        token.id_token = access_token.id_token.raw_value;
-        token.game_service_token = game_service_token.access_token.raw_value;
-        token.game_web_token = game_web_token.access_token.raw_value;
-        token.bullet_token = bullet_token.bullet_token;
-        fs.writeFileSync('./tests/token.json', JSON.stringify(token, null, 2));
+        process.env.EXPIRES_IN = dayjs().add(2, 'hours').toDate().toISOString();
     }, 10000);
 });
