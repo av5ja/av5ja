@@ -14,9 +14,9 @@ import { CoopSchedule, set_coop_schedules } from './stats/coop_schedule';
 export async function get_coop_history_details(): Promise<CoopResult.Response[]> {
     const { last_play_time } = await get_user_info();
     const result_ids = (await request(new CoopHistoryQuery.Request())).coop_result_detail_ids.filter((id) => id.play_time > last_play_time);
-    console.log("Results count", result_ids.length)
+    console.log('Results count', result_ids.length);
     if (result_ids.length === 0) {
-        return []
+        return [];
     }
     /**
      * 最も新しいリザルトIDのプレイ時間をユーザー情報に保存します
