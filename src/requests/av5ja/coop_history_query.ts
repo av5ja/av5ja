@@ -86,6 +86,15 @@ export namespace CoopHistoryQuery {
             return this.data.coop_result.history_groups.nodes;
         }
 
+        /**
+         * リザルトIDをプレイ時間で昇順にソート
+         */
+        get coop_result_detail_ids(): Common.CoopHistoryDetailId[] {
+            return this.history_groups
+                .flatMap((v) => v.history_details.nodes.map((v) => v.id))
+                .sort((a, b) => dayjs(a.play_time).unix() - dayjs(b.play_time).unix());
+        }
+
         @Expose()
         private readonly raw_value: JSON;
 

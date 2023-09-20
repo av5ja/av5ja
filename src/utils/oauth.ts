@@ -58,11 +58,13 @@ export async function authorize(state: string, code: string): Promise<boolean> {
     if (state !== state) throw new Error('Provided state does not match.');
     const session_token = await get_session_token(code, verifier);
     try {
+        console.log('Found Previous Account');
         // 旧データがあるならそれを利用する
         const { last_play_time } = await keychain.get();
         await refresh_from_token(session_token, last_play_time);
         return true;
     } catch {
+        console.log('Create New Account');
         // ないなら新規で作成する
         await refresh_from_token(session_token, dayjs(0).toDate());
         return true;

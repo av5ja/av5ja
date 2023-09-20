@@ -17,7 +17,7 @@ export namespace CoopResult {
 
         constructor(results: any[]) {
             this.parameters = {
-                results: JSON.parse(JSON.stringify((results))),
+                results: JSON.parse(JSON.stringify(results)),
             };
         }
 

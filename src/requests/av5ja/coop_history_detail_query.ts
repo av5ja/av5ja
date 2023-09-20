@@ -16,7 +16,7 @@ export namespace CoopHistoryDetailQuery {
         }
 
         request(response: any): any {
-            return response 
+            return response;
         }
     }
 }

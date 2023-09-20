@@ -1,4 +1,4 @@
-import { Expose, Transform, Type, plainToInstance } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import dayjs from 'dayjs';
 
 import { SHA256Hash } from '../../enum/sha256hash';
@@ -14,7 +14,7 @@ export namespace StageScheduleQuery {
         readonly parameters: Parameters;
 
         request(response: any): any {
-            return response 
+            return response;
         }
     }
 

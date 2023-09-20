@@ -22,7 +22,6 @@ export interface GraphQL {
 
 export async function request<T extends GraphQL, U extends ReturnType<T['request']>>(request: T): Promise<U> {
     const user_info: UserInfo = await get_user_info();
-    console.log(user_info);
 
     let { bullet_token } = user_info;
     const { requires_refresh, web_version } = user_info;
