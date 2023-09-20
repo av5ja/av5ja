@@ -47,18 +47,18 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         },
         variables: request.parameters,
     });
-    
+
     // 仮のデータ
-    const lang = 'en-US'
-    const country = 'US'
-    
+    const lang = 'en-US';
+    const country = 'US';
+
     const headers = {
-        'Accept': '*/*',
-        'Accept-Encoding':  'gzip, deflate',
+        Accept: '*/*',
+        'Accept-Encoding': 'gzip, deflate',
         'Accept-Language': 'en-US',
-        'Authorization': `Bearer ${bullet_token}`,
+        Authorization: `Bearer ${bullet_token}`,
         'Content-Type': 'application/json',
-        'Referer': `https://api.lp1.av5ja.srv.nintendo.net?lang=${lang}&na_country=${country}&na_lang=${lang}`,
+        Referer: `https://api.lp1.av5ja.srv.nintendo.net?lang=${lang}&na_country=${country}&na_lang=${lang}`,
         'User-Agent': 'Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Mobile Safari/537.36',
         'X-Requested-With': 'com.nintendo.znca',
         'X-Web-View-Ver': web_version,

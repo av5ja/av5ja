@@ -14,8 +14,9 @@ export namespace CoralToken {
         constructor(token: string, hash_method: 1 | 2, na_id: string | undefined, coral_user_id: string | number | undefined, version: string) {
             this.headers = {
                 'Content-Type': 'application/json',
+                'User-Agent': 'av5ja/0.2.2',
                 'X-znca-Platform': 'Android',
-                'X-znca-Version': version,
+                'X-znca-Version': version
             };
             this.parameters = {
                 coral_user_id: coral_user_id,
