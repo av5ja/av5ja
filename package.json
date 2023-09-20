@@ -7,7 +7,7 @@
   "types": "dist/index.d.ts",
   "author": "tkgstrator <tkgling@splatnet3.com>",
   "license": "MIT",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc --build tsconfig.build.json",
