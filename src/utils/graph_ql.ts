@@ -22,6 +22,7 @@ export interface GraphQL {
 
 export async function request<T extends GraphQL, U extends ReturnType<T['request']>>(request: T): Promise<U> {
     const user_info: UserInfo = await get_user_info();
+    console.log(user_info);
 
     let { bullet_token } = user_info;
     const { requires_refresh, web_version } = user_info;
@@ -76,5 +77,5 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         throw new Error('Unknown error occurred.');
     }
 
-    return request.request(snakecaseKeys(response.data)) as U;
+    return request.request(response.data) as U;
 }

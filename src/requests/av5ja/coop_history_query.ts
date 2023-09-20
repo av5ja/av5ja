@@ -1,5 +1,6 @@
 import { Expose, Transform, Type, plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
+import snakecaseKeys from 'snakecase-keys';
 
 import { ModeType } from '../../enum/mode';
 import { RuleType } from '../../enum/rule';
@@ -16,7 +17,7 @@ export namespace CoopHistoryQuery {
         readonly parameters: Parameters;
 
         request(response: any): CoopHistoryQuery.Response {
-            return plainToInstance(Response, { ...response, ...{ raw_value: response } }, { excludeExtraneousValues: true });
+            return plainToInstance(Response, { ...snakecaseKeys(response), ...{ raw_value: response } }, { excludeExtraneousValues: true });
         }
     }
 

@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 
 import base64url from 'base64url';
+import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
 import Randomstring from 'randomstring';
 
@@ -84,7 +85,7 @@ async function refresh_from_token(session_token: JWT<Token.SessionToken>, last_p
     const hash = ((await request(new Web.Hash.Request())) as Web.Hash.Response).js;
     console.log('Hash', hash);
     const version = ((await request(new NSO.Version.Request())) as NSO.Version.Response).result;
-    console.log('Version', version);
+    console.log('Version', version.version);
     const web_version = ((await request(new Web.Version.Request(hash))) as Web.Version.Response).web_version;
     console.log('Web version', web_version);
     const access_token = await get_access_token(session_token);
@@ -92,7 +93,7 @@ async function refresh_from_token(session_token: JWT<Token.SessionToken>, last_p
     const hash_nso = await get_coral_token(access_token, undefined, version.version);
     console.log('Hash NSO', hash_nso);
     const game_service_token = await get_game_service_token(access_token, hash_nso, version.version);
-    console.log('Game Service Token', game_service_token);
+    console.log('Game Service Token', game_service_token.access_token);
     const hash_app = await get_coral_token(game_service_token.access_token, access_token.payload.sub, version.version);
     console.log('Hash APP', hash_app);
     const game_web_token = await get_game_web_token(game_service_token.access_token, hash_app, version.version);
@@ -100,16 +101,17 @@ async function refresh_from_token(session_token: JWT<Token.SessionToken>, last_p
     const bullet_token = await get_bullet_token(game_web_token, web_version);
     console.log('Bullet Token', game_web_token);
     await keychain.set(
-        new UserInfo(
-            game_service_token.user,
-            session_token,
-            access_token,
-            game_service_token.access_token,
-            game_web_token,
-            bullet_token,
-            web_version,
-            last_play_time
-        )
+        plainToInstance(UserInfo, {
+            access_token: access_token.raw_value,
+            bullet_token: bullet_token,
+            expires_in: dayjs().add(2, 'hour').toDate(),
+            game_service_token: game_service_token.access_token.raw_value,
+            game_web_token: game_web_token.raw_value,
+            last_play_time: last_play_time,
+            session_token: session_token.raw_value,
+            user: game_service_token.user,
+            web_version: web_version,
+        })
     );
     return bullet_token;
 }

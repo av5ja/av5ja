@@ -13,8 +13,7 @@ import { CoopSchedule, set_coop_schedules } from './stats/coop_schedule';
 export async function get_coop_history_details(): Promise<CoopResult.Response[]> {
     const history_groups = (await request(new CoopHistoryQuery.Request())).history_groups;
     const result_ids: string[] = history_groups.flatMap((v: CoopHistoryQuery.HistoryGroup) => v.history_details.nodes.map((v) => v.id.raw_value));
-    const results: CoopHistoryDetailQuery.Response[] = await Promise.all(result_ids.map((id) => request(new CoopHistoryDetailQuery.Request(id))));
-    return await set_coop_history_details(results);
+    return await set_coop_history_details(await Promise.all(result_ids.map((id) => request(new CoopHistoryDetailQuery.Request(id)))));
 }
 
 /**

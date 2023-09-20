@@ -76,10 +76,15 @@ const expires_in: () => Date = () => {
 export const base_url: string = (() => {
     const base_url = process.env.BASE_URL;
     if (base_url === undefined) {
-        return 'http://localhost:3000';
+        return 'http://localhost:3030';
     }
     return base_url;
 })();
+
+export function configure(base_url: string = 'http://localhost:3030', version: string = '4.0.0-355675c2'): void {
+    process.env.BASE_URL = base_url;
+    process.env.WEB_VERSION = version;
+}
 
 export const get_user_info: () => UserInfo = () => {
     return plainToInstance(

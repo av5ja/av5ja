@@ -1,11 +1,9 @@
 import { Expose, plainToInstance } from 'class-transformer';
 
 import { Method } from '../../enum/method';
-import { camelcaseKeys } from '../../utils/camelcase_keys';
 import { base_url } from '../../utils/env';
 import { RequestType, Headers, Parameters, ResponseType, request } from '../../utils/request';
 import 'reflect-metadata';
-import { CoopHistoryDetailQuery } from '../av5ja/coop_history_detail_query';
 
 export namespace CoopResult {
     export class Request implements RequestType {
@@ -17,9 +15,9 @@ export namespace CoopResult {
         readonly parameters: Parameters;
         readonly path: string = 'v1/results';
 
-        constructor(results: CoopHistoryDetailQuery.Response[]) {
+        constructor(results: any[]) {
             this.parameters = {
-                results: JSON.parse(JSON.stringify(camelcaseKeys(results))),
+                results: JSON.parse(JSON.stringify((results))),
             };
         }
 
@@ -37,6 +35,6 @@ export namespace CoopResult {
     }
 }
 
-export async function set_coop_history_details(results: CoopHistoryDetailQuery.Response[]): Promise<CoopResult.Response[]> {
+export async function set_coop_history_details(results: any[]): Promise<CoopResult.Response[]> {
     return await request(new CoopResult.Request(results));
 }

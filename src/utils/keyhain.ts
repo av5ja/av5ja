@@ -1,5 +1,4 @@
-import { SecureStorage, DataType } from '@aparajita/capacitor-secure-storage';
-import { plainToInstance } from 'class-transformer';
+import { SecureStorage } from '@aparajita/capacitor-secure-storage';
 
 import { get_user_info, node_env } from './env';
 import { UserInfo } from './user_info';
@@ -14,9 +13,9 @@ export class Keychain {
             return get_user_info();
         }
         if (typeof window !== 'undefined') {
-            const data: DataType | null = await SecureStorage.get(this.identifier);
-            if (data !== null && typeof data === 'string') {
-                return plainToInstance(UserInfo, JSON.parse(data) as object, { excludeExtraneousValues: true });
+            const data: string | null = await SecureStorage.getItem(this.identifier);
+            if (data !== null) {
+                return JSON.parse(data);
             }
             throw new Error('Unsupported data type.');
         } else {
@@ -29,7 +28,7 @@ export class Keychain {
             return;
         }
         if (typeof window !== 'undefined') {
-            await SecureStorage.set(this.identifier, JSON.stringify(value));
+            await SecureStorage.setItem(this.identifier, JSON.stringify(value));
         }
     }
 }

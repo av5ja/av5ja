@@ -1,7 +1,6 @@
 import { Expose, plainToInstance } from 'class-transformer';
 
 import { Method } from '../../enum/method';
-import { camelcaseKeys } from '../../utils/camelcase_keys';
 import { base_url } from '../../utils/env';
 import { RequestType, Headers, Parameters, ResponseType, request } from '../../utils/request';
 import 'reflect-metadata';
@@ -18,7 +17,7 @@ export namespace CoopSchedule {
         readonly path: string = 'v1/schedules';
 
         constructor(results: StageScheduleQuery.Response) {
-            this.parameters = JSON.parse(JSON.stringify(camelcaseKeys(results)));
+            this.parameters = JSON.parse(JSON.stringify(results))
         }
 
         request(response: any): CoopSchedule.Response[] {

@@ -25,9 +25,9 @@ export namespace GameServiceToken {
             this.parameters = {
                 parameter: {
                     f: hash.f,
-                    language: 'ja-JP',
+                    language: 'en-US',
                     naBirthday: '1990-01-01',
-                    naCountry: 'JP',
+                    naCountry: 'US',
                     naIdToken: token.raw_value,
                     requestId: hash.request_id,
                     timestamp: hash.timestamp.toString(),
