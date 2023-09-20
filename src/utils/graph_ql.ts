@@ -24,7 +24,7 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
     const user_info: UserInfo = await get_user_info();
 
     let { bullet_token } = user_info;
-    const { requires_refresh, web_version } = user_info;
+    const { requires_refresh, web_version, language, country } = user_info;
 
     // 未ログインの場合はエラーを返す
     if (bullet_token === undefined) {
@@ -47,9 +47,16 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         },
         variables: request.parameters,
     });
+
     const headers = {
+        Accept: '*/*',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept-Language': 'en-US',
         Authorization: `Bearer ${bullet_token}`,
         'Content-Type': 'application/json',
+        Referer: `https://api.lp1.av5ja.srv.nintendo.net?lang=${language}&na_country=${country}&na_lang=${language}`,
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Mobile Safari/537.36',
+        'X-Requested-With': 'com.nintendo.znca',
         'X-Web-View-Ver': web_version,
     };
     const options: HttpOptions = {
@@ -76,5 +83,5 @@ export async function request<T extends GraphQL, U extends ReturnType<T['request
         throw new Error('Unknown error occurred.');
     }
 
-    return request.request(snakecaseKeys(response.data)) as U;
+    return request.request(response.data) as U;
 }

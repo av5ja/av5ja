@@ -14,9 +14,12 @@ export namespace BulletToken {
 
         constructor(token: JWT<Token.GameWebToken>, version: string) {
             this.headers = {
+                Accept: '*/*',
                 'Content-Type': 'application/json',
+                Origin: 'https://api.lp1.av5ja.srv.nintendo.net',
                 'X-GameWebToken': token.raw_value,
                 'X-NaCountry': 'US',
+                'X-Requested-With': 'com.nintendo.znca',
                 'X-Web-View-Ver': version,
             };
         }

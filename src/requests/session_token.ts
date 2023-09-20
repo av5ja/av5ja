@@ -8,7 +8,11 @@ export namespace SessionToken {
     export class Request implements RequestType {
         readonly baseURL: string = 'https://accounts.nintendo.com/';
         readonly headers: Headers = {
+            'Accept-Encoding': 'gzip',
+            'Accept-Language': 'en-US',
+            Connection: 'Keep-Alive',
             'Content-Type': 'application/json',
+            Host: 'accounts.nintendo.com',
         };
         readonly method: Method = Method.POST;
         readonly parameters: Parameters;

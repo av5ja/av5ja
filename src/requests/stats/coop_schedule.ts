@@ -1,11 +1,7 @@
-import { Expose, plainToInstance } from 'class-transformer';
-
 import { Method } from '../../enum/method';
-import { camelcaseKeys } from '../../utils/camelcase_keys';
 import { base_url } from '../../utils/env';
-import { RequestType, Headers, Parameters, ResponseType, request } from '../../utils/request';
+import { RequestType, Headers, Parameters, request } from '../../utils/request';
 import 'reflect-metadata';
-import { StageScheduleQuery } from '../av5ja/stage_schedule_query';
 
 export namespace CoopSchedule {
     export class Request implements RequestType {
@@ -17,24 +13,17 @@ export namespace CoopSchedule {
         readonly parameters: Parameters;
         readonly path: string = 'v1/schedules';
 
-        constructor(results: StageScheduleQuery.Response) {
-            this.parameters = JSON.parse(JSON.stringify(camelcaseKeys(results)));
+        constructor(results: any) {
+            this.parameters = JSON.parse(JSON.stringify(results));
         }
 
-        request(response: any): CoopSchedule.Response[] {
-            return response.map((v: any) => plainToInstance(Response, v, { excludeExtraneousValues: true }));
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        request(response: any): void {
+            return;
         }
-    }
-
-    export class Response implements ResponseType {
-        @Expose()
-        result_id: string;
-
-        @Expose()
-        schedule_id: string;
     }
 }
 
-export async function set_coop_schedules(schedule: StageScheduleQuery.Response): Promise<CoopSchedule.Response[]> {
+export async function set_coop_schedules(schedule: any): Promise<void> {
     return await request(new CoopSchedule.Request(schedule));
 }

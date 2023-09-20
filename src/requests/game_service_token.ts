@@ -5,8 +5,8 @@ import { Method } from '../enum/method';
 import { ResponseType, RequestType, Headers, Parameters } from '../utils/request';
 
 import { CoralToken } from './coral_token';
-
 import 'reflect-metadata';
+import { UserMe } from './user_me';
 
 export namespace GameServiceToken {
     export class Request implements RequestType {
@@ -16,18 +16,20 @@ export namespace GameServiceToken {
         readonly parameters: Parameters;
         readonly path: string = 'v3/Account/Login';
 
-        constructor(token: JWT<Token.Token>, hash: CoralToken.Response, version: string) {
+        constructor(token: JWT<Token.Token>, hash: CoralToken.Response, version: string, user: UserMe.Response) {
             this.headers = {
-                'Content-Type': 'application/json',
+                'Accept-Encoding': 'gzip',
+                'Content-Type': 'application/json; charset=utf-8',
+                'User-Agent': `com.nintendo.znca/${version}(Android/7.1.2)`,
                 'X-Platform': 'Android',
                 'X-ProductVersion': version,
             };
             this.parameters = {
                 parameter: {
                     f: hash.f,
-                    language: 'ja-JP',
-                    naBirthday: '1990-01-01',
-                    naCountry: 'JP',
+                    language: user.language,
+                    naBirthday: user.birthday,
+                    naCountry: user.country,
                     naIdToken: token.raw_value,
                     requestId: hash.request_id,
                     timestamp: hash.timestamp.toString(),

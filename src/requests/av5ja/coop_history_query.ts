@@ -1,5 +1,6 @@
 import { Expose, Transform, Type, plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
+import snakecaseKeys from 'snakecase-keys';
 
 import { ModeType } from '../../enum/mode';
 import { RuleType } from '../../enum/rule';
@@ -16,7 +17,7 @@ export namespace CoopHistoryQuery {
         readonly parameters: Parameters;
 
         request(response: any): CoopHistoryQuery.Response {
-            return plainToInstance(Response, { ...response, ...{ raw_value: response } }, { excludeExtraneousValues: true });
+            return plainToInstance(Response, { ...snakecaseKeys(response), ...{ raw_value: response } }, { excludeExtraneousValues: true });
         }
     }
 
@@ -83,6 +84,15 @@ export namespace CoopHistoryQuery {
 
         get history_groups(): HistoryGroup[] {
             return this.data.coop_result.history_groups.nodes;
+        }
+
+        /**
+         * リザルトIDをプレイ時間で昇順にソート
+         */
+        get coop_result_detail_ids(): Common.CoopHistoryDetailId[] {
+            return this.history_groups
+                .flatMap((v) => v.history_details.nodes.map((v) => v.id))
+                .sort((a, b) => dayjs(a.play_time).unix() - dayjs(b.play_time).unix());
         }
 
         @Expose()

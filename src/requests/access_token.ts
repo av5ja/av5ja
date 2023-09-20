@@ -8,7 +8,10 @@ export namespace AccessToken {
     export class Request implements RequestType {
         readonly baseURL: string = 'https://accounts.nintendo.com/';
         readonly headers: Headers = {
+            Accept: 'application/json',
+            'Accept-Encoding': 'gzip',
             'Content-Type': 'application/json',
+            Host: 'accounts.nintendo.com',
         };
         readonly method: Method = Method.POST;
         readonly parameters: Parameters;
