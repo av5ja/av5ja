@@ -16,7 +16,7 @@ export namespace CoralToken {
                 'Content-Type': 'application/json',
                 'User-Agent': 'av5ja/0.2.2',
                 'X-znca-Platform': 'Android',
-                'X-znca-Version': version
+                'X-znca-Version': version,
             };
             this.parameters = {
                 coral_user_id: coral_user_id,

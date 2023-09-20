@@ -18,13 +18,12 @@ export namespace GameWebToken {
 
         constructor(token: JWT<Token.GameServiceToken>, hash: CoralToken.Response, version: string) {
             this.headers = {
-                "Accept-Encoding": "gzip",
-                "Authorization": `Bearer ${token.raw_value}`,
-                "Connection": "Keep-Alive",
-                "Content-Type": "application/json; charset=utf-8",
-                "User-Agent": `com.nintendo.znca/${version}(Android/7.1.2)`,
-                "X-Platform": "Android",
-                "X-ProductVersion": version
+                'Accept-Encoding': 'gzip',
+                Authorization: `Bearer ${token.raw_value}`,
+                'Content-Type': 'application/json; charset=utf-8',
+                'User-Agent': `com.nintendo.znca/${version}(Android/7.1.2)`,
+                'X-Platform': 'Android',
+                'X-ProductVersion': version,
             };
             this.parameters = {
                 parameter: {

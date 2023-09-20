@@ -12,6 +12,7 @@ import { CoralToken } from '../requests/coral_token';
 import { GameServiceToken } from '../requests/game_service_token';
 import { GameWebToken } from '../requests/game_web_token';
 import { SessionToken } from '../requests/session_token';
+import { UserMe } from '../requests/user_me';
 
 import { Keychain } from './keyhain';
 import { NSO } from './nso_version';
@@ -92,9 +93,11 @@ async function refresh_from_token(session_token: JWT<Token.SessionToken>, last_p
     console.log('Web version', web_version);
     const access_token = await get_access_token(session_token);
     console.log('Access Token', access_token);
+    const user_me = await get_user_me(access_token);
+    console.log('UserMe', user_me);
     const hash_nso = await get_coral_token(access_token, undefined, version.version);
     console.log('Hash NSO', hash_nso);
-    const game_service_token = await get_game_service_token(access_token, hash_nso, version.version);
+    const game_service_token = await get_game_service_token(access_token, hash_nso, version.version, user_me);
     console.log('Game Service Token', game_service_token.access_token);
     const hash_app = await get_coral_token(game_service_token.access_token, access_token.payload.sub, version.version);
     console.log('Hash APP', hash_app);
@@ -105,13 +108,20 @@ async function refresh_from_token(session_token: JWT<Token.SessionToken>, last_p
     await keychain.set(
         plainToInstance(UserInfo, {
             access_token: access_token.raw_value,
+            birthday: user_me.birthday,
             bullet_token: bullet_token,
+            country: user_me.country,
             expires_in: dayjs().add(2, 'hour').toDate(),
+            friend_code: game_service_token.user.links.friend_code.id,
             game_service_token: game_service_token.access_token.raw_value,
             game_web_token: game_web_token.raw_value,
+            id: user_me.id,
+            language: user_me.language,
             last_play_time: last_play_time,
+            nickname: user_me.nickname,
+            nsa_id: game_service_token.nsa_id,
             session_token: session_token.raw_value,
-            user: game_service_token.user,
+            thumbnail_url: game_service_token.user.image_uri,
             web_version: web_version,
         })
     );
@@ -126,6 +136,10 @@ async function get_access_token(session_token: JWT<Token.SessionToken>): Promise
     return ((await request(new AccessToken.Request(session_token))) as AccessToken.Response).access_token;
 }
 
+async function get_user_me(access_token: JWT<Token.Token>): Promise<UserMe.Response> {
+    return await request(new UserMe.Request(access_token));
+}
+
 async function get_coral_token(
     access_token: JWT<Token.Token> | JWT<Token.GameServiceToken>,
     id: string | undefined,
@@ -137,8 +151,13 @@ async function get_coral_token(
     return await request(new CoralToken.Request(access_token.raw_value, hash_method, na_id, coral_user_id, version));
 }
 
-async function get_game_service_token(access_token: JWT<Token.Token>, hash: CoralToken.Response, version: string): Promise<GameServiceToken.Response> {
-    return (await request(new GameServiceToken.Request(access_token, hash, version))) as GameServiceToken.Response;
+async function get_game_service_token(
+    access_token: JWT<Token.Token>,
+    hash: CoralToken.Response,
+    version: string,
+    user: UserMe.Response
+): Promise<GameServiceToken.Response> {
+    return (await request(new GameServiceToken.Request(access_token, hash, version, user))) as GameServiceToken.Response;
 }
 
 async function get_game_web_token(access_token: JWT<Token.GameServiceToken>, hash: CoralToken.Response, version: string): Promise<JWT<Token.GameWebToken>> {
