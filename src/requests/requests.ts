@@ -5,7 +5,7 @@ import { CoopHistoryDetailQuery } from './av5ja/coop_history_detail_query';
 import { CoopHistoryQuery } from './av5ja/coop_history_query';
 import { StageScheduleQuery } from './av5ja/stage_schedule_query';
 import { CoopResult, set_coop_history_details } from './stats/coop_result';
-import { CoopSchedule, set_coop_schedules } from './stats/coop_schedule';
+import { set_coop_schedules } from './stats/coop_schedule';
 
 /**
  * リザルト一覧を取得します
@@ -29,7 +29,7 @@ export async function get_coop_history_details(): Promise<CoopResult.Response[]>
  * スケジュール一覧を取得します
  * @returns
  */
-export async function get_coop_schedules(): Promise<CoopSchedule.Response[]> {
+export async function get_coop_schedules(): Promise<any> {
     const schedule = await request(new StageScheduleQuery.Request());
     return await set_coop_schedules(schedule);
 }
