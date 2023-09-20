@@ -22,7 +22,7 @@ export namespace UserMe {
         }
 
         request(response: any): UserMe.Response {
-            console.log(response)
+            console.log(response);
             return plainToInstance(Response, response, { excludeExtraneousValues: true });
         }
     }

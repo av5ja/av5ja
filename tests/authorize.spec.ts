@@ -16,29 +16,29 @@ describe('Authorize', () => {
 
     it('Bullet Token', async () => {
         const version: string = (await request(new NSO.Version.Request())).result.version;
-        console.log(version)
+        console.log(version);
         const hash: string = (await request(new Web.Hash.Request())).js;
-        console.log(hash)
+        console.log(hash);
         const web_version = (await request(new Web.Version.Request(hash))).web_version;
-        console.log(web_version)
+        console.log(web_version);
         const access_token = (await request(new AccessToken.Request(user_info.session_token))) as AccessToken.Response;
-        console.log(access_token)
+        console.log(access_token);
         const user_me = await request(new UserMe.Request(access_token.access_token));
-        console.log(user_me)
+        console.log(user_me);
         const coral_token_nso: CoralToken.Response = await request(
             new CoralToken.Request(access_token.access_token.raw_value, 1, access_token.na_id, undefined, version)
         );
-        console.log(coral_token_nso)
+        console.log(coral_token_nso);
         const game_service_token = (await request(
             new GameServiceToken.Request(access_token.access_token, coral_token_nso, version, user_me)
         )) as GameServiceToken.Response;
-        console.log(game_service_token)
+        console.log(game_service_token);
         const coral_token_app: CoralToken.Response = await request(
             new CoralToken.Request(game_service_token.access_token.raw_value, 2, access_token.na_id, game_service_token.access_token.payload.sub, version)
         );
-        console.log(coral_token_app)
+        console.log(coral_token_app);
         const game_web_token = (await request(new GameWebToken.Request(game_service_token.access_token, coral_token_app, version))) as GameWebToken.Response;
-        console.log(game_web_token)
+        console.log(game_web_token);
         const bullet_token = (await request(new BulletToken.Request(game_web_token.access_token, web_version))) as BulletToken.Response;
 
         // NA_ID

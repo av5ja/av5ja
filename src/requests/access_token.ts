@@ -10,7 +10,7 @@ export namespace AccessToken {
         readonly headers: Headers = {
             Accept: 'application/json',
             'Accept-Encoding': 'gzip',
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Host: 'accounts.nintendo.com',
         };
         readonly method: Method = Method.POST;
